@@ -1,0 +1,16 @@
+import Interfaces
+import SlideKit
+import SwiftUI
+
+@MainActor
+public struct PotatotipsSlideConfiguration: SlideConfigurationInterface {
+  public let size = SlideSize.standard16_9
+
+  public let slideIndexController = SlideIndexController {
+    TItleSlide()
+  }
+
+  public let theme: any SlideTheme = .default
+
+  public init() {}
+}
