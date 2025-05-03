@@ -12,6 +12,17 @@ final class PresentationStore {
 struct PresentationsApp: App {
   @Bindable var store = PresentationStore()
 
+  @ViewBuilder
+  var presentationContentView: some View {
+    if let configuration = store.currentSlideConfiguration {
+      SlideRouterView(slideIndexController: configuration.slideIndexController)
+        .background(.white)
+        .foregroundColor(.black)
+    } else {
+      EmptyView()
+    }
+  }
+
   @Environment(\.openWindow) var openWindow
 
   var body: some Scene {
@@ -20,12 +31,14 @@ struct PresentationsApp: App {
         List {
           Button {
             store.currentSlideConfiguration = PotatotipsSlideConfiguration()
-            openWindow(
-              id: "presentation"
-            )
-            openWindow(
-              id: "presenter"
-            )
+            #if os(macOS)
+              openWindow(
+                id: "presentation"
+              )
+              openWindow(
+                id: "presenter"
+              )
+            #endif
           } label: {
             HStack {
               Text("potatotips 05/27")
@@ -38,37 +51,66 @@ struct PresentationsApp: App {
         }
         .navigationTitle(Text("Presentations"))
       }
-    }
-
-    WindowGroup(id: "presentation") {
-      if let configuration = store.currentSlideConfiguration {
-        PresentationView(
-          slideSize: configuration.size,
+      #if os(iOS)
+        .fullScreenCover(
+          isPresented: Binding(
+            get: { store.currentSlideConfiguration != nil },
+            set: { if !$0 { store.currentSlideConfiguration = nil } }
+          ),
           content: {
-            presentationContentView
+            ZStack(alignment: .topTrailing) {
+              if let configuration = store.currentSlideConfiguration {
+                PresentationView(
+                  slideSize: configuration.size,
+                  content: {
+                    presentationContentView
+                  }
+                )
+              }
+
+              Button {
+                store.currentSlideConfiguration = nil
+              } label: {
+                Image(systemName: "xmark")
+                  .padding(8)
+                  .clipShape(Circle())
+                  .overlay {
+                    Circle()
+                      .stroke(Color.accentColor, style: .init(lineWidth: 1))
+                  }
+              }
+              .tint(Color.accentColor)
+              .accessibilityLabel(Text("Close"))
+              .padding()
+            }
           })
-      }
+      #endif
     }
 
-    WindowGroup(id: "presenter") {
-      if let configuration = store.currentSlideConfiguration {
-        macOSPresenterView(
-          slideSize: configuration.size,
-          slideIndexController: configuration.slideIndexController,
-          content: {
-            presentationContentView
-          })
+    #if os(macOS)
+      WindowGroup(id: "presentation") {
+        if let configuration = store.currentSlideConfiguration {
+          PresentationView(
+            slideSize: configuration.size,
+            content: {
+              presentationContentView
+            }
+          )
+        }
       }
-    }
-    .setupAsPresenterWindow()
-  }
 
-  @ViewBuilder
-  var presentationContentView: some View {
-    if let configuration = store.currentSlideConfiguration {
-      SlideRouterView(slideIndexController: configuration.slideIndexController)
-    } else {
-      EmptyView()
-    }
+      WindowGroup(id: "presenter") {
+        if let configuration = store.currentSlideConfiguration {
+          macOSPresenterView(
+            slideSize: configuration.size,
+            slideIndexController: configuration.slideIndexController,
+            content: {
+              presentationContentView
+            }
+          )
+        }
+      }
+      .setupAsPresenterWindow()
+    #endif
   }
 }
