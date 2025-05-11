@@ -2,8 +2,9 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct SelfIntroduce: View {
-  var body: some View {
+public struct SelfIntroduce: View {
+  public init() {}
+  public var body: some View {
     Code(
       """
       struct Profile {

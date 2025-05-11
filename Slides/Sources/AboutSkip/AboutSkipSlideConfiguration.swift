@@ -3,15 +3,21 @@ import SelfIntroduce
 import SlideKit
 import SwiftUI
 
-public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
-  public let id: String = "potatotips0527"
+public struct AboutSkipSlideConfiguration: SlideConfigurationInterface {
+  public let id: String = "aboutSkip"
 
-  public var title: String = "potatotips 05/27"
+  public var title: String = "About Skip"
 
   public let size = SlideSize.standard16_9
 
   public let slideIndexController = SlideIndexController {
+    TitleSlide()
     SelfIntroduce()
+    AboutSkip()
+    Pricing()
+    InstallSkip()
+    Activation()
+    CreatingApp()
   }
 
   public let theme: any SlideTheme = .default

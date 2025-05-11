@@ -1,10 +1,13 @@
+import AboutSkip
 import Interfaces
 import Potatotips0527
 import SlideKit
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 final class PresentationStore {
+  var aboutConiguration: AboutSkipSlideConfiguration = .init()
+  var potatotipsConfiguration: Potatotips0527SlideConfiguration = .init()
   var currentSlideConfiguration: (any SlideConfigurationInterface)?
 }
 
@@ -30,23 +33,25 @@ struct PresentationsApp: App {
       NavigationStack {
         List {
           Button {
-            store.currentSlideConfiguration = PotatotipsSlideConfiguration()
-            #if os(macOS)
-              openWindow(
-                id: "presentation"
-              )
-              openWindow(
-                id: "presenter"
-              )
-            #endif
+            store.currentSlideConfiguration = store.aboutConiguration
           } label: {
             HStack {
-              Text("potatotips 05/27")
+              Text(store.aboutConiguration.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
               Image(systemName: "chevron.forward")
             }
-            .padding()
+          }
+
+          Button {
+            store.currentSlideConfiguration = store.potatotipsConfiguration
+          } label: {
+            HStack {
+              Text(store.potatotipsConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
           }
         }
         .navigationTitle(Text("Presentations"))

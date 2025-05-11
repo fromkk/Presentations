@@ -8,6 +8,10 @@ let package = Package(
   platforms: [.iOS(.v17), .macOS(.v12)],
   products: [
     .library(
+      name: "AboutSkip",
+      targets: ["AboutSkip"]
+    ),
+    .library(
       name: "Interfaces",
       targets: ["Interfaces"]
     ),
@@ -15,11 +19,23 @@ let package = Package(
       name: "Potatotips0527",
       targets: ["Potatotips0527"]
     ),
+    .library(
+      name: "SelfIntroduce",
+      targets: ["SelfIntroduce"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit", from: "0.5.0")
   ],
   targets: [
+    .target(
+      name: "AboutSkip",
+      dependencies: [
+        "Interfaces",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
     .target(
       name: "Interfaces",
       dependencies: [
@@ -30,7 +46,14 @@ let package = Package(
       name: "Potatotips0527",
       dependencies: [
         "Interfaces",
+        "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "SelfIntroduce",
+      dependencies: [
+        .product(name: "SlideKit", package: "SlideKit")
       ]
     ),
   ]
