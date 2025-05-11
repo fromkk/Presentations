@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "Slides",
-  platforms: [.iOS(.v17), .macOS(.v12)],
+  platforms: [.iOS(.v18), .macOS(.v15)],
   products: [
     .library(
       name: "AboutSkip",

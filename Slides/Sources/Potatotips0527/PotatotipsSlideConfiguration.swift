@@ -11,7 +11,13 @@ public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
   public let size = SlideSize.standard16_9
 
   public let slideIndexController = SlideIndexController {
+    TitleSlide()
     SelfIntroduce()
+    QuestionSpatialPhotoSlide()
+    AboutSpatialPhotoSlide()
+    DeepDiveSpatialPhotoSlide()
+    PhotoPickerSlide()
+    SplitSpatialPhotoSlide()
   }
 
   public let theme: any SlideTheme = .default
