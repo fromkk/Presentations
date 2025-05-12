@@ -15,6 +15,7 @@ public struct VisionOSMeetUpVol10Configuration: SlideConfigurationInterface {
   public var slideIndexController: SlideIndexController = .init {
     TitleSlide()
     SelfIntroduce()
+    AboutExhivision()
   }
 
   public var theme: any SlideKit.SlideTheme = .default

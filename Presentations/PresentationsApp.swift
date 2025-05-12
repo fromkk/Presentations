@@ -30,12 +30,20 @@ struct PresentationsApp: App {
 
   @Environment(\.openWindow) var openWindow
 
+  private func openWindowsIfMacOS() {
+    #if os(macOS)
+      openWindow(id: "presentation")
+      openWindow(id: "presenter")
+    #endif
+  }
+
   var body: some Scene {
     WindowGroup {
       NavigationStack {
         List {
           Button {
             store.currentSlideConfiguration = store.aboutConiguration
+            openWindowsIfMacOS()
           } label: {
             HStack {
               Text(store.aboutConiguration.title)
@@ -47,6 +55,7 @@ struct PresentationsApp: App {
 
           Button {
             store.currentSlideConfiguration = store.potatotipsConfiguration
+            openWindowsIfMacOS()
           } label: {
             HStack {
               Text(store.potatotipsConfiguration.title)
@@ -58,6 +67,7 @@ struct PresentationsApp: App {
 
           Button {
             store.currentSlideConfiguration = store.visionProMeetupVol10
+            openWindowsIfMacOS()
           } label: {
             HStack {
               Text(store.visionProMeetupVol10.title)
