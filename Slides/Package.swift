@@ -23,6 +23,10 @@ let package = Package(
       name: "SelfIntroduce",
       targets: ["SelfIntroduce"]
     ),
+    .library(
+      name: "visionOSMeetupVol10",
+      targets: ["visionOSMeetupVol10"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit", from: "0.5.0")
@@ -54,6 +58,14 @@ let package = Package(
       name: "SelfIntroduce",
       dependencies: [
         .product(name: "SlideKit", package: "SlideKit")
+      ]
+    ),
+    .target(
+      name: "visionOSMeetupVol10",
+      dependencies: [
+        "Interfaces",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
   ]

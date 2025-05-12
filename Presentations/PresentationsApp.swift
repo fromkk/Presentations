@@ -3,11 +3,13 @@ import Interfaces
 import Potatotips0527
 import SlideKit
 import SwiftUI
+import visionOSMeetupVol10
 
 @Observable @MainActor
 final class PresentationStore {
   var aboutConiguration: AboutSkipSlideConfiguration = .init()
   var potatotipsConfiguration: Potatotips0527SlideConfiguration = .init()
+  var visionProMeetupVol10 = VisionOSMeetUpVol10Configuration()
   var currentSlideConfiguration: (any SlideConfigurationInterface)?
 }
 
@@ -48,6 +50,17 @@ struct PresentationsApp: App {
           } label: {
             HStack {
               Text(store.potatotipsConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration = store.visionProMeetupVol10
+          } label: {
+            HStack {
+              Text(store.visionProMeetupVol10.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
               Image(systemName: "chevron.forward")
