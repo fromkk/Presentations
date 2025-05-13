@@ -23,6 +23,26 @@ struct PresentationsApp: App {
       SlideRouterView(slideIndexController: configuration.slideIndexController)
         #if !os(visionOS)
           .background(Color.white)
+        #else
+          .ornament(
+            attachmentAnchor: .scene(.bottom),
+            ornament: {
+              HStack(spacing: 32) {
+                Button {
+                  configuration.slideIndexController.back()
+                } label: {
+                  Image(systemName: "chevron.backward")
+                }
+                .accessibilityLabel("Backward")
+
+                Button {
+                  configuration.slideIndexController.forward()
+                } label: {
+                  Image(systemName: "chevron.forward")
+                }
+                .accessibilityLabel("Forward")
+              }
+            })
         #endif
     } else {
       EmptyView()
