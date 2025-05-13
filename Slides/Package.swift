@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "Slides",
-  platforms: [.iOS(.v18), .macOS(.v15)],
+  platforms: [.iOS(.v18), .macOS(.v15), .tvOS(.v16), .visionOS(.v2)],
   products: [
     .library(
       name: "AboutSkip",
@@ -29,7 +29,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/mtj0928/SlideKit", from: "0.5.0")
+    .package(url: "https://github.com/fromkk/SlideKit", branch: "main")
   ],
   targets: [
     .target(

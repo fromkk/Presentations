@@ -31,7 +31,7 @@ struct PresentationsApp: App {
   @Environment(\.openWindow) var openWindow
 
   private func openWindowsIfMacOS() {
-    #if os(macOS)
+    #if canImport(AppKit)
       openWindow(id: "presentation")
       openWindow(id: "presenter")
     #endif
@@ -79,7 +79,7 @@ struct PresentationsApp: App {
         }
         .navigationTitle(Text("Presentations"))
       }
-      #if os(iOS)
+      #if canImport(UIKit)
         .fullScreenCover(
           isPresented: Binding(
             get: { store.currentSlideConfiguration != nil },
@@ -115,7 +115,7 @@ struct PresentationsApp: App {
       #endif
     }
 
-    #if os(macOS)
+    #if canImport(AppKit)
       WindowGroup(id: "presentation") {
         if let configuration = store.currentSlideConfiguration {
           PresentationView(
