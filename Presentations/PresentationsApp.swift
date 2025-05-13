@@ -21,8 +21,9 @@ struct PresentationsApp: App {
   var presentationContentView: some View {
     if let configuration = store.currentSlideConfiguration {
       SlideRouterView(slideIndexController: configuration.slideIndexController)
-        .background(.white)
-        .foregroundColor(.black)
+        #if !os(visionOS)
+          .background(Color.white)
+        #endif
     } else {
       EmptyView()
     }
@@ -30,9 +31,9 @@ struct PresentationsApp: App {
 
   @Environment(\.openWindow) var openWindow
 
-  private func openWindowsIfMacOS() {
+  private func openWindows() {
+    openWindow(id: "presentation")
     #if canImport(AppKit)
-      openWindow(id: "presentation")
       openWindow(id: "presenter")
     #endif
   }
@@ -43,7 +44,7 @@ struct PresentationsApp: App {
         List {
           Button {
             store.currentSlideConfiguration = store.aboutConiguration
-            openWindowsIfMacOS()
+            openWindows()
           } label: {
             HStack {
               Text(store.aboutConiguration.title)
@@ -55,7 +56,7 @@ struct PresentationsApp: App {
 
           Button {
             store.currentSlideConfiguration = store.potatotipsConfiguration
-            openWindowsIfMacOS()
+            openWindows()
           } label: {
             HStack {
               Text(store.potatotipsConfiguration.title)
@@ -67,7 +68,7 @@ struct PresentationsApp: App {
 
           Button {
             store.currentSlideConfiguration = store.visionProMeetupVol10
-            openWindowsIfMacOS()
+            openWindows()
           } label: {
             HStack {
               Text(store.visionProMeetupVol10.title)
@@ -79,54 +80,20 @@ struct PresentationsApp: App {
         }
         .navigationTitle(Text("Presentations"))
       }
-      #if canImport(UIKit)
-        .fullScreenCover(
-          isPresented: Binding(
-            get: { store.currentSlideConfiguration != nil },
-            set: { if !$0 { store.currentSlideConfiguration = nil } }
-          ),
-          content: {
-            ZStack(alignment: .topTrailing) {
-              if let configuration = store.currentSlideConfiguration {
-                PresentationView(
-                  slideSize: configuration.size,
-                  content: {
-                    presentationContentView
-                  }
-                )
-              }
+    }
 
-              Button {
-                store.currentSlideConfiguration = nil
-              } label: {
-                Image(systemName: "xmark")
-                  .padding(8)
-                  .clipShape(Circle())
-                  .overlay {
-                    Circle()
-                      .stroke(Color.accentColor, style: .init(lineWidth: 1))
-                  }
-              }
-              .tint(Color.accentColor)
-              .accessibilityLabel(Text("Close"))
-              .padding()
-            }
-          })
-      #endif
+    WindowGroup(id: "presentation") {
+      if let configuration = store.currentSlideConfiguration {
+        PresentationView(
+          slideSize: configuration.size,
+          content: {
+            presentationContentView
+          }
+        )
+      }
     }
 
     #if canImport(AppKit)
-      WindowGroup(id: "presentation") {
-        if let configuration = store.currentSlideConfiguration {
-          PresentationView(
-            slideSize: configuration.size,
-            content: {
-              presentationContentView
-            }
-          )
-        }
-      }
-
       WindowGroup(id: "presenter") {
         if let configuration = store.currentSlideConfiguration {
           macOSPresenterView(

@@ -66,6 +66,9 @@ let package = Package(
         "Interfaces",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ],
+      resources: [
+        .process("exhivision.mov")
       ]
     ),
   ]

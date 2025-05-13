@@ -16,6 +16,11 @@ public struct VisionOSMeetUpVol10Configuration: SlideConfigurationInterface {
     TitleSlide()
     SelfIntroduce()
     AboutExhivision()
+    RealityViewSlide()
+    SwiftUIViewSlide()
+    UINotRespondingSlide()
+    SolutionSlide()
+    SummarySlide()
   }
 
   public var theme: any SlideKit.SlideTheme = .default
