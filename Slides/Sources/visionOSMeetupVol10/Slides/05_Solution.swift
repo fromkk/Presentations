@@ -14,6 +14,7 @@ struct SolutionSlide: View {
         GeometryReader { proxy in
           VStack {
             Item("hoverEffectなどを利用して、hover時にUIを変化させた")
+              .frame(maxWidth: .infinity, alignment: .leading)
             ScrollView {
               Code(
                 """
@@ -27,6 +28,7 @@ struct SolutionSlide: View {
                   effect.scaleEffect(!isActive ? 1 : 1.5)
                 }
                 """, fontSize: 36)
+              .frame(maxWidth: .infinity, alignment: .leading)
             }
           }
           .frame(maxWidth: .infinity)

@@ -15,7 +15,9 @@ struct UINotRespondingSlide: View {
           ScrollView {
             VStack {
               Item("3D空間に配置したカスタムボタンスタイルを適用したSwiftUIのButtonが目線に反応しない（ように見える）問題")
+                .frame(maxWidth: .infinity, alignment: .leading)
               Item("ボタンをタップしたくても反応するのか分かりづらい")
+                .frame(maxWidth: .infinity, alignment: .leading)
               Code(
                 """
                 RealityView { content, attachments in
@@ -43,6 +45,7 @@ struct UINotRespondingSlide: View {
                 """,
                 fontSize: 36
               )
+              .frame(maxWidth: .infinity, alignment: .leading)
             }
           }
           .frame(maxWidth: .infinity)
