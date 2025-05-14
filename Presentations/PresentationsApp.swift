@@ -1,21 +1,10 @@
-import AboutSkip
-import Interfaces
-import Potatotips0527
+import App
 import SlideKit
 import SwiftUI
-import visionOSMeetupVol10
-
-@Observable @MainActor
-final class PresentationStore {
-  var aboutConiguration: AboutSkipSlideConfiguration = .init()
-  var potatotipsConfiguration: Potatotips0527SlideConfiguration = .init()
-  var visionProMeetupVol10 = VisionOSMeetUpVol10Configuration()
-  var currentSlideConfiguration: (any SlideConfigurationInterface)?
-}
 
 @main
 struct PresentationsApp: App {
-  @Bindable var store = PresentationStore()
+  var store: PresentationStore = .init()
 
   @ViewBuilder
   var presentationContentView: some View {
@@ -59,57 +48,9 @@ struct PresentationsApp: App {
     }
   }
 
-  @Environment(\.openWindow) var openWindow
-
-  private func openWindows() {
-    openWindow(id: "presentation")
-    #if canImport(AppKit)
-      openWindow(id: "presenter")
-    #endif
-  }
-
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
-        List {
-          Button {
-            store.currentSlideConfiguration = store.aboutConiguration
-            openWindows()
-          } label: {
-            HStack {
-              Text(store.aboutConiguration.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-              Image(systemName: "chevron.forward")
-            }
-          }
-
-          Button {
-            store.currentSlideConfiguration = store.potatotipsConfiguration
-            openWindows()
-          } label: {
-            HStack {
-              Text(store.potatotipsConfiguration.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-              Image(systemName: "chevron.forward")
-            }
-          }
-
-          Button {
-            store.currentSlideConfiguration = store.visionProMeetupVol10
-            openWindows()
-          } label: {
-            HStack {
-              Text(store.visionProMeetupVol10.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-              Image(systemName: "chevron.forward")
-            }
-          }
-        }
-        .navigationTitle(Text("Presentations"))
-      }
+      AppView(store: store)
     }
 
     WindowGroup(id: "presentation") {

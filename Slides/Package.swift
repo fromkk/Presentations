@@ -12,6 +12,10 @@ let package = Package(
       targets: ["AboutSkip"]
     ),
     .library(
+      name: "App",
+      targets: ["App"]
+    ),
+    .library(
       name: "Exhivision",
       targets: ["Exhivision"]
     ),
@@ -42,6 +46,14 @@ let package = Package(
         "Interfaces",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "App",
+      dependencies: [
+        "AboutSkip",
+        "Potatotips0527",
+        "visionOSMeetupVol10",
       ]
     ),
     .target(

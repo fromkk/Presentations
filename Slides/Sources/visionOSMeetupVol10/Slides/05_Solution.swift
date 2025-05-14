@@ -27,7 +27,8 @@ struct SolutionSlide: View {
                 .hoverEffect { effect, isActive, _ in
                   effect.scaleEffect(!isActive ? 1 : 1.5)
                 }
-                """, fontSize: 36)
+                """, fontSize: 36
+              )
               .frame(maxWidth: .infinity, alignment: .leading)
             }
           }

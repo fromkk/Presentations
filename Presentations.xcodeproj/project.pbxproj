@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD48607A2DC593A100B381FB /* Potatotips0527 in Frameworks */ = {isa = PBXBuildFile; productRef = AD4860792DC593A100B381FB /* Potatotips0527 */; };
-		AD5EA33A2DD0AF5E0087B39C /* AboutSkip in Frameworks */ = {isa = PBXBuildFile; productRef = AD5EA3392DD0AF5E0087B39C /* AboutSkip */; };
-		AD5EA33C2DD207410087B39C /* visionOSMeetupVol10 in Frameworks */ = {isa = PBXBuildFile; productRef = AD5EA33B2DD207410087B39C /* visionOSMeetupVol10 */; };
+		AD0E09342DD55F34000E850B /* App in Frameworks */ = {isa = PBXBuildFile; productRef = AD0E09332DD55F34000E850B /* App */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,9 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD48607A2DC593A100B381FB /* Potatotips0527 in Frameworks */,
-				AD5EA33A2DD0AF5E0087B39C /* AboutSkip in Frameworks */,
-				AD5EA33C2DD207410087B39C /* visionOSMeetupVol10 in Frameworks */,
+				AD0E09342DD55F34000E850B /* App in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,9 +93,7 @@
 			);
 			name = Presentations;
 			packageProductDependencies = (
-				AD4860792DC593A100B381FB /* Potatotips0527 */,
-				AD5EA3392DD0AF5E0087B39C /* AboutSkip */,
-				AD5EA33B2DD207410087B39C /* visionOSMeetupVol10 */,
+				AD0E09332DD55F34000E850B /* App */,
 			);
 			productName = Presentations;
 			productReference = AD2A62EA2DC591C00016D8BE /* Presentations.app */;
@@ -378,17 +372,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AD4860792DC593A100B381FB /* Potatotips0527 */ = {
+		AD0E09332DD55F34000E850B /* App */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Potatotips0527;
-		};
-		AD5EA3392DD0AF5E0087B39C /* AboutSkip */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AboutSkip;
-		};
-		AD5EA33B2DD207410087B39C /* visionOSMeetupVol10 */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = visionOSMeetupVol10;
+			productName = App;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
