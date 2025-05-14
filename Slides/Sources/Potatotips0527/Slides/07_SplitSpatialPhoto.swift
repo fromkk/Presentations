@@ -220,7 +220,7 @@ struct SplitSpatialPhotoSlide: View {
                     matching: .spatialMedia
                   )
 
-                """, fontSize: 32)
+                """, fontSize: 24)
             }
             .frame(maxWidth: proxy.size.width / 2)
           }

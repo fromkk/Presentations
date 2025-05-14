@@ -1,14 +1,14 @@
 import SlideKit
 import SwiftUI
 
-#if canImport(RealityKit)
+#if os(visionOS)
   import RealityKit
 #endif
 
 @Slide
 struct TitleSlide: View {
   var body: some View {
-    #if canImport(RealityKit)
+    #if os(visionOS)
       RealityView { content, attachments in
         if let title = attachments.entity(for: "title") {
           title.position = [0, 0, 0.3]

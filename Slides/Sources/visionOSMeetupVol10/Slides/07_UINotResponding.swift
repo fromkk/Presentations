@@ -1,7 +1,7 @@
 import SlideKit
 import SwiftUI
 
-#if canImport(RealityKit)
+#if os(visionOS)
   import RealityKit
 #endif
 
@@ -47,7 +47,7 @@ struct UINotRespondingSlide: View {
           }
           .frame(maxWidth: .infinity)
         }
-        #if canImport(RealityKit)
+        #if os(visionOS)
           RealityView { content, attachments in
             let mesh = MeshResource.generateBox(
               width: 0.5,

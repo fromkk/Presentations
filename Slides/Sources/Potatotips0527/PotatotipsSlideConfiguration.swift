@@ -18,6 +18,7 @@ public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
     DeepDiveSpatialPhotoSlide()
     PhotoPickerSlide()
     SplitSpatialPhotoSlide()
+    OverlaySpatialPhotoSlide()
   }
 
   public let theme: any SlideTheme = .default

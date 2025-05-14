@@ -92,7 +92,7 @@ struct PhotoPickerSlide: View {
                 try data.write(to: imageURL)
                 return imageURL
               }
-              """, fontSize: 32
+              """, fontSize: 24
             )
             .frame(maxWidth: proxy.size.width / 2)
           }

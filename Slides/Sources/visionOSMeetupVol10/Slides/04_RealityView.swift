@@ -1,7 +1,7 @@
 import SlideKit
 import SwiftUI
 
-#if canImport(RealityKit)
+#if os(visionOS)
   import RealityKit
 #endif
 
