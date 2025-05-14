@@ -44,6 +44,16 @@ struct PresentationsApp: App {
               }
             })
         #endif
+        .gesture(
+          DragGesture()
+            .onEnded { value in
+              if value.translation.width < 0 {
+                configuration.slideIndexController.forward()
+              } else {
+                configuration.slideIndexController.back()
+              }
+            }
+        )
     } else {
       EmptyView()
     }
