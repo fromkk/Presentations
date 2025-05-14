@@ -3,10 +3,11 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct AboutExhivision: View {
+public struct AboutExhivision: View {
+  public init() {}
   let player = AVPlayer(url: Bundle.module.url(forResource: "exhivision", withExtension: "mov")!)
 
-  var body: some View {
+  public var body: some View {
     ZStack {
       VideoPlayer(player: player)
         .onAppear {

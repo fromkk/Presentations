@@ -1,3 +1,4 @@
+import Exhivision
 import Interfaces
 import SelfIntroduce
 import SlideKit
@@ -13,12 +14,14 @@ public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
   public let slideIndexController = SlideIndexController {
     TitleSlide()
     SelfIntroduce()
+    AboutExhivision()
     QuestionSpatialPhotoSlide()
     AboutSpatialPhotoSlide()
     DeepDiveSpatialPhotoSlide()
     PhotoPickerSlide()
     SplitSpatialPhotoSlide()
     OverlaySpatialPhotoSlide()
+    SummarySlide()
   }
 
   public let theme: any SlideTheme = .default

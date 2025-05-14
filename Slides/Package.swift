@@ -12,6 +12,10 @@ let package = Package(
       targets: ["AboutSkip"]
     ),
     .library(
+      name: "Exhivision",
+      targets: ["Exhivision"]
+    ),
+    .library(
       name: "Interfaces",
       targets: ["Interfaces"]
     ),
@@ -41,6 +45,15 @@ let package = Package(
       ]
     ),
     .target(
+      name: "Exhivision",
+      dependencies: [
+        .product(name: "SlideKit", package: "SlideKit")
+      ],
+      resources: [
+        .process("exhivision.mov")
+      ]
+    ),
+    .target(
       name: "Interfaces",
       dependencies: [
         .product(name: "SlideKit", package: "SlideKit")
@@ -49,6 +62,7 @@ let package = Package(
     .target(
       name: "Potatotips0527",
       dependencies: [
+        "Exhivision",
         "Interfaces",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
@@ -63,12 +77,10 @@ let package = Package(
     .target(
       name: "visionOSMeetupVol10",
       dependencies: [
+        "Exhivision",
         "Interfaces",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
-      ],
-      resources: [
-        .process("exhivision.mov")
       ]
     ),
   ]
