@@ -12,7 +12,7 @@ struct OverlaySpatialPhotoSlide: View {
   @State var orientation: Image.Orientation? = nil
   @State var value: Double = 0.015
   var body: some View {
-    HeaderSlide("Overlay splited spatial photos") {
+    HeaderSlide("左右の写真を重ねてみる") {
       HStack {
         GeometryReader { proxy in
           HStack(spacing: 32) {
@@ -49,6 +49,7 @@ struct OverlaySpatialPhotoSlide: View {
                 value: $value,
                 in: 0...0.03
               )
+              .frame(maxWidth: 500)
 
               Button {
                 isPhotosPickerPresented = true
@@ -57,7 +58,6 @@ struct OverlaySpatialPhotoSlide: View {
                   .foregroundStyle(.white)
               }
               .buttonStyle(.borderedProminent)
-              .frame(maxWidth: proxy.size.width / 2)
               .photosPicker(
                 isPresented: $isPhotosPickerPresented,
                 selection: Binding<PhotosPickerItem?>(
@@ -106,6 +106,7 @@ struct OverlaySpatialPhotoSlide: View {
                 matching: .spatialMedia
               )
             }
+            .frame(maxWidth: proxy.size.width / 2)
 
             ScrollView {
               Code(
@@ -144,8 +145,8 @@ struct OverlaySpatialPhotoSlide: View {
                 """,
                 fontSize: 24
               )
+              .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: proxy.size.width / 2)
           }
         }
       }

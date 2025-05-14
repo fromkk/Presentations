@@ -10,7 +10,7 @@ struct PhotoPickerSlide: View {
   @State var imageURL: URL?
 
   var body: some View {
-    HeaderSlide("Pick Spatial Photo") {
+    HeaderSlide("空間写真を表示してみる") {
       GeometryReader { proxy in
         HStack(spacing: 32) {
           VStack {
@@ -51,6 +51,7 @@ struct PhotoPickerSlide: View {
               matching: .spatialMedia
             )
           }
+          .frame(maxWidth: proxy.size.width / 2)
 
           ScrollView {
             Code(
@@ -94,7 +95,7 @@ struct PhotoPickerSlide: View {
               }
               """, fontSize: 24
             )
-            .frame(maxWidth: proxy.size.width / 2)
+            .frame(maxWidth: .infinity)
           }
         }
       }
