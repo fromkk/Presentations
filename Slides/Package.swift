@@ -33,7 +33,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/fromkk/SlideKit", branch: "main")
+    .package(url: "https://github.com/fromkk/SlideKit.git", branch: "main")
   ],
   targets: [
     .target(
