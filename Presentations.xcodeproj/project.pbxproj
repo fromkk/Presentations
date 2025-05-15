@@ -21,6 +21,9 @@
 			membershipExceptions = (
 				Info.plist,
 			);
+			platformFiltersByRelativePath = {
+				LaunchScreen.storyboard = (ios, xros, );
+			};
 			target = AD2A62E92DC591C00016D8BE /* Presentations */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
