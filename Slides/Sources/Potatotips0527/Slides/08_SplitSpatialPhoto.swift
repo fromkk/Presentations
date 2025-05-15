@@ -6,6 +6,8 @@ import SwiftUI
 
 @Slide
 struct SplitSpatialPhotoSlide: View {
+  @Environment(\.colorScheme) var colorScheme
+  
   @State var isPhotosPickerPresented: Bool = false
   @State var selectedPhotosPickerItem: PhotosPickerItem?
   @State var leftImage: CGImage?
@@ -220,7 +222,7 @@ struct SplitSpatialPhotoSlide: View {
                     matching: .spatialMedia
                   )
 
-                """, fontSize: 24
+                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 24
               )
               .frame(maxWidth: .infinity)
             }

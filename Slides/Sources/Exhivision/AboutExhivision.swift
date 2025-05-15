@@ -16,8 +16,13 @@ public struct AboutExhivision: View {
         }
         .allowsHitTesting(false)
 
-      Color.white.opacity(0.25)
-        .allowsHitTesting(false)
+      #if canImport(UIKit)
+        Color(uiColor: .systemBackground).opacity(0.25)
+          .allowsHitTesting(false)
+      #elseif canImport(AppKit)
+        Color(nsColor: .windowBackgroundColor).opacity(0.25)
+          .allowsHitTesting(false)
+      #endif
 
       HeaderSlide("About exhivision") {
         Item("Skip製のiOS / Android対応の写真展示アプリ")

@@ -7,6 +7,7 @@ import SwiftUI
 
 @Slide
 struct SolutionSlide: View {
+  @Environment(\.colorScheme) var colorScheme
   @State var isPresentedAlert: Bool = false
   var body: some View {
     HeaderSlide("解決した方法") {
@@ -27,7 +28,7 @@ struct SolutionSlide: View {
                 .hoverEffect { effect, isActive, _ in
                   effect.scaleEffect(!isActive ? 1 : 1.5)
                 }
-                """, fontSize: 36
+                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 36
               )
               .frame(maxWidth: .infinity, alignment: .leading)
             }

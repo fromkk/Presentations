@@ -3,6 +3,8 @@ import SwiftUI
 
 @Slide
 public struct SelfIntroduce: View {
+  @Environment(\.colorScheme) var colorScheme
+  
   public init() {}
   public var body: some View {
     HStack(spacing: 32) {
@@ -17,8 +19,9 @@ public struct SelfIntroduce: View {
           let basedOn = "Saitama, Japan"
           let favorite = "Photography"
         }
-        """,
-        fontSize: 60
+        """
+        , colorTheme: colorScheme == .dark ? .defaultDark : .presentation
+        , fontSize: 60
       )
 
       Image(.fromkk)

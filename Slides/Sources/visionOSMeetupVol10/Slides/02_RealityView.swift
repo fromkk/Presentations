@@ -7,6 +7,7 @@ import SwiftUI
 
 @Slide
 struct RealityViewSlide: View {
+  @Environment(\.colorScheme) var colorScheme
   var body: some View {
     HeaderSlide("RealityViewの表示") {
       HStack {
@@ -25,7 +26,7 @@ struct RealityViewSlide: View {
                 let boxEntity = ModelEntity(mesh: mesh, materials: [material])
                 content.add(boxEntity)
               }
-              """, fontSize: 36)
+              """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 36)
           }
         }
 

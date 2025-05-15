@@ -1,5 +1,5 @@
 import AboutSkip
-import Interfaces
+import Common
 import Potatotips0527
 import SlideKit
 import SwiftUI

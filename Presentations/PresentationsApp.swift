@@ -2,6 +2,12 @@ import App
 import SlideKit
 import SwiftUI
 
+#if canImport(UIKit)
+  import UIKit
+#elseif canImport(AppKit)
+  import AppKit
+#endif
+
 @main
 struct PresentationsApp: App {
   var store: PresentationStore = .init()
@@ -11,7 +17,11 @@ struct PresentationsApp: App {
     if let configuration = store.currentSlideConfiguration {
       SlideRouterView(slideIndexController: configuration.slideIndexController)
         #if !os(visionOS)
-          .background(Color.white)
+          #if canImport(UIKit)
+            .background(Color(uiColor: .systemBackground))
+          #elseif canImport(AppKit)
+            .background(Color(nsColor: .windowBackgroundColor))
+          #endif
         #else
           .ornament(
             attachmentAnchor: .scene(.bottom),

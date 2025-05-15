@@ -1,4 +1,4 @@
-import Interfaces
+import Common
 import SelfIntroduce
 import SlideKit
 import SwiftUI

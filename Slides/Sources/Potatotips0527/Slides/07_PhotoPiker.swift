@@ -5,6 +5,8 @@ import SwiftUI
 
 @Slide
 struct PhotoPickerSlide: View {
+  @Environment(\.colorScheme) var colorScheme
+  
   @State var isPhotosPickerPresented: Bool = false
   @State var selectedPhotosPickerItem: PhotosPickerItem?
   @State var imageURL: URL?
@@ -93,7 +95,7 @@ struct PhotoPickerSlide: View {
                 try data.write(to: imageURL)
                 return imageURL
               }
-              """, fontSize: 24
+              """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 24
             )
             .frame(maxWidth: .infinity)
           }

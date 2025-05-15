@@ -20,8 +20,8 @@ let package = Package(
       targets: ["Exhivision"]
     ),
     .library(
-      name: "Interfaces",
-      targets: ["Interfaces"]
+      name: "Common",
+      targets: ["Common"]
     ),
     .library(
       name: "Potatotips0527",
@@ -43,7 +43,7 @@ let package = Package(
     .target(
       name: "AboutSkip",
       dependencies: [
-        "Interfaces",
+        "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
@@ -66,7 +66,7 @@ let package = Package(
       ]
     ),
     .target(
-      name: "Interfaces",
+      name: "Common",
       dependencies: [
         .product(name: "SlideKit", package: "SlideKit")
       ]
@@ -75,7 +75,7 @@ let package = Package(
       name: "Potatotips0527",
       dependencies: [
         "Exhivision",
-        "Interfaces",
+        "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
@@ -83,6 +83,7 @@ let package = Package(
     .target(
       name: "SelfIntroduce",
       dependencies: [
+        "Common",
         .product(name: "SlideKit", package: "SlideKit")
       ]
     ),
@@ -90,7 +91,7 @@ let package = Package(
       name: "visionOSMeetupVol10",
       dependencies: [
         "Exhivision",
-        "Interfaces",
+        "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]

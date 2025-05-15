@@ -4,6 +4,7 @@ import SwiftUI
 @Slide
 struct VisionOSSlide: View {
   var body: some View {
+    @Environment(\.colorScheme) var colorScheme
     HeaderSlide("visionOSで空間写真を表示するには") {
       ScrollView {
         Code(
@@ -33,7 +34,7 @@ struct VisionOSSlide: View {
             ///
             final public class func open(items: [PreviewItem], selectedItem: PreviewItem? = nil) -> PreviewSession
           }
-          """
+          """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation
         )
         .frame(maxWidth: .infinity, alignment: .leading)
       }

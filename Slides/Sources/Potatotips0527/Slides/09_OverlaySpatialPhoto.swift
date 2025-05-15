@@ -5,6 +5,8 @@ import SwiftUI
 
 @Slide
 struct OverlaySpatialPhotoSlide: View {
+  @Environment(\.colorScheme) var colorScheme
+  
   @State var isPhotosPickerPresented: Bool = false
   @State var selectedPhotosPickerItem: PhotosPickerItem?
   @State var leftImage: CGImage?
@@ -142,8 +144,7 @@ struct OverlaySpatialPhotoSlide: View {
                   value: $value,
                   in: 0...0.03
                 )
-                """,
-                fontSize: 24
+                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 24
               )
               .frame(maxWidth: .infinity)
             }

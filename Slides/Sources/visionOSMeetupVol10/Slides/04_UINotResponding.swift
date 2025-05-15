@@ -7,6 +7,7 @@ import SwiftUI
 
 @Slide
 struct UINotRespondingSlide: View {
+  @Environment(\.colorScheme) var colorScheme
   @State var isPresentedAlert: Bool = false
   var body: some View {
     HeaderSlide("目線を当ててもUIが反応しない問題にハマった") {
@@ -42,7 +43,7 @@ struct UINotRespondingSlide: View {
                     .buttonStyle(.primaryButtonStyle)
                   }
                 }
-                """,
+                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
                 fontSize: 36
               )
               .frame(maxWidth: .infinity, alignment: .leading)

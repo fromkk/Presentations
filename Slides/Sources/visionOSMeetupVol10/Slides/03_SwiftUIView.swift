@@ -7,6 +7,8 @@ import SwiftUI
 
 @Slide
 struct SwiftUIViewSlide: View {
+  @Environment(\.colorScheme) var colorScheme
+  
   var body: some View {
     HeaderSlide("SwiftUIのViewを配置") {
       HStack {
@@ -26,7 +28,10 @@ struct SwiftUIViewSlide: View {
                   Text("Hello world")
                 }
               }
-              """, fontSize: 36)
+              """,
+              colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
+              fontSize: 36
+            )
           }
           .frame(maxWidth: proxy.size.width * 0.5)
 
