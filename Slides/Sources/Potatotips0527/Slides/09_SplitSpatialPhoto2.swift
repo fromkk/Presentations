@@ -5,7 +5,7 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct SplitSpatialPhotoSlide: View {
+struct SplitSpatialPhoto2Slide: View {
   @Environment(\.colorScheme) var colorScheme
 
   @State var isPhotosPickerPresented: Bool = false
@@ -235,6 +235,6 @@ struct SplitSpatialPhotoSlide: View {
 
 #Preview {
   SlidePreview {
-    SplitSpatialPhotoSlide()
+    SplitSpatialPhoto2Slide()
   }
 }
