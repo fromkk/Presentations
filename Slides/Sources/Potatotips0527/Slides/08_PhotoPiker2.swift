@@ -4,7 +4,7 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct PhotoPickerSlide: View {
+struct PhotoPicker2Slide: View {
   @Environment(\.colorScheme) var colorScheme
 
   @State var isPhotosPickerPresented: Bool = false
@@ -50,7 +50,7 @@ struct PhotoPickerSlide: View {
                   }
                 }
               ),
-              matching: .spatialMedia
+              matching: .all(of: [.images, .spatialMedia])
             )
           }
           .frame(maxWidth: proxy.size.width / 2)
@@ -107,6 +107,6 @@ struct PhotoPickerSlide: View {
 
 #Preview {
   SlidePreview {
-    PhotoPickerSlide()
+    PhotoPicker2Slide()
   }
 }

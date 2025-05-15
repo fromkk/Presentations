@@ -3,8 +3,8 @@ import SwiftUI
 
 @Slide
 struct VisionOSSlide: View {
+  @Environment(\.colorScheme) var colorScheme
   var body: some View {
-    @Environment(\.colorScheme) var colorScheme
     HeaderSlide("visionOSで空間写真を表示するには") {
       ScrollView {
         Code(

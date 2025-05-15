@@ -105,7 +105,7 @@ struct OverlaySpatialPhotoSlide: View {
                     }
                   }
                 ),
-                matching: .spatialMedia
+                matching: .all(of: [.images, .spatialMedia])
               )
             }
             .frame(maxWidth: proxy.size.width / 2)
