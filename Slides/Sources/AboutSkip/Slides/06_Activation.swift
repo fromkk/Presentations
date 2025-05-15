@@ -10,7 +10,8 @@ struct Activation: View {
 
       Text("https://skip.tools/eval/")
 
-      Code("~/.skiptools/skipkey.env", colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+      Code(
+        "~/.skiptools/skipkey.env", colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
     }
   }
 }

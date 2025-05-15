@@ -84,7 +84,7 @@ let package = Package(
       name: "SelfIntroduce",
       dependencies: [
         "Common",
-        .product(name: "SlideKit", package: "SlideKit")
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
     .target(

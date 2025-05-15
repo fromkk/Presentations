@@ -6,7 +6,7 @@ import SwiftUI
 @Slide
 struct PhotoPickerSlide: View {
   @Environment(\.colorScheme) var colorScheme
-  
+
   @State var isPhotosPickerPresented: Bool = false
   @State var selectedPhotosPickerItem: PhotosPickerItem?
   @State var imageURL: URL?

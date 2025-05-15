@@ -8,7 +8,7 @@ import SwiftUI
 @Slide
 struct SwiftUIViewSlide: View {
   @Environment(\.colorScheme) var colorScheme
-  
+
   var body: some View {
     HeaderSlide("SwiftUIのViewを配置") {
       HStack {
