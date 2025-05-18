@@ -21,6 +21,26 @@ struct UINotRespondingSlide: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
               Code(
                 """
+                import SwiftUI
+
+                struct PrimaryButtonStyle: ButtonStyle {
+                  @Environment(\\.isEnabled) var isEnabled
+                  func makeBody(configuration: Configuration) -> some View {
+                    configuration
+                      .label
+                      .fontWeight(.semibold)
+                      .padding(.horizontal, 16)
+                      .padding(.vertical, 12)
+                      .background(isEnabled ? Color.accentColor : Color.gray)
+                      .foregroundStyle(Color.white)
+                      .clipShape(Capsule())
+                  }
+                }
+
+                extension ButtonStyle where Self == PrimaryButtonStyle {
+                  static var primaryButtonStyle: Self { Self() }
+                }
+
                 RealityView { content, attachments in
                   let mesh = MeshResource.generateBox(
                     width: 0.5,

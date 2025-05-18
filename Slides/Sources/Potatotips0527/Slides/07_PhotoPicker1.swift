@@ -6,7 +6,8 @@ struct PhotoPicker1Slide: View {
   @Environment(\.colorScheme) var colorScheme
   var body: some View {
     HeaderSlide("Pick a spatial photo") {
-      Code("""
+      Code(
+        """
         .photosPicker(
           isPresented: $isPhotosPickerPresented,
           selection: $selection,

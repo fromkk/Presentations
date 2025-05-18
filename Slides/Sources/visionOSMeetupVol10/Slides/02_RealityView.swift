@@ -16,7 +16,7 @@ struct RealityViewSlide: View {
           ScrollView {
             Code(
               """
-              import RealityView
+              import RealityKit
               RealityView { content in
                 let mesh = MeshResource.generateBox(
                   width: 0.5,

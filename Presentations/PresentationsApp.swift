@@ -44,11 +44,11 @@ struct PresentationsApp: App {
             })
         #endif
         .gesture(
-          DragGesture()
+          DragGesture(minimumDistance: 100)
             .onEnded { value in
-              if value.translation.width < 0 {
+              if value.translation.width < 100 {
                 configuration.slideIndexController.forward()
-              } else {
+              } else if value.translation.width > -100 {
                 configuration.slideIndexController.back()
               }
             }
