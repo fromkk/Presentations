@@ -22,6 +22,7 @@ public struct VisionOSMeetUpVol10Configuration: SlideConfigurationInterface {
     UINotRespondingSlide()
     SolutionSlide()
     SpatialPhotoSlide()
+    DemoSlide()
     SummarySlide()
   }
 
