@@ -21,6 +21,7 @@ public struct VisionOSMeetUpVol10Configuration: SlideConfigurationInterface {
     SwiftUIViewSlide()
     UINotRespondingSlide()
     SolutionSlide()
+    PlainButtonSlide()
     SpatialPhotoSlide()
     DemoSlide()
     SummarySlide()
