@@ -16,13 +16,13 @@ struct TitleSlide: View {
         }
       } attachments: {
         Attachment(id: "title") {
-          Text("3D空間でSwiftUIを利用する際のUX向上")
+          Text("visionOSでSwiftUIを利用する際のUX向上")
             .font(.system(size: 108))
             .shadow(radius: 10)
         }
       }
     #else
-      Text("3D空間でSwiftUIを利用する際のUX向上")
+      Text("visionOSでSwiftUIを利用する際のUX向上")
         .font(.system(size: 108))
     #endif
   }
