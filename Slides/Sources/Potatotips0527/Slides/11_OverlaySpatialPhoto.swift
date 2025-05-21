@@ -47,11 +47,13 @@ struct OverlaySpatialPhotoSlide: View {
               .compositingGroup()
               .aspectRatio(1, contentMode: .fit)
 
-              Slider(
-                value: $value,
-                in: 0...0.03
-              )
-              .frame(maxWidth: 500)
+              if leftImage != nil && rightImage != nil {
+                Slider(
+                  value: $value,
+                  in: 0...0.03
+                )
+                .frame(maxWidth: 500)
+              }
 
               Button {
                 isPhotosPickerPresented = true

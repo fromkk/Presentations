@@ -13,6 +13,7 @@ struct SplitSpatialPhoto2Slide: View {
   @State var leftImage: CGImage?
   @State var rightImage: CGImage?
   @State var orientation: Image.Orientation? = nil
+  @State var showCompareLine: Bool = false
 
   var body: some View {
     HeaderSlide("左右それぞれの写真を取得してみる") {
@@ -20,80 +21,100 @@ struct SplitSpatialPhoto2Slide: View {
         GeometryReader { proxy in
           HStack(spacing: 32) {
             VStack {
-              VStack {
-                if let leftImage {
-                  Image(
-                    decorative: leftImage,
-                    scale: 1,
-                    orientation: orientation ?? .up
-                  )
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                }
+              ZStack(alignment: .center) {
+                VStack {
+                  if let leftImage {
+                    Image(
+                      decorative: leftImage,
+                      scale: 1,
+                      orientation: orientation ?? .up
+                    )
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                  }
 
-                if let rightImage {
-                  Image(
-                    decorative: rightImage,
-                    scale: 1,
-                    orientation: orientation ?? .up
-                  )
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
+                  if let rightImage {
+                    Image(
+                      decorative: rightImage,
+                      scale: 1,
+                      orientation: orientation ?? .up
+                    )
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                  }
+                }
+                .padding(.vertical, 32)
+
+                if showCompareLine {
+                  Rectangle()
+                    .frame(maxWidth: 1, maxHeight: .infinity)
+                    .foregroundStyle(.red)
                 }
               }
 
-              Button {
-                isPhotosPickerPresented = true
-              } label: {
-                Text("Pick Spatial Photo")
-                  .foregroundStyle(.white)
-              }
-              .buttonStyle(.borderedProminent)
-              .photosPicker(
-                isPresented: $isPhotosPickerPresented,
-                selection: Binding<PhotosPickerItem?>(
-                  get: {
-                    selectedPhotosPickerItem
-                  },
-                  set: { pickerItem in
-                    selectedPhotosPickerItem = pickerItem
-                    Task {
-                      if let pickerItem {
-                        let data = try await pickerItem.loadTransferable(type: Data.self)
-                        guard let (left, right) = data?.splitImages else {
-                          leftImage = nil
-                          rightImage = nil
-                          return
-                        }
-                        leftImage = left
-                        rightImage = right
+              HStack(spacing: 16) {
+                Button {
+                  isPhotosPickerPresented = true
+                } label: {
+                  Text("Pick Spatial Photo")
+                    .foregroundStyle(.white)
+                }
+                .buttonStyle(.borderedProminent)
+                .photosPicker(
+                  isPresented: $isPhotosPickerPresented,
+                  selection: Binding<PhotosPickerItem?>(
+                    get: {
+                      selectedPhotosPickerItem
+                    },
+                    set: { pickerItem in
+                      selectedPhotosPickerItem = pickerItem
+                      Task {
+                        if let pickerItem {
+                          let data = try await pickerItem.loadTransferable(type: Data.self)
+                          guard let (left, right) = data?.splitImages else {
+                            leftImage = nil
+                            rightImage = nil
+                            return
+                          }
+                          leftImage = left
+                          rightImage = right
 
-                        switch data?.orientation {
-                        case .up:
-                          orientation = .up
-                        case .upMirrored:
-                          orientation = .upMirrored
-                        case .down:
-                          orientation = .down
-                        case .downMirrored:
-                          orientation = .downMirrored
-                        case .left:
-                          orientation = .left
-                        case .leftMirrored:
-                          orientation = .leftMirrored
-                        case .right:
-                          orientation = .right
-                        case .rightMirrored:
-                          orientation = .rightMirrored
-                        case nil:
-                          orientation = .up
+                          switch data?.orientation {
+                          case .up:
+                            orientation = .up
+                          case .upMirrored:
+                            orientation = .upMirrored
+                          case .down:
+                            orientation = .down
+                          case .downMirrored:
+                            orientation = .downMirrored
+                          case .left:
+                            orientation = .left
+                          case .leftMirrored:
+                            orientation = .leftMirrored
+                          case .right:
+                            orientation = .right
+                          case .rightMirrored:
+                            orientation = .rightMirrored
+                          case nil:
+                            orientation = .up
+                          }
                         }
                       }
                     }
+                  ),
+                  matching: .spatialMedia
+                )
+
+                if leftImage != nil && rightImage != nil {
+                  Button {
+                    showCompareLine.toggle()
+                  } label: {
+                    Text("Toggle Compare")
                   }
-                ),
-                matching: .spatialMedia
-              )
+                  .buttonStyle(.bordered)
+                }
+              }
             }
             .frame(maxWidth: proxy.size.width / 2)
 

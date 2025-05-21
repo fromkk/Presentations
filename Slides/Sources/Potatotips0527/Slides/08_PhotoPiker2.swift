@@ -16,14 +16,11 @@ struct PhotoPicker2Slide: View {
       GeometryReader { proxy in
         HStack(spacing: 32) {
           VStack {
-            AsyncImage(url: imageURL) {
-              switch $0 {
-              case let .success(image):
+            AsyncImage(url: imageURL) { context in
+              if let image = context.image {
                 image
                   .resizable()
                   .aspectRatio(contentMode: .fit)
-              default:
-                EmptyView()
               }
             }
 
@@ -61,6 +58,14 @@ struct PhotoPicker2Slide: View {
               @State var isPhotosPickerPresented: Bool = false
               @State var selectedPhotosPickerItem: PhotosPickerItem?
               @State var imageURL: URL?
+
+              AsyncImage(url: imageURL) { context in
+                if let image = context.image {
+                  image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                }
+              }
 
               Button {
                 isPhotosPickerPresented = true
