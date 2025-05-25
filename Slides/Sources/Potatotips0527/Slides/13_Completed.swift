@@ -8,8 +8,10 @@ struct CompletedSlide: View {
   @State var isMuted: Bool = true
 
   init() {
+    #if os(iOS)
     try? AVAudioSession.sharedInstance().setCategory(
       .playback, mode: .default, options: [.mixWithOthers])
+    #endif
     self.player = AVPlayer(
       url: Bundle.module.url(forResource: "exhivision_spatial_photo", withExtension: "mov")!)
     self.player.isMuted = true
