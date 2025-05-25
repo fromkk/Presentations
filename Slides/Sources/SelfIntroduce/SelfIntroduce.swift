@@ -19,7 +19,8 @@ public struct SelfIntroduce: View {
           let basedOn = "Saitama, Japan"
           let favorite = "Photography"
         }
-        """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 60
+        """,
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 60) : .presentation(fontSize: 60)
       )
 
       Image(.fromkk)

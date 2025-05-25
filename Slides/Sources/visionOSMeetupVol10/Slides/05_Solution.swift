@@ -28,7 +28,8 @@ struct SolutionSlide: View {
                 .hoverEffect { effect, isActive, _ in
                   effect.scaleEffect(!isActive ? 1 : 1.5)
                 }
-                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 36
+                """,
+                syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
               )
               .frame(maxWidth: .infinity, alignment: .leading)
             }

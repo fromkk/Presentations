@@ -6,12 +6,15 @@ struct Activation: View {
   @Environment(\.colorScheme) var colorScheme
   var body: some View {
     HeaderSlide("Activation") {
-      Code("skip hostid", colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+      Code(
+        "skip hostid",
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation)
 
       Text("https://skip.tools/eval/")
 
       Code(
-        "~/.skiptools/skipkey.env", colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+        "~/.skiptools/skipkey.env",
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation)
     }
   }
 }

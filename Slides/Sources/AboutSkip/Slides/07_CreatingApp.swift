@@ -11,8 +11,7 @@ struct CreatingApp: View {
 
       Code(
         "skip init --appid=bundle.id project-name AppName",
-        colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
-        fontSize: 32
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
       )
 
       Text("Native mode")
@@ -20,8 +19,7 @@ struct CreatingApp: View {
 
       Code(
         "skip init --native-model --appid=bundle.id project-name AppName AppNameModel",
-        colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
-        fontSize: 32
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
       )
     }
   }

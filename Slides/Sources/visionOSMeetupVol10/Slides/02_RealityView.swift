@@ -26,7 +26,9 @@ struct RealityViewSlide: View {
                 let boxEntity = ModelEntity(mesh: mesh, materials: [material])
                 content.add(boxEntity)
               }
-              """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 36)
+              """,
+              syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
+            )
           }
         }
 

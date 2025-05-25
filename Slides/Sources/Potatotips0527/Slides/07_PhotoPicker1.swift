@@ -13,7 +13,9 @@ struct PhotoPicker1Slide: View {
           selection: $selection,
           matching: .all(of: [.images, .spatialMedia])
         )
-        """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+        """,
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+      )
     }
   }
 }

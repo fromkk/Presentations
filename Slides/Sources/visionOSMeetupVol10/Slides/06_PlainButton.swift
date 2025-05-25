@@ -23,8 +23,8 @@ struct PlainButtonSlide: View {
                   Text("Button")
                 }
                 .buttonStyle(.plain)
-                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
-                fontSize: 36
+                """,
+                syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
               )
               .frame(maxWidth: .infinity, alignment: .leading)
             }

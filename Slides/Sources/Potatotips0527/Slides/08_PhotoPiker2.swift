@@ -100,7 +100,8 @@ struct PhotoPicker2Slide: View {
                 try data.write(to: imageURL)
                 return imageURL
               }
-              """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 24
+              """,
+              syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
             )
             .frame(maxWidth: .infinity)
           }

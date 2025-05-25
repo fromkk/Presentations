@@ -243,7 +243,8 @@ struct SplitSpatialPhoto2Slide: View {
                     matching: .spatialMedia
                   )
 
-                """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation, fontSize: 24
+                """,
+                syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
               )
               .frame(maxWidth: .infinity)
             }

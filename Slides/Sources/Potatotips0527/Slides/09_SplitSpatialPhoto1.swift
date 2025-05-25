@@ -34,8 +34,7 @@ struct SplitSpatialPhoto1Slide: View {
           let left = CGImageSourceCreateImageAtIndex(src, leftIndex, nil)
           let right = CGImageSourceCreateImageAtIndex(src, rightIndex, nil)
           """,
-          colorTheme: colorScheme == .dark ? .defaultDark : .presentation,
-          fontSize: 40
+          syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 40) : .presentation(fontSize: 40)
         )
       }
     }

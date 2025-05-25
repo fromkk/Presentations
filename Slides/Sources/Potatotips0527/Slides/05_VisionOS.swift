@@ -34,7 +34,8 @@ struct VisionOSSlide: View {
             ///
             final public class func open(items: [PreviewItem], selectedItem: PreviewItem? = nil) -> PreviewSession
           }
-          """, colorTheme: colorScheme == .dark ? .defaultDark : .presentation
+          """,
+          syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
         )
         .frame(maxWidth: .infinity, alignment: .leading)
       }

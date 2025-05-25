@@ -10,12 +10,15 @@ struct InstallSkip: View {
     HeaderSlide("Installation") {
       Code(
         "brew install skiptools/skip/skip",
-        colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+      )
 
       Text("> Ensure that the basic development prerequisites are satisfied by running:")
         .font(.system(size: 32).italic())
 
-      Code("skip checkup", colorTheme: colorScheme == .dark ? .defaultDark : .presentation)
+      Code(
+        "skip checkup",
+        syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation)
     }
   }
 }
