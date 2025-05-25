@@ -8,7 +8,7 @@ struct TitleSlide: View {
       Text("What a `spatial` day!")
         .font(.system(size: 128))
 
-      Text("Split the spatial photo")
+      Text("空間写真を分解してみた")
         .font(.system(size: 64))
     }
   }
