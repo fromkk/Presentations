@@ -27,7 +27,8 @@ struct RealityViewSlide: View {
                 content.add(boxEntity)
               }
               """,
-              syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
+              syntaxHighlighter: colorScheme == .dark
+                ? .presentationDark(fontSize: 32) : .presentation(fontSize: 32)
             )
           }
         }

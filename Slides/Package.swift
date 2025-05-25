@@ -78,6 +78,9 @@ let package = Package(
         "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ],
+      resources: [
+        .process("exhivision_spatial_photo.mov")
       ]
     ),
     .target(

@@ -147,7 +147,8 @@ struct OverlaySpatialPhotoSlide: View {
                   in: 0...0.03
                 )
                 """,
-                syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
+                syntaxHighlighter: colorScheme == .dark
+                  ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
               )
               .frame(maxWidth: .infinity)
             }

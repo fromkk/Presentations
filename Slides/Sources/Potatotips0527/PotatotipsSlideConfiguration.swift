@@ -25,6 +25,7 @@ public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
     SplitSpatialPhoto1Slide()
     SplitSpatialPhoto2Slide()
     OverlaySpatialPhotoSlide()
+    CompletedSlide()
     SummarySlide()
   }
 

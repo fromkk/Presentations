@@ -101,7 +101,8 @@ struct PhotoPicker2Slide: View {
                 return imageURL
               }
               """,
-              syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
+              syntaxHighlighter: colorScheme == .dark
+                ? .presentationDark(fontSize: 24) : .presentation(fontSize: 24)
             )
             .frame(maxWidth: .infinity)
           }

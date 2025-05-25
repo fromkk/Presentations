@@ -37,7 +37,8 @@ struct SpatialPhotoSlide: View {
             final public class func open(items: [PreviewItem], selectedItem: PreviewItem? = nil) -> PreviewSession
           }
           """,
-          syntaxHighlighter: colorScheme == .dark ? .presentationDark(fontSize: 40) : .presentation(fontSize: 40)
+          syntaxHighlighter: colorScheme == .dark
+            ? .presentationDark(fontSize: 40) : .presentation(fontSize: 40)
         )
         .frame(maxWidth: .infinity, alignment: .leading)
       }
