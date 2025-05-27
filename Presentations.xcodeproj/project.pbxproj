@@ -22,7 +22,7 @@
 				Info.plist,
 			);
 			platformFiltersByRelativePath = {
-				LaunchScreen.storyboard = (ios, xros, );
+				LaunchScreen.storyboard = (ios, );
 			};
 			target = AD2A62E92DC591C00016D8BE /* Presentations */;
 		};
