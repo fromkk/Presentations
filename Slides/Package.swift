@@ -32,6 +32,14 @@ let package = Package(
       targets: ["SelfIntroduce"]
     ),
     .library(
+      name: "SwiftUITransition",
+      targets: ["SwiftUITransition"]
+    ),
+    .library(
+      name: "MitumerundesuSpatialPhoto",
+      targets: ["MitumerundesuSpatialPhoto"]
+    ),
+    .library(
       name: "visionOSMeetupVol10",
       targets: ["visionOSMeetupVol10"]
     ),
@@ -54,6 +62,8 @@ let package = Package(
         "AboutSkip",
         "Potatotips0527",
         "visionOSMeetupVol10",
+        "SwiftUITransition",
+        "MitumerundesuSpatialPhoto",
       ]
     ),
     .target(
@@ -87,6 +97,24 @@ let package = Package(
       name: "SelfIntroduce",
       dependencies: [
         "Common",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "SwiftUITransition",
+      dependencies: [
+        "Exhivision",
+        "Common",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "MitumerundesuSpatialPhoto",
+      dependencies: [
+        "Exhivision",
+        "Common",
+        "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
