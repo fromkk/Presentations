@@ -9,7 +9,7 @@ public struct VisionOSMeetUpVol10Configuration: SlideConfigurationInterface {
 
   public var id: String = "visionos-meetup-vol-10"
 
-  public var title: String = "visionOS Engineer Meetup vol.10 オンラインLT会"
+  public static var title: String = "visionOS Engineer Meetup vol.10 オンラインLT会"
 
   public var size: CGSize = SlideSize.standard16_9
 

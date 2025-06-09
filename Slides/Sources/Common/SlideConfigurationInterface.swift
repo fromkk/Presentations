@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor
 public protocol SlideConfigurationInterface: SlideConfigurationHashable {
-  var title: String { get }
+  static var title: String { get }
 
   var size: CGSize { get }
 
