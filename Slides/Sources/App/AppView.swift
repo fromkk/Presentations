@@ -62,6 +62,18 @@ public struct AppView: View {
         }
 
         Button {
+          store.currentSlideConfiguration = store.visionProMeetupVol10
+          openWindows()
+        } label: {
+          HStack {
+            Text(store.visionProMeetupVol10.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
           store.currentSlideConfiguration = store.swiftuiTransitionConfiguration
           openWindows()
         } label: {
@@ -79,18 +91,6 @@ public struct AppView: View {
         } label: {
           HStack {
             Text(store.mitumerundesuConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = store.visionProMeetupVol10
-          openWindows()
-        } label: {
-          HStack {
-            Text(store.visionProMeetupVol10.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
