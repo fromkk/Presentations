@@ -16,12 +16,16 @@ let package = Package(
       targets: ["App"]
     ),
     .library(
+      name: "Common",
+      targets: ["Common"]
+    ),
+    .library(
       name: "Exhivision",
       targets: ["Exhivision"]
     ),
     .library(
-      name: "Common",
-      targets: ["Common"]
+      name: "MitumerundesuSpatialPhoto",
+      targets: ["MitumerundesuSpatialPhoto"]
     ),
     .library(
       name: "Potatotips0527",
@@ -30,6 +34,10 @@ let package = Package(
     .library(
       name: "SelfIntroduce",
       targets: ["SelfIntroduce"]
+    ),
+    .library(
+      name: "SwiftUITransition",
+      targets: ["SwiftUITransition"]
     ),
     .library(
       name: "visionOSMeetupVol10",
@@ -52,8 +60,16 @@ let package = Package(
       name: "App",
       dependencies: [
         "AboutSkip",
+        "MitumerundesuSpatialPhoto",
         "Potatotips0527",
+        "SwiftUITransition",
         "visionOSMeetupVol10",
+      ]
+    ),
+    .target(
+      name: "Common",
+      dependencies: [
+        .product(name: "SlideKit", package: "SlideKit")
       ]
     ),
     .target(
@@ -66,16 +82,19 @@ let package = Package(
       ]
     ),
     .target(
-      name: "Common",
+      name: "MitumerundesuSpatialPhoto",
       dependencies: [
-        .product(name: "SlideKit", package: "SlideKit")
+        "Common",
+        "Exhivision",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
     .target(
       name: "Potatotips0527",
       dependencies: [
-        "Exhivision",
         "Common",
+        "Exhivision",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ],
@@ -91,10 +110,19 @@ let package = Package(
       ]
     ),
     .target(
+      name: "SwiftUITransition",
+      dependencies: [
+        "Common",
+        "Exhivision",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
       name: "visionOSMeetupVol10",
       dependencies: [
-        "Exhivision",
         "Common",
+        "Exhivision",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]

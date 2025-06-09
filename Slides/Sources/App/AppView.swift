@@ -3,6 +3,8 @@ import Common
 import Potatotips0527
 import SlideKit
 import SwiftUI
+import SwiftUITransition
+import MitumerundesuSpatialPhoto
 import visionOSMeetupVol10
 
 @Observable @MainActor
@@ -11,6 +13,8 @@ public final class PresentationStore {
   var aboutConiguration: AboutSkipSlideConfiguration = .init()
   var potatotipsConfiguration: Potatotips0527SlideConfiguration = .init()
   var visionProMeetupVol10 = VisionOSMeetUpVol10Configuration()
+  var swiftuiTransitionConfiguration = SwiftUITransitionSlideConfiguration()
+  var mitumerundesuConfiguration = MitumerundesuSpatialPhotoSlideConfiguration()
   public var currentSlideConfiguration: (any SlideConfigurationInterface)?
 }
 
@@ -63,6 +67,30 @@ public struct AppView: View {
         } label: {
           HStack {
             Text(store.visionProMeetupVol10.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
+          store.currentSlideConfiguration = store.swiftuiTransitionConfiguration
+          openWindows()
+        } label: {
+          HStack {
+            Text(store.swiftuiTransitionConfiguration.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
+          store.currentSlideConfiguration = store.mitumerundesuConfiguration
+          openWindows()
+        } label: {
+          HStack {
+            Text(store.mitumerundesuConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
