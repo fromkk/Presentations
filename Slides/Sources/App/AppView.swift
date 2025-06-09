@@ -10,11 +10,6 @@ import visionOSMeetupVol10
 @Observable @MainActor
 public final class PresentationStore {
   public init() {}
-  var aboutConiguration: AboutSkipSlideConfiguration = .init()
-  var potatotipsConfiguration: Potatotips0527SlideConfiguration = .init()
-  var visionProMeetupVol10 = VisionOSMeetUpVol10Configuration()
-  var swiftuiTransitionConfiguration = SwiftUITransitionSlideConfiguration()
-  var mitumerundesuConfiguration = MitumerundesuSpatialPhotoSlideConfiguration()
   public var currentSlideConfiguration: (any SlideConfigurationInterface)?
 }
 
@@ -38,11 +33,11 @@ public struct AppView: View {
     NavigationStack {
       List {
         Button {
-          store.currentSlideConfiguration = store.aboutConiguration
+          store.currentSlideConfiguration = AboutSkipSlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(store.aboutConiguration.title)
+            Text(AboutSkipSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
@@ -50,11 +45,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = store.potatotipsConfiguration
+          store.currentSlideConfiguration = Potatotips0527SlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(store.potatotipsConfiguration.title)
+            Text(Potatotips0527SlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
@@ -62,11 +57,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = store.visionProMeetupVol10
+          store.currentSlideConfiguration = VisionOSMeetUpVol10Configuration()
           openWindows()
         } label: {
           HStack {
-            Text(store.visionProMeetupVol10.title)
+            Text(VisionOSMeetUpVol10Configuration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
@@ -74,11 +69,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = store.swiftuiTransitionConfiguration
+          store.currentSlideConfiguration = SwiftUITransitionSlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(store.swiftuiTransitionConfiguration.title)
+            Text(SwiftUITransitionSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
@@ -86,11 +81,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = store.mitumerundesuConfiguration
+          store.currentSlideConfiguration = MitumerundesuSpatialPhotoSlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(store.mitumerundesuConfiguration.title)
+            Text(MitumerundesuSpatialPhotoSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")

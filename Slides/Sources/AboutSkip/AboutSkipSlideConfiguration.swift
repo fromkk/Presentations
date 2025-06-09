@@ -6,7 +6,7 @@ import SwiftUI
 public struct AboutSkipSlideConfiguration: SlideConfigurationInterface {
   public let id: String = "aboutSkip"
 
-  public var title: String = "About Skip"
+  public static var title: String = "About Skip"
 
   public let size = SlideSize.standard16_9
 
