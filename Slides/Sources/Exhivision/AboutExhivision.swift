@@ -4,7 +4,12 @@ import SwiftUI
 
 @Slide
 public struct AboutExhivision: View {
-  public init() {}
+  private let _transition: AnyTransition
+  public var transition: AnyTransition { _transition }
+
+  public init(transition: AnyTransition = .identity) {
+    _transition = transition
+  }
   let player = AVPlayer(url: Bundle.module.url(forResource: "exhivision", withExtension: "mov")!)
 
   public var body: some View {

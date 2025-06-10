@@ -1,10 +1,10 @@
 import AboutSkip
 import Common
+import MitumerundesuSpatialPhoto
 import Potatotips0527
 import SlideKit
 import SwiftUI
 import SwiftUITransition
-import MitumerundesuSpatialPhoto
 import visionOSMeetupVol10
 
 @Observable @MainActor
