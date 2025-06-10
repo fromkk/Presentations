@@ -5,7 +5,13 @@ import SwiftUI
 public struct SelfIntroduce: View {
   @Environment(\.colorScheme) var colorScheme
 
-  public init() {}
+  private let _transition: AnyTransition
+  public var transition: AnyTransition { _transition }
+
+  public init(transition: AnyTransition = .identity) {
+    _transition = transition
+  }
+
   public var body: some View {
     HStack(spacing: 32) {
       Code(

@@ -45,7 +45,8 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1")
+    .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1"),
+    .package(url: "https://github.com/SvenTiigi/YouTubePlayerKit.git", from: "2.0.0"),
   ],
   targets: [
     .target(
@@ -88,6 +89,7 @@ let package = Package(
         "Exhivision",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+        .product(name: "YouTubePlayerKit", package: "YouTubePlayerKit"),
       ]
     ),
     .target(
