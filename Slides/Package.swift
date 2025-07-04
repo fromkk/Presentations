@@ -43,6 +43,10 @@ let package = Package(
       name: "visionOSMeetupVol10",
       targets: ["visionOSMeetupVol10"]
     ),
+    .library(
+      name: "iOSDC2025Interview",
+      targets: ["iOSDC2025Interview"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1"),
@@ -65,6 +69,7 @@ let package = Package(
         "Potatotips0527",
         "SwiftUITransition",
         "visionOSMeetupVol10",
+        "iOSDC2025Interview",
       ]
     ),
     .target(
@@ -126,6 +131,13 @@ let package = Package(
         "Common",
         "Exhivision",
         "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "iOSDC2025Interview",
+      dependencies: [
+        "Common",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
