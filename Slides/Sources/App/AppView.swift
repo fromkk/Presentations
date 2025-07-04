@@ -6,6 +6,7 @@ import SlideKit
 import SwiftUI
 import SwiftUITransition
 import visionOSMeetupVol10
+import iOSDC2025Interview
 
 @Observable @MainActor
 public final class PresentationStore {
@@ -86,6 +87,18 @@ public struct AppView: View {
         } label: {
           HStack {
             Text(MitumerundesuSpatialPhotoSlideConfiguration.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
+          store.currentSlideConfiguration = iOSDC2025InterviewSlideConfiguration()
+          openWindows()
+        } label: {
+          HStack {
+            Text(iOSDC2025InterviewSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
