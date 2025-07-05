@@ -11,18 +11,26 @@ public struct MitumerundesuSpatialPhotoSlideConfiguration: SlideConfigurationInt
   public static var title: String = "空間写真を作りたい！"
   public let size = SlideSize.standard16_9
   public let slideIndexController = SlideIndexController {
-    TitleSlide()
-    SelfIntroduce(transition: .push(from: .trailing))
-    AboutExhivision(transition: .push(from: .trailing))
-    AboutSpatialPhoto1Slide()
-    AboutSpatialPhoto2Slide()
-    AboutHEIC()
-    WWDC()
-    BeforeSlide()
-    InterestingSlide()
-    TweetSlide()
-    MitumerundesSamplesSlide()
-    SampleCodeSlide()
+    TitleSlide()  // 01
+    SelfIntroduce(transition: .push(from: .trailing))  // 02
+    AboutExhivision(transition: .push(from: .trailing))  // 03
+    AboutSpatialPhoto1Slide()  // 04
+    AboutSpatialPhoto2Slide()  // 05
+    AboutHEIC()  // 06
+    WWDC()  // 07
+    BeforeSlide()  // 08
+    NextSlide()  // 09
+    SampleCodeSlide()  // 10
+    HowToMakeSpatialPhoto()  // 11
+    AboutParameters()  // 12
+    InterestingSlide()  // 13
+    TweetSlide()  // 14
+    MitumerundesSamplesSlide()  // 15
   }
   public let theme: any SlideTheme = .default
+}
+
+#Preview {
+  let configuration = MitumerundesuSpatialPhotoSlideConfiguration()
+  SlideRouterView(slideIndexController: configuration.slideIndexController)
 }

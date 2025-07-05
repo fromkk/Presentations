@@ -40,3 +40,9 @@ struct MitumerundesSamplesSlide: View {
     .push(from: .trailing)
   }
 }
+
+#Preview {
+  SlidePreview {
+    MitumerundesSamplesSlide()
+  }
+}
