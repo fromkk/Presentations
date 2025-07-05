@@ -1,6 +1,6 @@
 import AboutSkip
 import Common
-import MitumerundesuSpatialPhoto
+import CreateSpatialPhoto
 import Potatotips0527
 import SlideKit
 import SwiftUI
@@ -142,11 +142,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = MitumerundesuSpatialPhotoSlideConfiguration()
+          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(MitumerundesuSpatialPhotoSlideConfiguration.title)
+            Text(CreateSpatialPhotoSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")

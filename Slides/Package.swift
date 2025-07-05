@@ -23,9 +23,9 @@ let package = Package(
       name: "Exhivision",
       targets: ["Exhivision"]
     ),
-    .library(
-      name: "MitumerundesuSpatialPhoto",
-      targets: ["MitumerundesuSpatialPhoto"]
+            .library(
+            name: "CreateSpatialPhoto",
+            targets: ["CreateSpatialPhoto"]
     ),
     .library(
       name: "Potatotips0527",
@@ -65,7 +65,7 @@ let package = Package(
       name: "App",
       dependencies: [
         "AboutSkip",
-        "MitumerundesuSpatialPhoto",
+        "CreateSpatialPhoto",
         "Potatotips0527",
         "SwiftUITransition",
         "visionOSMeetupVol10",
@@ -87,8 +87,8 @@ let package = Package(
         .process("exhivision.mov")
       ]
     ),
-    .target(
-      name: "MitumerundesuSpatialPhoto",
+            .target(
+            name: "CreateSpatialPhoto",
       dependencies: [
         "Common",
         "Exhivision",
