@@ -25,7 +25,7 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     AboutParameters()  // 12
     InterestingSlide()  // 13
     TweetSlide()  // 14
-    CreateSpatialPhotoSamplesSlide()  // 15
+    MitumerundesSamplesSlide()  // 15
   }
   public let theme: any SlideTheme = .default
 }
