@@ -8,7 +8,7 @@ public struct MitumerundesuSpatialPhotoSlideConfiguration: SlideConfigurationInt
   public init() {}
 
   public let id: String = "mitumerundesu-spatial-photo"
-  public static var title: String = "MITUMERUNDESUで撮った写真を空間写真へ"
+  public static var title: String = "空間写真を作りたい！"
   public let size = SlideSize.standard16_9
   public let slideIndexController = SlideIndexController {
     TitleSlide()
@@ -16,7 +16,13 @@ public struct MitumerundesuSpatialPhotoSlideConfiguration: SlideConfigurationInt
     AboutExhivision(transition: .push(from: .trailing))
     AboutSpatialPhoto1Slide()
     AboutSpatialPhoto2Slide()
+    AboutHEIC()
     WWDC()
+    BeforeSlide()
+    NextSlide()
+    TweetSlide()
+    MitumerundesSamplesSlide()
+    SampleCodeSlide()
     HowToMakeSpatialPhoto()
     AboutParameters()
   }

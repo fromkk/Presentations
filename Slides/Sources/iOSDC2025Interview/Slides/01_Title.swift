@@ -5,14 +5,11 @@ import SwiftUI
 struct TitleSlide: View {
   var body: some View {
     VStack {
-      Text("空間写真を作りたい！")
-        .font(.system(size: 120, weight: .bold))
+      Text("iOSDC2025 Interview")
+        .font(.system(size: 108))
     }
   }
-
-  var transition: AnyTransition {
-    .push(from: .trailing)
-  }
+  var shouldHideIndex: Bool { true }
 }
 
 #Preview {

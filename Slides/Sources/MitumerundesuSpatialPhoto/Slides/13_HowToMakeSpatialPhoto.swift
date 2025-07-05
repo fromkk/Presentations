@@ -22,9 +22,6 @@ import SwiftUI
 struct HowToMakeSpatialPhoto: View {
   var body: some View {
     HeaderSlide("空間写真を作る方法") {
-      Item(
-        "https://developer.apple.com/documentation/imageio/writing-spatial-photos にサンプルがあるので詳細はそちらを参照"
-      )
       Item("簡単に解説すると") {
         Item("`CGImageDestinationCreateWithURL` を作成し")
         Item("左右それぞれの画像を `CGImageDestinationAddImageFromSource` で追加")

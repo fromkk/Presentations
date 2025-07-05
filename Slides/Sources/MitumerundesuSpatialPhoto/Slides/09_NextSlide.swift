@@ -2,12 +2,10 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct TitleSlide: View {
+struct NextSlide: View {
   var body: some View {
-    VStack {
-      Text("空間写真を作りたい！")
-        .font(.system(size: 120, weight: .bold))
-    }
+    Text("次は空間写真を作りたい")
+      .font(.system(size: 96))
   }
 
   var transition: AnyTransition {
@@ -17,6 +15,6 @@ struct TitleSlide: View {
 
 #Preview {
   SlidePreview {
-    TitleSlide()
+    NextSlide()
   }
 }
