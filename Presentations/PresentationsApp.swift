@@ -12,7 +12,6 @@ import SwiftUI
 struct PresentationsApp: App {
   var store: PresentationStore = .init()
 
-
   var body: some Scene {
     WindowGroup {
       AppView(store: store)
