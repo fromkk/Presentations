@@ -18,6 +18,8 @@ public struct MitumerundesuSpatialPhotoSlideConfiguration: SlideConfigurationInt
     AboutSpatialPhoto2Slide()
     WWDC()
     BeforeSlide()
+    InterestingSlide()
+    TweetSlide()
     SampleCodeSlide()
   }
   public let theme: any SlideTheme = .default
