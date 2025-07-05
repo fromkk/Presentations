@@ -5,8 +5,8 @@ import Potatotips0527
 import SlideKit
 import SwiftUI
 import SwiftUITransition
-import visionOSMeetupVol10
 import iOSDC2025Interview
+import visionOSMeetupVol10
 
 @Observable @MainActor
 public final class PresentationStore {
@@ -18,9 +18,9 @@ public struct PresentationContentView: View {
   public init(store: PresentationStore) {
     self.store = store
   }
-  
+
   @Bindable var store: PresentationStore
-  
+
   public var body: some View {
     if let configuration = store.currentSlideConfiguration {
       SlideRouterView(slideIndexController: configuration.slideIndexController)
@@ -168,16 +168,28 @@ public struct AppView: View {
       .navigationTitle(Text("Presentations"))
     }
     #if canImport(UIKit)
-    .fullScreenCover(isPresented: $showingFullScreenPresentation) {
-      if let configuration = store.currentSlideConfiguration {
-        PresentationView(
-          slideSize: configuration.size,
-          content: {
-            PresentationContentView(store: store)
+      .fullScreenCover(isPresented: $showingFullScreenPresentation) {
+        if let configuration = store.currentSlideConfiguration {
+          NavigationStack {
+            PresentationView(
+              slideSize: configuration.size,
+              content: {
+                PresentationContentView(store: store)
+              }
+            )
+            .toolbar {
+              ToolbarItem(placement: .primaryAction) {
+                Button {
+                  showingFullScreenPresentation = false
+                } label: {
+                  Label("Close", systemImage: "xmark")
+                }
+                .labelStyle(.iconOnly)
+              }
+            }
           }
-        )
+        }
       }
-    }
     #endif
   }
 }
