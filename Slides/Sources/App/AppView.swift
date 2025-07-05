@@ -14,6 +14,59 @@ public final class PresentationStore {
   public var currentSlideConfiguration: (any SlideConfigurationInterface)?
 }
 
+public struct PresentationContentView: View {
+  public init(store: PresentationStore) {
+    self.store = store
+  }
+  
+  @Bindable var store: PresentationStore
+  
+  public var body: some View {
+    if let configuration = store.currentSlideConfiguration {
+      SlideRouterView(slideIndexController: configuration.slideIndexController)
+        #if !os(visionOS)
+          #if canImport(UIKit)
+            .background(Color(uiColor: .systemBackground))
+          #elseif canImport(AppKit)
+            .background(Color(nsColor: .windowBackgroundColor))
+          #endif
+        #else
+          .ornament(
+            attachmentAnchor: .scene(.bottom),
+            ornament: {
+              HStack(spacing: 32) {
+                Button {
+                  configuration.slideIndexController.back()
+                } label: {
+                  Image(systemName: "chevron.backward")
+                }
+                .accessibilityLabel("Backward")
+
+                Button {
+                  configuration.slideIndexController.forward()
+                } label: {
+                  Image(systemName: "chevron.forward")
+                }
+                .accessibilityLabel("Forward")
+              }
+            })
+        #endif
+        .gesture(
+          DragGesture(minimumDistance: 100)
+            .onEnded { value in
+              if value.translation.width < 100 {
+                configuration.slideIndexController.forward()
+              } else if value.translation.width > -100 {
+                configuration.slideIndexController.back()
+              }
+            }
+        )
+    } else {
+      EmptyView()
+    }
+  }
+}
+
 public struct AppView: View {
   public init(store: PresentationStore) {
     self.store = store
@@ -22,12 +75,19 @@ public struct AppView: View {
   @Bindable var store: PresentationStore
 
   @Environment(\.openWindow) var openWindow
+  @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
+
+  @State private var showingFullScreenPresentation = false
 
   private func openWindows() {
-    openWindow(id: "presentation")
-    #if canImport(AppKit)
-      openWindow(id: "presenter")
-    #endif
+    if supportsMultipleWindows {
+      openWindow(id: "presentation")
+      #if canImport(AppKit)
+        openWindow(id: "presenter")
+      #endif
+    } else {
+      showingFullScreenPresentation = true
+    }
   }
 
   public var body: some View {
@@ -107,5 +167,17 @@ public struct AppView: View {
       }
       .navigationTitle(Text("Presentations"))
     }
+    #if canImport(UIKit)
+    .fullScreenCover(isPresented: $showingFullScreenPresentation) {
+      if let configuration = store.currentSlideConfiguration {
+        PresentationView(
+          slideSize: configuration.size,
+          content: {
+            PresentationContentView(store: store)
+          }
+        )
+      }
+    }
+    #endif
   }
 }
