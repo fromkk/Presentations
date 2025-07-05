@@ -2,9 +2,9 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct MitumerundesSamplesSlide: View {
+struct CreateSpatialPhotoSamplesSlide: View {
   var body: some View {
-    HeaderSlide("MITUMERUNDES Samples") {
+    HeaderSlide("Create Spatial Photo Samples") {
       ScrollView(.horizontal) {
         HStack(spacing: 0) {
           Image(.MIT_001)
@@ -43,6 +43,6 @@ struct MitumerundesSamplesSlide: View {
 
 #Preview {
   SlidePreview {
-    MitumerundesSamplesSlide()
+    CreateSpatialPhotoSamplesSlide()
   }
 }

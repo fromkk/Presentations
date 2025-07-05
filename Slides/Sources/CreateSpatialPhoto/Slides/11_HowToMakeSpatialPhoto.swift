@@ -11,7 +11,7 @@ import SwiftUI
    - https://developer.apple.com/documentation/imageio/writing-spatial-photos を参考に
    - 注意点としては左右の画像のサイズが等しい必要がある
  - 面白い画像を作ってみたい
-  - MITUMERUNDES の紹介
+          - Create Spatial Photo の紹介
   - 2TUMERUNDESがあればできそう？
   - 結果
  - まとめ
