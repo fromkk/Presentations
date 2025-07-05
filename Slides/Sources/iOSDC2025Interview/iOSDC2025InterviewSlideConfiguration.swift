@@ -10,16 +10,16 @@ public struct iOSDC2025InterviewSlideConfiguration: SlideConfigurationInterface 
   public let size = SlideSize.standard16_9
   public let slideIndexController = SlideIndexController {
     TitleSlide()
-    SelfIntroductionSlide()
-    WhyHostSlide()
-    AfterHostingSlide()
-    MemorableEventSlide()
-    RegionalFlavorSlide()
-    OperationDifficultySlide()
-    NextEventSlide()
-    OtherRegionsSlide()
-    MessageForHostsSlide()
-    AnythingElseSlide()
+    SelfIntroductionSlide(transition: .push(from: .trailing))
+    WhyHostSlide(transition: .push(from: .trailing))
+    AfterHostingSlide(transition: .push(from: .trailing))
+    MemorableEventSlide(transition: .push(from: .trailing))
+    RegionalFlavorSlide(transition: .push(from: .trailing))
+    OperationDifficultySlide(transition: .push(from: .trailing))
+    NextEventSlide(transition: .push(from: .trailing))
+    OtherRegionsSlide(transition: .push(from: .trailing))
+    MessageForHostsSlide(transition: .push(from: .trailing))
+    AnythingElseSlide(transition: .push(from: .trailing))
   }
   public let theme: any SlideTheme = .default
 }
