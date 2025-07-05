@@ -187,6 +187,14 @@ public struct AppView: View {
                 .labelStyle(.iconOnly)
               }
             }
+            .gesture(
+              DragGesture(minimumDistance: 100)
+                .onEnded { value in
+                  if value.translation.height > 100 {
+                    showingFullScreenPresentation = false
+                  }
+                }
+            )
           }
         }
       }

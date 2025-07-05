@@ -20,10 +20,10 @@ struct AboutHEIC: View {
           .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
+  }
 
-    var transition: AnyTransition {
-      .push(from: .trailing)
-    }
+  var transition: AnyTransition {
+    .push(from: .trailing)
   }
 }
 

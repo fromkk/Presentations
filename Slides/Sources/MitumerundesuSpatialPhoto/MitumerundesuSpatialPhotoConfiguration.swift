@@ -16,10 +16,12 @@ public struct MitumerundesuSpatialPhotoSlideConfiguration: SlideConfigurationInt
     AboutExhivision(transition: .push(from: .trailing))
     AboutSpatialPhoto1Slide()
     AboutSpatialPhoto2Slide()
+    AboutHEIC()
     WWDC()
     BeforeSlide()
     InterestingSlide()
     TweetSlide()
+    MitumerundesSamplesSlide()
     SampleCodeSlide()
   }
   public let theme: any SlideTheme = .default
