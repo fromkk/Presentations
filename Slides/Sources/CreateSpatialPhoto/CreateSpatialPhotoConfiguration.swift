@@ -23,14 +23,22 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     SampleCodeSlide()  // 10
     HowToMakeSpatialPhoto()  // 11
     AboutParameters()  // 12
-    InterestingSlide()  // 13
-    TweetSlide()  // 14
-    MitumerundesSamplesSlide()  // 15
+    MakingApproachSlide()  // 13
+    ApproachMethodSlide()  // 14
+    MultipleiPhonesSlide()  // 15
+    MirrorlessCameraSlide()  // 16
+    CommercialEquipmentSlide()  // 17
+    CanUseMitumerundesSlide()  // 18
+    WhatIsMitumerundesSlide()  // 19
+    DoubleLensSlide()  // 20
+    MadeItSlide()  // 21
+    ResultsSlide()  // 22
+    SummarySlide()  // 23
   }
   public let theme: any SlideTheme = .default
 }
 
 #Preview {
-      let configuration = CreateSpatialPhotoSlideConfiguration()
+  let configuration = CreateSpatialPhotoSlideConfiguration()
   SlideRouterView(slideIndexController: configuration.slideIndexController)
 }

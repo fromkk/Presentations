@@ -23,9 +23,9 @@ let package = Package(
       name: "Exhivision",
       targets: ["Exhivision"]
     ),
-            .library(
-            name: "CreateSpatialPhoto",
-            targets: ["CreateSpatialPhoto"]
+    .library(
+      name: "CreateSpatialPhoto",
+      targets: ["CreateSpatialPhoto"]
     ),
     .library(
       name: "Potatotips0527",
@@ -87,8 +87,8 @@ let package = Package(
         .process("exhivision.mov")
       ]
     ),
-            .target(
-            name: "CreateSpatialPhoto",
+    .target(
+      name: "CreateSpatialPhoto",
       dependencies: [
         "Common",
         "Exhivision",

@@ -2,10 +2,11 @@ import SlideKit
 import SwiftUI
 
 @Slide
-struct InterestingSlide: View {
+struct ResultsSlide: View {
   var body: some View {
-    Text("漠然と何か面白いことができないか")
-      .font(.system(size: 96))
+    HeaderSlide("成果") {
+
+    }
   }
 
   var transition: AnyTransition {
@@ -15,6 +16,6 @@ struct InterestingSlide: View {
 
 #Preview {
   SlidePreview {
-    InterestingSlide()
+    ResultsSlide()
   }
 }
