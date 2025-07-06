@@ -26,14 +26,16 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     MakingApproachSlide()  // 13
     ApproachMethodSlide()  // 14
     MultipleiPhonesSlide()  // 15
-    MirrorlessCameraSlide()  // 16
-    CommercialEquipmentSlide()  // 17
-    CanUseMitumerundesSlide()  // 18
-    WhatIsMitumerundesSlide()  // 19
-    DoubleLensSlide()  // 20
-    MadeItSlide()  // 21
-    ResultsSlide()  // 22
-    SummarySlide()  // 23
+    SynchronizeShutterSlide()  // 16
+    DemoSlide()  // 17
+    MirrorlessCameraSlide()  // 18
+    CommercialEquipmentSlide()  // 19
+    CanUseMitumerundesSlide()  // 20
+    WhatIsMitumerundesSlide()  // 21
+    DoubleLensSlide()  // 22
+    MadeItSlide()  // 23
+    ResultsSlide()  // 24
+    SummarySlide()  // 25
   }
   public let theme: any SlideTheme = .default
 }
