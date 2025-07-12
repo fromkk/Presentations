@@ -1,6 +1,7 @@
 import AboutSkip
 import Common
 import CreateSpatialPhoto
+import ExternalStorage
 import Potatotips0527
 import SlideKit
 import SwiftUI
@@ -159,6 +160,18 @@ public struct AppView: View {
         } label: {
           HStack {
             Text(iOSDC2025InterviewSlideConfiguration.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
+          store.currentSlideConfiguration = ExternalStorageConfiguration()
+          openWindows()
+        } label: {
+          HStack {
+            Text(ExternalStorageConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")

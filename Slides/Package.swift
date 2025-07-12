@@ -47,6 +47,10 @@ let package = Package(
       name: "iOSDC2025Interview",
       targets: ["iOSDC2025Interview"]
     ),
+    .library(
+      name: "ExternalStorage",
+      targets: ["ExternalStorage"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1"),
@@ -70,6 +74,7 @@ let package = Package(
         "SwiftUITransition",
         "visionOSMeetupVol10",
         "iOSDC2025Interview",
+        "ExternalStorage",
       ]
     ),
     .target(
@@ -138,6 +143,14 @@ let package = Package(
       name: "iOSDC2025Interview",
       dependencies: [
         "Common",
+        .product(name: "SlideKit", package: "SlideKit"),
+      ]
+    ),
+    .target(
+      name: "ExternalStorage",
+      dependencies: [
+        "Common",
+        "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
