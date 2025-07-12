@@ -4,9 +4,8 @@ import SwiftUI
 @Slide
 struct MakingApproachSlide: View {
   var body: some View {
-    HeaderSlide("作り方は分かった") {
-
-    }
+    Text("作り方は分かった")
+      .font(.system(size: 96))
   }
 
   var transition: AnyTransition {

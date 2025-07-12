@@ -4,9 +4,8 @@ import SwiftUI
 @Slide
 struct MirrorlessCameraSlide: View {
   var body: some View {
-    HeaderSlide("ミラーレスカメラを利用する") {
-
-    }
+    Text("ミラーレスカメラを利用する")
+          .font(.system(size: 96))
   }
 
   var transition: AnyTransition {

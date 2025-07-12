@@ -31,11 +31,10 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     MirrorlessCameraSlide()  // 18
     CommercialEquipmentSlide()  // 19
     CanUseMitumerundesSlide()  // 20
-    WhatIsMitumerundesSlide()  // 21
-    DoubleLensSlide()  // 22
-    MadeItSlide()  // 23
-    ResultsSlide()  // 24
-    SummarySlide()  // 25
+    DoubleLensSlide()  // 21
+    MadeItSlide()  // 22
+    ResultsSlide()  // 23
+    SummarySlide()  // 24
   }
   public let theme: any SlideTheme = .default
 }

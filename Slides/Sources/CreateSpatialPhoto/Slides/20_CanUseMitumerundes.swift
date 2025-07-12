@@ -1,3 +1,4 @@
+import Common
 import SlideKit
 import SwiftUI
 
@@ -5,7 +6,7 @@ import SwiftUI
 struct CanUseMitumerundesSlide: View {
   var body: some View {
     HeaderSlide("MITUMERUNDESとか使えない？") {
-
+      BackportWebView(url: URL(string: "https://note.com/takuma3_/n/n7586154de520")!)
     }
   }
 
