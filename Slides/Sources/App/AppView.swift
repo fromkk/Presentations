@@ -164,6 +164,18 @@ public struct AppView: View {
             Image(systemName: "chevron.forward")
           }
         }
+
+        Button {
+          store.currentSlideConfiguration = ExternalStorageConfiguration()
+          openWindows()
+        } label: {
+          HStack {
+            Text(ExternalStorageConfiguration.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
       }
       .navigationTitle(Text("Presentations"))
     }
