@@ -1,6 +1,7 @@
 import AboutSkip
 import Common
 import CreateSpatialPhoto
+import ExternalStorage
 import Potatotips0527
 import SlideKit
 import SwiftUI
