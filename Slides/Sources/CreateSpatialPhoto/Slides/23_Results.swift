@@ -1,31 +1,26 @@
+import QuickLook
 import SlideKit
 import SwiftUI
 
 @Slide
 struct ResultsSlide: View {
+  @State var selectedData: Data?
+
+  @State var imageURL: URL?
+  @State var leftImage: CGImage?
+  @State var rightImage: CGImage?
+  @State var orientation: Image.Orientation?
+
   var body: some View {
     HeaderSlide("成果") {
-      ScrollView(.horizontal) {
-        HStack {
-          Image(.NIT_001)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: .infinity)
-          Image(.NIT_002)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: .infinity)
-          Image(.NIT_003)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: .infinity)
-          Image(.NIT_004)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: .infinity)
-        }
-      }
+      GenerateSplitView(outputURL: Binding(get: {
+        nil
+      }, set: { url in
+        self.imageURL = url
+      }))
+      .quickLookPreview($imageURL)
     }
+
   }
 
   var transition: AnyTransition {
