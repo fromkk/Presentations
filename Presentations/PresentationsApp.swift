@@ -8,7 +8,9 @@ import SwiftUI
   import AppKit
 #endif
 
-@main
+#if !canImport(UIKit)
+  @main
+#endif
 struct PresentationsApp: App {
   var store: PresentationStore = .init()
 

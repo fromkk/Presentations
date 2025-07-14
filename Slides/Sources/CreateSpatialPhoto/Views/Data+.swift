@@ -1,4 +1,3 @@
-import Foundation
 import CoreImage
 import Foundation
 import UniformTypeIdentifiers
@@ -60,7 +59,6 @@ extension Data {
     return .heic
   }
 }
-
 
 extension Data {
   func copyToTemporaryDirectory() throws -> URL {

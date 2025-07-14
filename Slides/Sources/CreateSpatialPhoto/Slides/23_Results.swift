@@ -13,11 +13,15 @@ struct ResultsSlide: View {
 
   var body: some View {
     HeaderSlide("成果") {
-      GenerateSplitView(outputURL: Binding(get: {
-        nil
-      }, set: { url in
-        self.imageURL = url
-      }))
+      GenerateSplitView(
+        outputURL: Binding(
+          get: {
+            nil
+          },
+          set: { url in
+            self.imageURL = url
+          })
+      )
       .quickLookPreview($imageURL)
     }
 

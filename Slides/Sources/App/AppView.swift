@@ -13,6 +13,13 @@ import visionOSMeetupVol10
 public final class PresentationStore {
   public init() {}
   public var currentSlideConfiguration: (any SlideConfigurationInterface)?
+  public var hasExternalDisplay: Bool = false
+
+  public enum ExternalDisplayMode {
+    case external
+    case mirroring
+  }
+  public var externalDisplayMode: ExternalDisplayMode = .external
 }
 
 public struct PresentationContentView: View {
@@ -194,10 +201,25 @@ public struct AppView: View {
               ToolbarItem(placement: .primaryAction) {
                 Button {
                   showingFullScreenPresentation = false
+                  store.currentSlideConfiguration = nil
                 } label: {
                   Label("Close", systemImage: "xmark")
                 }
                 .labelStyle(.iconOnly)
+              }
+
+              if store.hasExternalDisplay {
+                ToolbarItem(placement: .primaryAction) {
+                  Button {
+                    if store.externalDisplayMode == .mirroring {
+                      store.externalDisplayMode = .external
+                    } else {
+                      store.externalDisplayMode = .mirroring
+                    }
+                  } label: {
+                    Label("Toggle Mirroring", systemImage: "arrow.trianglehead.2.counterclockwise")
+                  }
+                }
               }
             }
             .gesture(

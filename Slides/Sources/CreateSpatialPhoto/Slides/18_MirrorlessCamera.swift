@@ -5,7 +5,7 @@ import SwiftUI
 struct MirrorlessCameraSlide: View {
   var body: some View {
     Text("ミラーレスカメラを利用する")
-          .font(.system(size: 96))
+      .font(.system(size: 96))
   }
 
   var transition: AnyTransition {
