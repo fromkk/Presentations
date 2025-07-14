@@ -4,7 +4,7 @@
   import UIKit
   import SwiftUI
 
-final class ExternalSceneDelegate: UIResponder, UIWindowSceneDelegate {
+  final class ExternalSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(
@@ -13,21 +13,56 @@ final class ExternalSceneDelegate: UIResponder, UIWindowSceneDelegate {
       options connectionOptions: UIScene.ConnectionOptions
     ) {
       guard
-        let scene = scene as? UIWindowScene,
-        let store = (UIApplication.shared.delegate as? AppDelegate)?.store
+        let scene = scene as? UIWindowScene
       else {
         return
       }
 
+      createWindow(scene)
+
+      (UIApplication.shared.delegate as? AppDelegate)?.store
+        .hasExternalDisplay = true
+
+      subscribeExternalDisplayMode(scene)
+    }
+
+    private func subscribeExternalDisplayMode(_ scene: UIWindowScene) {
+      guard let store = (UIApplication.shared.delegate as? AppDelegate)?.store else {
+        return
+      }
+      withObservationTracking {
+        _ = store.externalDisplayMode
+      } onChange: { [weak self] in
+        Task { @MainActor in
+          guard let self else {
+            return
+          }
+          switch store.externalDisplayMode {
+          case .external:
+            self.createWindow(scene)
+          case .mirroring:
+            self.resetWindow()
+          }
+          self.subscribeExternalDisplayMode(scene)
+        }
+      }
+    }
+
+    private func createWindow(_ scene: UIWindowScene) {
+      guard let store = (UIApplication.shared.delegate as? AppDelegate)?.store
+      else {
+        return
+      }
       let window = UIWindow(windowScene: scene)
       window.rootViewController = UIHostingController(
         rootView: ExternalView(store: store)
       )
       window.makeKeyAndVisible()
       self.window = window
+    }
 
-      (UIApplication.shared.delegate as? AppDelegate)?.store
-        .hasExternalDisplay = true
+    private func resetWindow() {
+      self.window = nil
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

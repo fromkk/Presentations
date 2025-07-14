@@ -5,7 +5,7 @@ import SwiftUI
 struct DoubleLensSlide: View {
   var body: some View {
     Text("レンズ2つにできないか？ 🤔")
-          .font(.system(size: 96))
+      .font(.system(size: 96))
   }
 
   var transition: AnyTransition {

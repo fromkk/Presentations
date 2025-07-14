@@ -207,6 +207,20 @@ public struct AppView: View {
                 }
                 .labelStyle(.iconOnly)
               }
+
+              if store.hasExternalDisplay {
+                ToolbarItem(placement: .primaryAction) {
+                  Button {
+                    if store.externalDisplayMode == .mirroring {
+                      store.externalDisplayMode = .external
+                    } else {
+                      store.externalDisplayMode = .mirroring
+                    }
+                  } label: {
+                    Label("Toggle Mirroring", systemImage: "arrow.trianglehead.2.counterclockwise")
+                  }
+                }
+              }
             }
             .gesture(
               DragGesture(minimumDistance: 100)
