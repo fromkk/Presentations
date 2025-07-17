@@ -1,3 +1,4 @@
+import AVKit
 import SlideKit
 import SwiftUI
 
@@ -5,7 +6,14 @@ import SwiftUI
 struct DemoSlide: View {
   var body: some View {
     HeaderSlide("Demo") {
-      // Demo content can be added here
+      VideoPlayer(
+        player: AVPlayer(
+          url: Bundle.module.url(
+            forResource: "SyncCamera",
+            withExtension: "mov"
+          )!
+        )
+      )
     }
   }
 

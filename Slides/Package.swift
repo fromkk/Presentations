@@ -100,6 +100,9 @@ let package = Package(
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
         .product(name: "YouTubePlayerKit", package: "YouTubePlayerKit"),
+      ],
+      resources: [
+        .process("SyncCamera.mov")
       ]
     ),
     .target(
