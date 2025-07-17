@@ -13,28 +13,29 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
   public let slideIndexController = SlideIndexController {
     TitleSlide()  // 01
     SelfIntroduce(transition: .push(from: .trailing))  // 02
-    AboutExhivision(transition: .push(from: .trailing))  // 03
-    AboutSpatialPhoto1Slide()  // 04
-    AboutSpatialPhoto2Slide()  // 05
-    AboutHEIC()  // 06
-    WWDC()  // 07
-    BeforeSlide()  // 08
-    NextSlide()  // 09
-    SampleCodeSlide()  // 10
-    HowToMakeSpatialPhoto()  // 11
-    AboutParameters()  // 12
-    MakingApproachSlide()  // 13
-    ApproachMethodSlide()  // 14
-    MultipleiPhonesSlide()  // 15
-    SynchronizeShutterSlide()  // 16
-    DemoSlide()  // 17
-    MirrorlessCameraSlide()  // 18
-    CommercialEquipmentSlide()  // 19
-    CanUseMitumerundesSlide()  // 20
-    DoubleLensSlide()  // 21
-    MadeItSlide()  // 22
-    ResultsSlide()  // 23
-    SummarySlide()  // 24
+    iOSDCJapan2025Slide()  // 03
+    AboutExhivision(transition: .push(from: .trailing))  // 04
+    AboutSpatialPhoto1Slide()  // 05
+    AboutSpatialPhoto2Slide()  // 06
+    AboutHEIC()  // 07
+    WWDC()  // 08
+    BeforeSlide()  // 09
+    NextSlide()  // 10
+    SampleCodeSlide()  // 11
+    HowToMakeSpatialPhoto()  // 12
+    AboutParameters()  // 13
+    MakingApproachSlide()  // 14
+    ApproachMethodSlide()  // 15
+    MultipleiPhonesSlide()  // 16
+    SynchronizeShutterSlide()  // 17
+    DemoSlide()  // 18
+    MirrorlessCameraSlide()  // 19
+    CommercialEquipmentSlide()  // 20
+    CanUseMitumerundesSlide()  // 21
+    DoubleLensSlide()  // 22
+    MadeItSlide()  // 23
+    ResultsSlide()  // 24
+    SummarySlide()  // 25
   }
   public let theme: any SlideTheme = .default
 }
