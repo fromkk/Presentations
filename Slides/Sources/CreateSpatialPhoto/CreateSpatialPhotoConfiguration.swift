@@ -36,6 +36,7 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     MadeItSlide()  // 23
     ResultsSlide()  // 24
     SummarySlide()  // 25
+    PRView()  // 26
   }
   public let theme: any SlideTheme = .default
 }
