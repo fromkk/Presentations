@@ -13,7 +13,6 @@ struct iOSDCJapan2025Slide: View {
     case fourth
     case fifth
     case sixth
-    case seventh
   }
 
   var body: some View {
@@ -39,7 +38,7 @@ struct iOSDCJapan2025Slide: View {
                 .rotationEffect(.degrees(-15))
                 .transition(.scale.combined(with: .opacity))
             }
-          case .sixth, .seventh:
+          case .sixth:
             Image(.iosdc3)
           }
         }

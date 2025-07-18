@@ -20,23 +20,24 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
     AboutHEIC()  // 07
     WWDC()  // 08
     BeforeSlide()  // 09
-    NextSlide()  // 10
-    SampleCodeSlide()  // 11
-    HowToMakeSpatialPhoto()  // 12
-    AboutParameters()  // 13
-    MakingApproachSlide()  // 14
-    ApproachMethodSlide()  // 15
-    MultipleiPhonesSlide()  // 16
-    SynchronizeShutterSlide()  // 17
-    DemoSlide()  // 18
-    MirrorlessCameraSlide()  // 19
-    CommercialEquipmentSlide()  // 20
-    CanUseMitumerundesSlide()  // 21
-    DoubleLensSlide()  // 22
-    MadeItSlide()  // 23
-    ResultsSlide()  // 24
-    SummarySlide()  // 25
-    PRView()  // 26
+    OverlaySpatialPhotoSlide()  // 10
+    NextSlide()  // 11
+    SampleCodeSlide()  // 12
+    HowToMakeSpatialPhoto()  // 13
+    AboutParameters()  // 14
+    MakingApproachSlide()  // 15
+    ApproachMethodSlide()  // 16
+    MultipleiPhonesSlide()  // 17
+    SynchronizeShutterSlide()  // 18
+    DemoSlide()  // 19
+    MirrorlessCameraSlide()  // 20
+    CommercialEquipmentSlide()  // 21
+    CanUseMitumerundesSlide()  // 22
+    DoubleLensSlide()  // 23
+    MadeItSlide()  // 24
+    ResultsSlide()  // 25
+    SummarySlide()  // 26
+    PRView()  // 27
   }
   public let theme: any SlideTheme = .default
 }

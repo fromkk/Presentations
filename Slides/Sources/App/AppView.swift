@@ -197,36 +197,12 @@ public struct AppView: View {
                 PresentationContentView(store: store)
               }
             )
-            .toolbar {
-              ToolbarItem(placement: .primaryAction) {
-                Button {
-                  showingFullScreenPresentation = false
-                  store.currentSlideConfiguration = nil
-                } label: {
-                  Label("Close", systemImage: "xmark")
-                }
-                .labelStyle(.iconOnly)
-              }
-
-              if store.hasExternalDisplay {
-                ToolbarItem(placement: .primaryAction) {
-                  Button {
-                    if store.externalDisplayMode == .mirroring {
-                      store.externalDisplayMode = .external
-                    } else {
-                      store.externalDisplayMode = .mirroring
-                    }
-                  } label: {
-                    Label("Toggle Mirroring", systemImage: "arrow.trianglehead.2.counterclockwise")
-                  }
-                }
-              }
-            }
             .gesture(
               DragGesture(minimumDistance: 100)
                 .onEnded { value in
                   if value.translation.height > 100 {
                     showingFullScreenPresentation = false
+                    store.currentSlideConfiguration = nil
                   }
                 }
             )
