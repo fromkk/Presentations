@@ -141,6 +141,10 @@ struct PRView: View {
     let context = CIContext()
     return context.createCGImage(ciImage, from: ciImage.extent)
   }
+
+  var transition: AnyTransition {
+    .scale.combined(with: .opacity)
+  }
 }
 
 #Preview {
