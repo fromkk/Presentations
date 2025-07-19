@@ -68,6 +68,15 @@ public struct PresentationContentView: View {
               }
             }
         )
+        .onTapGesture(count: 2) {
+          if store.hasExternalDisplay {
+            if store.externalDisplayMode == .external {
+              store.externalDisplayMode = .mirroring
+            } else {
+              store.externalDisplayMode = .external
+            }
+          }
+        }
     } else {
       EmptyView()
     }
