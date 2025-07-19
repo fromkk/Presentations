@@ -8,7 +8,7 @@ public struct CreateSpatialPhotoSlideConfiguration: SlideConfigurationInterface 
   public init() {}
 
   public let id: String = "create-spatial-photo"
-  public static var title: String = "空間写真を作りたい！"
+  public static var title: String = "あなたの知らない空間写真の世界"
   public let size = SlideSize.standard16_9
   public let slideIndexController = SlideIndexController {
     TitleSlide()  // 01

@@ -44,10 +44,6 @@ let package = Package(
       targets: ["visionOSMeetupVol10"]
     ),
     .library(
-      name: "iOSDC2025Interview",
-      targets: ["iOSDC2025Interview"]
-    ),
-    .library(
       name: "ExternalStorage",
       targets: ["ExternalStorage"]
     ),
@@ -73,7 +69,6 @@ let package = Package(
         "Potatotips0527",
         "SwiftUITransition",
         "visionOSMeetupVol10",
-        "iOSDC2025Interview",
         "ExternalStorage",
       ]
     ),
@@ -139,13 +134,6 @@ let package = Package(
         "Common",
         "Exhivision",
         "SelfIntroduce",
-        .product(name: "SlideKit", package: "SlideKit"),
-      ]
-    ),
-    .target(
-      name: "iOSDC2025Interview",
-      dependencies: [
-        "Common",
         .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),

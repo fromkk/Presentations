@@ -150,35 +150,23 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(CreateSpatialPhotoSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = iOSDC2025InterviewSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(iOSDC2025InterviewSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
           store.currentSlideConfiguration = ExternalStorageConfiguration()
           openWindows()
         } label: {
           HStack {
             Text(ExternalStorageConfiguration.title)
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.forward")
+          }
+        }
+
+        Button {
+          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
+          openWindows()
+        } label: {
+          HStack {
+            Text(CreateSpatialPhotoSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")

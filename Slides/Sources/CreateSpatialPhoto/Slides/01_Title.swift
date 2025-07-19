@@ -5,7 +5,7 @@ import SwiftUI
 struct TitleSlide: View {
   var body: some View {
     VStack {
-      Text("空間写真を作りたい！")
+      Text("あなたの知らない空間写真の世界")
         .font(.system(size: 120, weight: .bold))
     }
   }
