@@ -6,7 +6,6 @@ import Potatotips0527
 import SlideKit
 import SwiftUI
 import SwiftUITransition
-import iOSDC2025Interview
 import visionOSMeetupVol10
 
 @Observable @MainActor
