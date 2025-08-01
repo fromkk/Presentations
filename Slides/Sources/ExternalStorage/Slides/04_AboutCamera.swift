@@ -1,3 +1,4 @@
+import Common
 import SlideKit
 import SwiftUI
 
@@ -11,11 +12,6 @@ struct AboutCamera: View {
     case lens
     case sensor
     case storage
-    case largeStorage
-
-    static func < (lhs: AboutCamera.SlidePhase, rhs: AboutCamera.SlidePhase) -> Bool {
-      lhs.rawValue < rhs.rawValue
-    }
   }
 
   var body: some View {
@@ -41,11 +37,12 @@ struct AboutCamera: View {
           if phase >= .storage {
             Item {
               Text("ストレージ").font(
-                phase == .storage ? .system(size: 60) : .system(size: 90)
+                .system(size: 60)
               )
-              .transition(.scale)
             }
           }
+
+          Spacer()
         }
       }
       .animation(.default, value: phase)
