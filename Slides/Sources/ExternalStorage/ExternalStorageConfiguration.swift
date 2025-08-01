@@ -13,10 +13,15 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     TitleSlide()
     SelfIntroduce()
     AboutKyuSlide()
-    RealityExternalStorageSlide()
-    ReadExternalStorageSlide()
-    WriteExternalStorageSlide()
-    SummarySlide()
+    IWantMakeCamera()
+    AboutCamera()
   }
   public let theme: any SlideTheme = .default
+}
+
+#Preview {
+  let configuration = ExternalStorageConfiguration()
+  SlideScreen(slideSize: configuration.size) {
+    SlideRouterView(slideIndexController: configuration.slideIndexController)
+  }
 }
