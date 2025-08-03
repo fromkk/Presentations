@@ -319,11 +319,11 @@
             }) {
               Circle()
                 .fill(Color.white)
-                .frame(width: 70, height: 70)
+                .frame(width: 90, height: 90)
                 .overlay(
                   Circle()
                     .stroke(Color.black, lineWidth: 2)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 80, height: 80)
                 )
             }
 
