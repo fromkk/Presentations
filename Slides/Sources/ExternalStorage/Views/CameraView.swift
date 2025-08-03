@@ -65,9 +65,21 @@
     }
 
     var capturePhotoSettings: AVCapturePhotoSettings {
-      let settings = AVCapturePhotoSettings(format: [
-        AVVideoCodecKey: AVVideoCodecType.hevc
-      ])
+      guard let photoOutput = photoOutput else {
+        return AVCapturePhotoSettings()
+      }
+      
+      let settings: AVCapturePhotoSettings
+      
+      // Check available photo file types and use the first available one
+      if photoOutput.availablePhotoFileTypes.contains(.heif) {
+        settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+      } else if photoOutput.availablePhotoFileTypes.contains(.jpg) {
+        settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
+      } else {
+        // Fallback to default settings
+        settings = AVCapturePhotoSettings()
+      }
 
       var meta: [String: Any] = [:]
       meta[kCGImagePropertyTIFFSoftware as String] =
