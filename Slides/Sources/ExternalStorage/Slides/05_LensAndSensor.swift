@@ -9,6 +9,8 @@ struct LensAndSensor: View {
       Item("SIGMA fpがUVCに対応しているので利用してみる")
     }
   }
+  
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

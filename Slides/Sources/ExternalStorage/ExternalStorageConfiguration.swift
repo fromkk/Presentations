@@ -17,6 +17,8 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     AboutCamera()
     LensAndSensor()
     TakeAPhoto()
+    WhatToDoWithCapturedPhotos()
+    SaveAPhotoToExternalStorage()
   }
   public let theme: any SlideTheme = .default
 }

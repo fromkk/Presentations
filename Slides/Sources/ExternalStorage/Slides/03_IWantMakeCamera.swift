@@ -13,7 +13,7 @@ struct IWantMakeCamera: View {
 
   var body: some View {
     HStack {
-      Text("カメラ作りたいと思ったことある人")
+      Text("カメラを作りたいと思ったことある人")
         .font(.system(size: 96))
 
       if phase == .second {
