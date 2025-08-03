@@ -1,5 +1,6 @@
 @preconcurrency import AVFoundation
 import Combine
+import OSLog
 import SwiftUI
 import UIKit
 
@@ -12,6 +13,11 @@ protocol CameraViewControllerDelegate: AnyObject {
 final class CameraViewController: UIViewController, @preconcurrency
   AVCapturePhotoCaptureDelegate
 {
+  private lazy var logger = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "\(Self.self)"
+  )
+
   weak var delegate: CameraViewControllerDelegate?
   let session = AVCaptureSession()
   var currentVideoInput: AVCaptureDeviceInput?
@@ -25,16 +31,20 @@ final class CameraViewController: UIViewController, @preconcurrency
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    logger.info("\(#function)")
     configuration()
+    observeDeviceConnection()
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
+    logger.info("\(#function)")
     previewLayer?.frame = view.bounds
   }
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    logger.info("\(#function)")
     guard isConfigurationCompleted else { return }
     queue.async { [weak session] in
       guard let session, !session.isRunning else { return }
@@ -44,6 +54,7 @@ final class CameraViewController: UIViewController, @preconcurrency
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
+    logger.info("\(#function)")
     guard isConfigurationCompleted else { return }
     queue.async { [weak session] in
       guard let session, session.isRunning else { return }
@@ -72,6 +83,7 @@ final class CameraViewController: UIViewController, @preconcurrency
   }
 
   func configuration() {
+    logger.info("\(#function)")
     queue.async { [weak self, weak session] in
       guard let self, let session else { return }
 
@@ -120,7 +132,32 @@ final class CameraViewController: UIViewController, @preconcurrency
     }
   }
 
+  private func observeDeviceConnection() {
+    Task {
+      for await _ in NotificationCenter.default.publisher(
+        for: AVCaptureDevice.wasConnectedNotification
+      ).values.map({ _ in () }) {
+        if let device = deviceLookUp() {
+          try? updateDeviceInput(device)
+        }
+      }
+    }
+
+    Task {
+      for await _ in NotificationCenter.default.publisher(
+        for: AVCaptureDevice.wasDisconnectedNotification
+      ).values.map({ _ in () }) {
+        if let device = deviceLookUp() {
+          try? updateDeviceInput(device)
+        }
+      }
+    }
+  }
+
+  var externalDeviceConnectedChanged: NSKeyValueObservation?
+
   nonisolated func deviceLookUp() -> AVCaptureDevice? {
+    Task { await logger.info("deviceLookUp") }
     let externalCameraDiscoverySession = AVCaptureDevice.DiscoverySession(
       deviceTypes: [.external],
       mediaType: .video,
@@ -153,6 +190,24 @@ final class CameraViewController: UIViewController, @preconcurrency
     }
 
     return nil
+  }
+
+  func updateDeviceInput(_ device: AVCaptureDevice) throws {
+    logger.info("\(#function)")
+    session.beginConfiguration()
+    defer {
+      session.commitConfiguration()
+    }
+
+    if let currentVideoInput {
+      session.removeInput(currentVideoInput)
+    }
+
+    let deviceInput = try AVCaptureDeviceInput(device: device)
+    if session.canAddInput(deviceInput) {
+      session.addInput(deviceInput)
+      currentVideoInput = deviceInput
+    }
   }
 
   func takePhoto() {
