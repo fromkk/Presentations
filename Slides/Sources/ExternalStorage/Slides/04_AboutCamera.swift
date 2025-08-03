@@ -12,6 +12,7 @@ struct AboutCamera: View {
     case lens
     case sensor
     case storage
+    case largeStorage
   }
 
   var body: some View {
@@ -37,7 +38,7 @@ struct AboutCamera: View {
           if phase >= .storage {
             Item {
               Text("ストレージ").font(
-                .system(size: 60)
+                .system(size: phase == .largeStorage ? 120 : 60)
               )
             }
           }

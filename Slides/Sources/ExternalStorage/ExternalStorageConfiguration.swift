@@ -15,6 +15,7 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     AboutKyuSlide()
     IWantMakeCamera()
     AboutCamera()
+    LensAndSensor()
   }
   public let theme: any SlideTheme = .default
 }
