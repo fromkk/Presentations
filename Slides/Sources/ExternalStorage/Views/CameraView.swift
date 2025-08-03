@@ -68,9 +68,9 @@
       guard let photoOutput = photoOutput else {
         return AVCapturePhotoSettings()
       }
-      
+
       let settings: AVCapturePhotoSettings
-      
+
       // Check available photo file types and use the first available one
       if photoOutput.availablePhotoFileTypes.contains(.heif) {
         settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
@@ -255,7 +255,7 @@
           }
         }
       }
-      
+
       rotationCoordinatorOutputObservation?.invalidate()
       rotationCoordinatorOutputObservation = rotationCoordinator.observe(
         \.videoRotationAngleForHorizonLevelCapture
@@ -271,7 +271,7 @@
     private func updatePreviewRotation(_ angle: CGFloat) {
       previewLayer?.connection?.videoRotationAngle = angle
     }
-    
+
     private func updateOutputRotation(_ angle: CGFloat) {
       photoOutput?.connection(with: .video)?.videoRotationAngle = angle
     }

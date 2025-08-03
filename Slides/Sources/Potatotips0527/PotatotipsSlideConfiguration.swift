@@ -7,7 +7,7 @@ import SwiftUI
 public struct Potatotips0527SlideConfiguration: SlideConfigurationInterface {
   public let id: String = "potatotips0527"
 
-  public static var title: String = "potatotips 05/27"
+  public static var title: String = "2025/05/27 potatotips"
 
   public let size = SlideSize.standard16_9
 

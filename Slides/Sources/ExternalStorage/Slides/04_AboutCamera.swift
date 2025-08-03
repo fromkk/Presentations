@@ -49,6 +49,8 @@ struct AboutCamera: View {
       .animation(.default, value: phase)
     }
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

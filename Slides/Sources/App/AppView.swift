@@ -158,11 +158,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = ExternalStorageConfiguration()
+          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(ExternalStorageConfiguration.title)
+            Text(CreateSpatialPhotoSlideConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")
@@ -170,11 +170,11 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
+          store.currentSlideConfiguration = ExternalStorageConfiguration()
           openWindows()
         } label: {
           HStack {
-            Text(CreateSpatialPhotoSlideConfiguration.title)
+            Text(ExternalStorageConfiguration.title)
               .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.forward")

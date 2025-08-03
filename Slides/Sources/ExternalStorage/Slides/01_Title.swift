@@ -7,6 +7,8 @@ struct TitleSlide: View {
     Text("独自UIで実現する\n外部ストレージデバイスの読み書き")
       .font(.system(size: 96, weight: .bold))
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

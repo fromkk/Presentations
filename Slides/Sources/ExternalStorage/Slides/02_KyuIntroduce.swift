@@ -8,6 +8,8 @@ struct AboutKyuSlide: View {
 
     }
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {
