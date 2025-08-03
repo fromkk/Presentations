@@ -218,7 +218,8 @@
 
     var rotationCoordinator: AVCaptureDevice.RotationCoordinator?
 
-    private var rotationCoordinatorObservation: NSKeyValueObservation?
+    private var rotationCoordinatorPreviewObservation: NSKeyValueObservation?
+    private var rotationCoordinatorOutputObservation: NSKeyValueObservation?
 
     private func createRotationCoordinator(for device: AVCaptureDevice) {
       let rotationCoordinator = AVCaptureDevice.RotationCoordinator(
@@ -228,9 +229,12 @@
       updatePreviewRotation(
         rotationCoordinator.videoRotationAngleForHorizonLevelPreview
       )
+      updateOutputRotation(
+        rotationCoordinator.videoRotationAngleForHorizonLevelCapture
+      )
 
-      rotationCoordinatorObservation?.invalidate()
-      rotationCoordinatorObservation = rotationCoordinator.observe(
+      rotationCoordinatorPreviewObservation?.invalidate()
+      rotationCoordinatorPreviewObservation = rotationCoordinator.observe(
         \.videoRotationAngleForHorizonLevelPreview
       ) { [weak self] _, value in
         if let angle = value.newValue {
@@ -239,10 +243,25 @@
           }
         }
       }
+      
+      rotationCoordinatorOutputObservation?.invalidate()
+      rotationCoordinatorOutputObservation = rotationCoordinator.observe(
+        \.videoRotationAngleForHorizonLevelCapture
+      ) { [weak self] _, value in
+        if let angle = value.newValue {
+          Task { @MainActor in
+            self?.updateOutputRotation(angle)
+          }
+        }
+      }
     }
 
     private func updatePreviewRotation(_ angle: CGFloat) {
       previewLayer?.connection?.videoRotationAngle = angle
+    }
+    
+    private func updateOutputRotation(_ angle: CGFloat) {
+      photoOutput?.connection(with: .video)?.videoRotationAngle = angle
     }
 
     // MARK: - AVCapturePhotoCaptureDelegate
