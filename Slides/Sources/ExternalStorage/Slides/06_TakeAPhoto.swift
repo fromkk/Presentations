@@ -22,6 +22,7 @@ struct TakeAPhoto: View {
           CameraView(
             photoTaken: { data in
               imageData = data
+              $phase.forward()
             },
             captureFailed: { error in
               self.error = error
