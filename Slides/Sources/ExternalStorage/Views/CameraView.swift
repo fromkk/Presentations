@@ -1,4 +1,5 @@
 @preconcurrency import AVFoundation
+import Combine
 import SwiftUI
 import UIKit
 
@@ -89,9 +90,9 @@ final class CameraViewController: UIViewController, @preconcurrency
       let photoOutput = AVCapturePhotoOutput()
       if session.canAddOutput(photoOutput) {
         session.addOutput(photoOutput)
-      }
-      Task { @MainActor in
-        self.photoOutput = photoOutput
+        Task { @MainActor in
+          self.photoOutput = photoOutput
+        }
       }
 
       if session.canSetSessionPreset(.photo) {
@@ -110,6 +111,9 @@ final class CameraViewController: UIViewController, @preconcurrency
 
       Task { @MainActor in
         self.view.layer.addSublayer(previewLayer)
+        if let device = currentVideoInput?.device {
+          self.createRotationCoordinator(for: device)
+        }
         previewLayer.frame = self.view.bounds
         self.isConfigurationCompleted = true
       }
@@ -153,6 +157,35 @@ final class CameraViewController: UIViewController, @preconcurrency
 
   func takePhoto() {
     photoOutput?.capturePhoto(with: capturePhotoSettings, delegate: self)
+  }
+
+  var rotationCoordinator: AVCaptureDevice.RotationCoordinator?
+
+  private var rotationCoordinatorObservation: NSKeyValueObservation?
+
+  private func createRotationCoordinator(for device: AVCaptureDevice) {
+    let rotationCoordinator = AVCaptureDevice.RotationCoordinator(
+      device: device,
+      previewLayer: previewLayer
+    )
+    updatePreviewRotation(
+      rotationCoordinator.videoRotationAngleForHorizonLevelPreview
+    )
+
+    rotationCoordinatorObservation?.invalidate()
+    rotationCoordinatorObservation = rotationCoordinator.observe(
+      \.videoRotationAngleForHorizonLevelPreview
+    ) { [weak self] _, value in
+      if let angle = value.newValue {
+        Task { @MainActor in
+          self?.updatePreviewRotation(angle)
+        }
+      }
+    }
+  }
+
+  private func updatePreviewRotation(_ angle: CGFloat) {
+    previewLayer?.connection?.videoRotationAngle = angle
   }
 
   // MARK: - AVCapturePhotoCaptureDelegate
