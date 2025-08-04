@@ -8,7 +8,8 @@ struct ExternalStorageClient: Sendable {
 extension ExternalStorageClient {
   static let liveValue: ExternalStorageClient = Self(
     devices: {
-      guard let devices = AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevices else {
+      guard let devices = AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevices
+      else {
         return []
       }
       return devices.compactMap { $0.displayName }

@@ -6,6 +6,7 @@ import SwiftUI
 struct ExternalStorageAuthorization: View {
   @State var authorizationStatus: AVAuthorizationStatus
   @Environment(\.openURL) var openURL
+  @Environment(\.scenePhase) var scenePhase
 
   init() {
     authorizationStatus = AVExternalStorageDevice.authorizationStatus
@@ -24,7 +25,8 @@ struct ExternalStorageAuthorization: View {
             Button {
               Task {
                 _ = await AVExternalStorageDevice.requestAccess()
-                authorizationStatus = AVExternalStorageDevice.authorizationStatus
+                authorizationStatus =
+                  AVExternalStorageDevice.authorizationStatus
               }
             } label: {
               Text("AVExternalStorageDevice\n.requestAccess()")
@@ -49,6 +51,11 @@ struct ExternalStorageAuthorization: View {
         }
       }
     }
+    .onChange(of: scenePhase) { oldValue, newValue in
+      if newValue == .active {
+        authorizationStatus = AVExternalStorageDevice.authorizationStatus
+      }
+    }
   }
 
   func OpenSettingsAppButton() -> some View {
@@ -59,6 +66,8 @@ struct ExternalStorageAuthorization: View {
     }
     .buttonStyle(.borderedProminent)
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

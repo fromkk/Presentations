@@ -15,7 +15,9 @@ struct TakeAPhoto: View {
 
   var body: some View {
     HeaderSlide("写真の撮影") {
-      Item("AVCaptureDevice.DiscoverySession(deviceTypes: [.external], mediaType: .video, position: .unspecified)")
+      Item(
+        "AVCaptureDevice.DiscoverySession(deviceTypes: [.external], mediaType: .video, position: .unspecified)"
+      )
       #if canImport(UIKit)
         switch phase {
         case .initial:
