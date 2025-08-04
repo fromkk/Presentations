@@ -50,9 +50,11 @@ struct ExternalStorageObservation: View, Sendable {
         ) {
           if store.deviceNames.isEmpty {
             Item("端末が接続されていません")
+              .transition(.scale.combined(with: .opacity))
           } else {
             ForEach(store.deviceNames, id: \.self) { deviceName in
               Item("\(deviceName)")
+                .transition(.scale.combined(with: .opacity))
             }
           }
         }
@@ -64,6 +66,7 @@ struct ExternalStorageObservation: View, Sendable {
     .onDisappear {
       store.cancel()
     }
+    .animation(.default, value: store.deviceNames)
   }
 
   var transition: AnyTransition = .push(from: .trailing)
