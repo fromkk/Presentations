@@ -60,7 +60,9 @@ struct ExternalStorageAuthorization: View {
 
   func OpenSettingsAppButton() -> some View {
     Button {
+      #if canImport(UIKit)
       openURL(URL(string: UIApplication.openSettingsURLString)!)
+      #endif
     } label: {
       Text("設定アプリを開く")
     }
