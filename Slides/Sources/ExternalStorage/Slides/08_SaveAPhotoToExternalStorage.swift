@@ -9,6 +9,6 @@ struct SaveAPhotoToExternalStorage: View {
       Item("https://developer.apple.com/documentation/avfoundation/avexternalstoragedevice")
     }
   }
-  
+
   var transition: AnyTransition = .push(from: .trailing)
 }
