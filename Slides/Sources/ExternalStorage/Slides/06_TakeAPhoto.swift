@@ -1,6 +1,7 @@
 import SlideKit
 import SwiftUI
 
+#if !os(visionOS)
 @Slide
 struct TakeAPhoto: View {
   @Phase var phase: SlidePhase
@@ -50,3 +51,4 @@ struct TakeAPhoto: View {
     TakeAPhoto()
   }
 }
+#endif

@@ -1,4 +1,4 @@
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(visionOS)
   @preconcurrency import AVFoundation
   import Combine
   import OSLog

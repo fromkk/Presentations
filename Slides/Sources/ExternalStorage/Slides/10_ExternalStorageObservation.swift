@@ -4,6 +4,7 @@ import Observation
 import SlideKit
 import SwiftUI
 
+#if !os(visionOS)
 @Observable
 final class ExternalStorageObservationStore {
   let isSupported: Bool = AVExternalStorageDeviceDiscoverySession.isSupported
@@ -77,3 +78,4 @@ struct ExternalStorageObservation: View, Sendable {
     ExternalStorageObservation()
   }
 }
+#endif

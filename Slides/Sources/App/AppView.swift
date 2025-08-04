@@ -169,6 +169,7 @@ public struct AppView: View {
           }
         }
 
+        #if !os(visionOS)
         Button {
           store.currentSlideConfiguration = ExternalStorageConfiguration()
           openWindows()
@@ -180,6 +181,7 @@ public struct AppView: View {
             Image(systemName: "chevron.forward")
           }
         }
+        #endif
       }
       .navigationTitle(Text("Presentations"))
     }

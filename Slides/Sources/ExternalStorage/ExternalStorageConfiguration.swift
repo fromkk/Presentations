@@ -3,6 +3,7 @@ import SelfIntroduce
 import SlideKit
 import SwiftUI
 
+#if !os(visionOS)
 public struct ExternalStorageConfiguration: SlideConfigurationInterface {
   public init() {}
 
@@ -31,3 +32,4 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     SlideRouterView(slideIndexController: configuration.slideIndexController)
   }
 }
+#endif

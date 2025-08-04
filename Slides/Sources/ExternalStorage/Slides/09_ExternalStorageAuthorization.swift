@@ -2,6 +2,7 @@ import AVFoundation
 import SlideKit
 import SwiftUI
 
+#if !os(visionOS)
 @Slide
 struct ExternalStorageAuthorization: View {
   @State var authorizationStatus: AVAuthorizationStatus
@@ -77,3 +78,4 @@ struct ExternalStorageAuthorization: View {
     ExternalStorageAuthorization()
   }
 }
+#endif
