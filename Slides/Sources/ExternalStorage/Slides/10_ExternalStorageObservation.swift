@@ -5,33 +5,6 @@ import SlideKit
 import SwiftUI
 
 #if !os(visionOS)
-@Observable
-final class ExternalStorageObservationStore {
-  let isSupported: Bool = AVExternalStorageDeviceDiscoverySession.isSupported
-  var deviceNames: [String] = []
-  @ObservationIgnored private var cancellables: Set<AnyCancellable> = []
-
-  func observeDeviceNames() {
-    cancellables.removeAll()
-    guard let discoverySession = AVExternalStorageDeviceDiscoverySession.shared
-    else {
-      return
-    }
-    deviceNames = discoverySession.externalStorageDevices.compactMap(\.displayName)
-    cancellables.insert(
-      discoverySession
-        .publisher(for: \.externalStorageDevices, options: [.initial, .new])
-        .map { $0.compactMap(\.displayName) }
-        .print("observeDeviceNames")
-        .assign(to: \.deviceNames, on: self)
-    )
-  }
-
-  func cancel() {
-    cancellables.removeAll()
-  }
-}
-
 @Slide
 struct ExternalStorageObservation: View, Sendable {
   @Bindable var store: ExternalStorageObservationStore
@@ -49,12 +22,12 @@ struct ExternalStorageObservation: View, Sendable {
         Item(
           "AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevices"
         ) {
-          if store.deviceNames.isEmpty {
+          if store.deviceList.isEmpty {
             Item("端末が接続されていません")
               .transition(.scale.combined(with: .opacity))
           } else {
-            ForEach(store.deviceNames, id: \.self) { deviceName in
-              Item("\(deviceName)")
+            ForEach(store.deviceList, id: \.self) { device in
+              Item("\(device.displayName ?? "No Name")")
                 .transition(.scale.combined(with: .opacity))
             }
           }
@@ -67,7 +40,7 @@ struct ExternalStorageObservation: View, Sendable {
     .onDisappear {
       store.cancel()
     }
-    .animation(.default, value: store.deviceNames)
+    .animation(.default, value: store.deviceList)
   }
 
   var transition: AnyTransition = .push(from: .trailing)

@@ -3,12 +3,6 @@ import SwiftUI
 
 @Slide
 struct WhatToDoWithCapturedPhotos: View {
-  @Phase var phase: SlidePhase
-
-  enum SlidePhase: Int, PhasedState {
-    case initial
-  }
-
   var body: some View {
     HeaderSlide("撮影した写真をどうするか") {
       Item("通常はカメラロールに保存")
