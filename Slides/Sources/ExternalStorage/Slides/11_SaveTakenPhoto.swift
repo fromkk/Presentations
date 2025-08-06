@@ -46,24 +46,27 @@
       category: "AddExternalStorageStore"
     )
 
-    func saveToExternalStorage(_ imageData: Data, to device: AVExternalStorageDevice) throws {
+    func saveToExternalStorage(
+      _ imageData: Data,
+      to device: AVExternalStorageDevice
+    ) throws {
       guard
         let url = try device.nextAvailableURLs(
           withPathExtensions: ["jpg"]
         ).first,
         url.startAccessingSecurityScopedResource()
       else {
-        return
+        throw NSError(
+          domain: "ExternalStorageError",
+          code: 1,
+          userInfo: [NSLocalizedDescriptionKey: "外部ストレージへのアクセスができませんでした"]
+        )
       }
       defer {
         url.stopAccessingSecurityScopedResource()
       }
-      do {
-        try imageData.write(to: url)
-        logger.info("imageData saved to url")
-      } catch {
-        logger.error("imageData save failed \(error.localizedDescription)")
-      }
+      try imageData.write(to: url)
+      logger.info("imageData saved to url")
     }
   }
 
@@ -78,6 +81,11 @@
     @State var error: (any Error)?
     @State var deviceList: [AVExternalStorageDevice] = []
     @State var selectedDevice: AVExternalStorageDevice?
+
+    // アラート表示用のState
+    @State var showAlert: Bool = false
+    @State var alertTitle: String = ""
+    @State var alertMessage: String = ""
 
     init() {
       store = ExternalStorageObservationStore()
@@ -120,9 +128,23 @@
                     guard await addPhotoLibraryStore.requestCameraRollAccess(),
                       let imageData
                     else {
+                      alertTitle = "エラー"
+                      alertMessage = "カメラロールへのアクセス許可が必要です"
+                      showAlert = true
                       return
                     }
-                    try await addPhotoLibraryStore.saveToCameraRoll(imageData)
+
+                    do {
+                      try await addPhotoLibraryStore.saveToCameraRoll(imageData)
+                      alertTitle = "成功"
+                      alertMessage = "カメラロールに画像を保存しました"
+                      showAlert = true
+                    } catch {
+                      alertTitle = "エラー"
+                      alertMessage =
+                        "カメラロールへの保存に失敗しました: \(error.localizedDescription)"
+                      showAlert = true
+                    }
                   }
                 } label: {
                   Text("カメラロールに保存")
@@ -132,8 +154,19 @@
                   ForEach(store.deviceList, id: \.uuid) { device in
                     Button {
                       guard let imageData else { return }
-                      try? addExternalStorageStore
-                        .saveToExternalStorage(imageData, to: device)
+                      do {
+                        try addExternalStorageStore
+                          .saveToExternalStorage(imageData, to: device)
+                        alertTitle = "成功"
+                        alertMessage =
+                          "\(device.displayName ?? "外部デバイス")に画像を保存しました"
+                        showAlert = true
+                      } catch {
+                        alertTitle = "エラー"
+                        alertMessage =
+                          "外部デバイスへの保存に失敗しました: \(error.localizedDescription)"
+                        showAlert = true
+                      }
                     } label: {
                       Text("\(device.displayName ?? "No Name") に保存")
                     }
@@ -143,6 +176,13 @@
             }
           }
         }
+      }
+      .alert(alertTitle, isPresented: $showAlert) {
+        Button("OK") {
+          showAlert = false
+        }
+      } message: {
+        Text(alertMessage)
       }
       .onAppear {
         store.observeDeviceNames()
