@@ -34,7 +34,6 @@
           options: nil
         )
       }
-
     }
   }
 
@@ -113,44 +112,59 @@
           )
           .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .photoTaken:
-          HStack(alignment: .top, spacing: 32) {
-            if let imageData, let uiImage = UIImage(data: imageData) {
-              Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-            }
+          ScrollView {
+            VStack(alignment: .leading, spacing: 32) {
+              if let imageData, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .frame(maxWidth: 320)
+              }
 
-            VStack {
-              Text("保存先")
-              if store.deviceList.isEmpty {
-                Button {
-                  Task { @MainActor in
-                    guard await addPhotoLibraryStore.requestCameraRollAccess(),
-                      let imageData
-                    else {
-                      alertTitle = "エラー"
-                      alertMessage = "カメラロールへのアクセス許可が必要です"
-                      showAlert = true
-                      return
-                    }
+              VStack(alignment: .leading, spacing: 16) {
+                Text("保存先")
+                if store.deviceList.isEmpty {
+                  Button {
+                    Task { @MainActor in
+                      guard await addPhotoLibraryStore.requestCameraRollAccess(),
+                        let imageData
+                      else {
+                        alertTitle = "エラー"
+                        alertMessage = "カメラロールへのアクセス許可が必要です"
+                        showAlert = true
+                        return
+                      }
 
-                    do {
-                      try await addPhotoLibraryStore.saveToCameraRoll(imageData)
-                      alertTitle = "成功"
-                      alertMessage = "カメラロールに画像を保存しました"
-                      showAlert = true
-                    } catch {
-                      alertTitle = "エラー"
-                      alertMessage =
-                        "カメラロールへの保存に失敗しました: \(error.localizedDescription)"
-                      showAlert = true
+                      do {
+                        try await addPhotoLibraryStore.saveToCameraRoll(imageData)
+                        alertTitle = "成功"
+                        alertMessage = "カメラロールに画像を保存しました"
+                        showAlert = true
+                      } catch {
+                        alertTitle = "エラー"
+                        alertMessage =
+                          "カメラロールへの保存に失敗しました: \(error.localizedDescription)"
+                        showAlert = true
+                      }
                     }
+                  } label: {
+                    Text("カメラロールに保存")
                   }
-                } label: {
-                  Text("カメラロールに保存")
-                }
-              } else {
-                List {
+                  .buttonStyle(.borderedProminent)
+
+                  Code("""
+                    let result = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+                    guard result == .authorized || result == .limited else { return }
+                    try await PHPhotoLibrary.shared().performChanges { @Sendable in
+                      let creationRequest = PHAssetCreationRequest.forAsset()
+                      creationRequest.addResource(
+                        with: .photo,
+                        data: data,
+                        options: nil
+                      )
+                    }
+                    """)
+                } else {
                   ForEach(store.deviceList, id: \.uuid) { device in
                     Button {
                       guard let imageData else { return }
@@ -169,8 +183,23 @@
                       }
                     } label: {
                       Text("\(device.displayName ?? "No Name") に保存")
+                        .frame(maxWidth: .infinity)
                     }
+                    .buttonStyle(.bordered)
                   }
+
+                  Code("""
+                    guard
+                      let url = try device.nextAvailableURLs(withPathExtensions: ["jpg"]).first,
+                      url.startAccessingSecurityScopedResource()
+                    else {
+                      return
+                    }
+                    defer {
+                      url.stopAccessingSecurityScopedResource()
+                    }
+                    try imageData.write(to: url)
+                    """)
                 }
               }
             }
