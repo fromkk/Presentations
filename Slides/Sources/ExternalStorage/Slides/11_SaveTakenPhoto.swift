@@ -1,6 +1,7 @@
 #if !os(visionOS)
 
   import AVFoundation
+  import OSLog
   import Photos
   import SlideKit
   import SwiftUI
@@ -33,7 +34,36 @@
           options: nil
         )
       }
-      
+
+    }
+  }
+
+  @MainActor
+  @Observable
+  final class AddExternalStorageStore {
+    private let logger = Logger(
+      subsystem: Bundle.main.bundleIdentifier!,
+      category: "AddExternalStorageStore"
+    )
+
+    func saveToExternalStorage(_ imageData: Data, to device: AVExternalStorageDevice) throws {
+      guard
+        let url = try device.nextAvailableURLs(
+          withPathExtensions: ["jpg"]
+        ).first,
+        url.startAccessingSecurityScopedResource()
+      else {
+        return
+      }
+      defer {
+        url.stopAccessingSecurityScopedResource()
+      }
+      do {
+        try imageData.write(to: url)
+        logger.info("imageData saved to url")
+      } catch {
+        logger.error("imageData save failed \(error.localizedDescription)")
+      }
     }
   }
 
@@ -41,6 +71,7 @@
   struct SaveTakenPhoto: View {
     @Bindable var store: ExternalStorageObservationStore
     @Bindable var addPhotoLibraryStore: AddPhotoLibraryStore = .init()
+    @Bindable var addExternalStorageStore: AddExternalStorageStore = .init()
 
     @Phase var phase: SlidePhase
     @State var imageData: Data?
@@ -100,7 +131,9 @@
                 List {
                   ForEach(store.deviceList, id: \.uuid) { device in
                     Button {
-
+                      guard let imageData else { return }
+                      try? addExternalStorageStore
+                        .saveToExternalStorage(imageData, to: device)
                     } label: {
                       Text("\(device.displayName ?? "No Name") に保存")
                     }
@@ -117,10 +150,6 @@
       .onDisappear {
         store.cancel()
       }
-    }
-
-    func save(to device: AVExternalStorageDevice) {
-
     }
 
     var transition: AnyTransition = .push(from: .trailing)
