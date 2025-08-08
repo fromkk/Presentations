@@ -1,4 +1,5 @@
 import AVFoundation
+import OSLog
 import SlideKit
 import SwiftUI
 
@@ -8,6 +9,7 @@ struct ExternalStorageAuthorization: View {
   @State var authorizationStatus: AVAuthorizationStatus
   @Environment(\.openURL) var openURL
   @Environment(\.scenePhase) var scenePhase
+  let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ExternalStorageAuthorization")
 
   init() {
     authorizationStatus = AVExternalStorageDevice.authorizationStatus
@@ -24,10 +26,10 @@ struct ExternalStorageAuthorization: View {
             Text(".notDetermined")
 
             Button {
-              Task {
-                _ = await AVExternalStorageDevice.requestAccess()
-                authorizationStatus =
-                  AVExternalStorageDevice.authorizationStatus
+              Task { @MainActor in
+                let result = await AVExternalStorageDevice.requestAccess()
+                logger.info("AVExternalStorageDevice.requestAccess() \(result)")
+                authorizationStatus = AVExternalStorageDevice.authorizationStatus
               }
             } label: {
               Text("AVExternalStorageDevice\n.requestAccess()")

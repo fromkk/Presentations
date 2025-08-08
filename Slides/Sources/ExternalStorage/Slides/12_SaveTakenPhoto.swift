@@ -6,9 +6,9 @@ import SwiftUI
 
 @Slide
 struct SaveTakenPhoto: View {
-  @Bindable var store: ExternalStorageObservationStore
-  @Bindable var addPhotoLibraryStore: AddPhotoLibraryStore = .init()
-  @Bindable var addExternalStorageStore: AddExternalStorageStore = .init()
+  @State var store: ExternalStorageObservationStore
+  @State var addPhotoLibraryStore: AddPhotoLibraryStore = .init()
+  @State var addExternalStorageStore: AddExternalStorageStore = .init()
 
   @Phase var phase: SlidePhase
   @State var imageData: Data?
@@ -144,20 +144,20 @@ struct SaveTakenPhoto: View {
             }
           }
         }
-        .alert(alertTitle, isPresented: $showAlert) {
-          Button("OK") {
-            showAlert = false
-          }
-        } message: {
-          Text(alertMessage)
-        }
-        .onAppear {
-          store.observeDeviceNames()
-        }
-        .onDisappear {
-          store.cancel()
-        }
       }
+    }
+    .alert(alertTitle, isPresented: $showAlert) {
+      Button("OK") {
+        showAlert = false
+      }
+    } message: {
+      Text(alertMessage)
+    }
+    .onAppear {
+      store.observeDeviceNames()
+    }
+    .onDisappear {
+      store.cancel()
     }
   }
 

@@ -7,7 +7,7 @@ import SwiftUI
 #if !os(visionOS)
 @Slide
 struct ExternalStorageObservation: View, Sendable {
-  @Bindable var store: ExternalStorageObservationStore
+  @State var store: ExternalStorageObservationStore
 
   init() {
     store = ExternalStorageObservationStore()
