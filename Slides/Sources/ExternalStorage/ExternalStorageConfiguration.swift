@@ -24,6 +24,7 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     ExternalStorageObservation()
     NextAvailableUrls()
     SaveTakenPhoto()
+    TakenPhotos()
   }
   public let theme: any SlideTheme = .default
 }

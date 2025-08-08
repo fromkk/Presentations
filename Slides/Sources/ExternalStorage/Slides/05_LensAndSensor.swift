@@ -5,8 +5,7 @@ import SwiftUI
 struct LensAndSensor: View {
   var body: some View {
     HeaderSlide("レンズとセンサー") {
-      Item("自作するのは現実的じゃないのでここではありものを利用する")
-      Item("SIGMA fpがUVCに対応しているので利用してみる")
+      Item("本質じゃないのでここではiPhoneのカメラを利用する")
     }
   }
 
