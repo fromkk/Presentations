@@ -34,6 +34,7 @@ struct SaveTakenPhoto: View {
     HeaderSlide("撮影した写真を保存") {
       switch phase {
       case .initial:
+        #if canImport(UIKit)
         CameraView(
           photoTaken: { data in
             imageData = data
@@ -44,15 +45,20 @@ struct SaveTakenPhoto: View {
           }
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        #else
+        Text("UIKitが利用可能な端末を利用してください")
+        #endif
       case .photoTaken:
         ScrollView {
           VStack(alignment: .leading, spacing: 32) {
+            #if canImport(UIKit)
             if let imageData, let uiImage = UIImage(data: imageData) {
               Image(uiImage: uiImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: 320)
             }
+            #endif
 
             VStack(alignment: .leading, spacing: 16) {
               Text("保存先")
