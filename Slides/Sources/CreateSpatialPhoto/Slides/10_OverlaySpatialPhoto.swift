@@ -167,4 +167,4 @@ struct OverlaySpatialPhotoSlide: View {
   SlidePreview {
     OverlaySpatialPhotoSlide()
   }
-} 
+}

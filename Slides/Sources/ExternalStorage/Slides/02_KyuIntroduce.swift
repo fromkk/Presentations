@@ -5,10 +5,11 @@ import SwiftUI
 struct AboutKyuSlide: View {
   var body: some View {
     HeaderSlide("kyu の紹介") {
-      Item("iOSアプリを中心に活動")
-      Item("ブログやコミュニティで情報発信")
+
     }
   }
+
+  var transition: AnyTransition = .push(from: .trailing)
 }
 
 #Preview {

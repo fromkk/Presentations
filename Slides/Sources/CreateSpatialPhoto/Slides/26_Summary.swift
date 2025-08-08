@@ -21,9 +21,9 @@ struct SummarySlide: View {
           Text("SyncCamera")
           if let syncCameraQRCode {
             Image(syncCameraQRCode, scale: 1, label: Text("QRCode"))
-                .resizable()
-                .frame(width: 280, height: 280)
-                .scaledToFit()
+              .resizable()
+              .frame(width: 280, height: 280)
+              .scaledToFit()
           }
           Text(syncCameraURL.absoluteString)
             .font(.system(size: 40))
@@ -32,9 +32,9 @@ struct SummarySlide: View {
           Text("SpatialPhoto-Sampler")
           if let spatialPhotoSamplerQRCode {
             Image(spatialPhotoSamplerQRCode, scale: 1, label: Text("QRCode"))
-                .resizable()
-                .frame(width: 280, height: 280)
-                .scaledToFit()
+              .resizable()
+              .frame(width: 280, height: 280)
+              .scaledToFit()
           }
           Text(spatialPhotoSamplerURL.absoluteString)
             .font(.system(size: 40))
