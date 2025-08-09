@@ -8,6 +8,8 @@ struct HowToUseSlide: View {
 
   enum SlidePhase: Int, PhasedState {
     case initial
+    case showDevices
+    case deviceSelected
   }
 
   @State var authorizationStatus: ICAuthorizationStatus = .notDetermined
@@ -50,6 +52,39 @@ struct HowToUseSlide: View {
             }
           }
           .frame(maxWidth: .infinity, alignment: .leading)
+          .transition(.scale.combined(with: .opacity))
+        case .showDevices:
+          Group {
+            Code("""
+                let browser = ICDeviceBrowser()
+                browser.delegate = self // ICDeviceBrowserDelegate
+                browser.start()
+                browser.devices // [ICDevice]?
+              """)
+            if deviceStore.devices.isEmpty {
+              Text("デバイスが接続されていません")
+            } else {
+              Text("検出済みデバイス")
+              ForEach(deviceStore.devices, id: \.self) { device in
+                Item {
+                  Button {
+                    deviceStore.select(device)
+                    $phase.forward()
+                  } label: {
+                    Text("\(device.name ?? "No Name")")
+                  }
+                }
+                  .transition(.scale.combined(with: .opacity))
+              }
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .transition(.scale.combined(with: .opacity))
+        case .deviceSelected:
+          Text("Device Selected \(deviceStore.selectedDevice?.name ?? ".none")")
+          if let selectedDevice = deviceStore.selectedDevice as? ICCameraDevice {
+            CameraItemsView(device: selectedDevice)
+          }
         }
       }
     }
@@ -57,17 +92,34 @@ struct HowToUseSlide: View {
     .onAppear {
       checkPermission()
     }
+    .onChange(of: phase) { oldValue, newValue in
+      if newValue == .showDevices {
+        if !deviceStore.isBrowsing {
+          deviceStore.start()
+        }
+      } else {
+        if deviceStore.isBrowsing {
+          deviceStore.stop()
+        }
+      }
+    }
+    .onDisappear {
+      if deviceStore.isBrowsing {
+        deviceStore.stop()
+      }
+    }
   }
 
-  let browser = ICDeviceBrowser()
+  @State var deviceStore: ImageCaptureCoreStore = .init()
 
   func checkPermission() {
-    authorizationStatus = browser.contentsAuthorizationStatus
+    authorizationStatus = deviceStore.browser.contentsAuthorizationStatus
   }
 
   func requestPermission() {
     Task {
-      authorizationStatus = await browser.requestContentsAuthorization()
+      authorizationStatus = await deviceStore.browser
+        .requestContentsAuthorization()
     }
   }
 
