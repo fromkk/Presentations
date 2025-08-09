@@ -17,7 +17,6 @@ public struct ExternalStorageConfiguration: SlideConfigurationInterface {
     IWantMakeCamera()
     AboutCamera()
     LensAndSensor()
-    TakeAPhoto()
     WhatToDoWithCapturedPhotos()
     SaveAPhotoToExternalStorage()
     ExternalStorageAuthorization()
