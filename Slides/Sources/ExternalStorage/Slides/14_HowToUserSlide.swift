@@ -10,6 +10,7 @@ struct HowToUseSlide: View {
     case initial
     case showDevices
     case deviceSelected
+    case percentCompleted
   }
 
   @State var authorizationStatus: ICAuthorizationStatus = .notDetermined
@@ -54,13 +55,15 @@ struct HowToUseSlide: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .transition(.scale.combined(with: .opacity))
         case .showDevices:
-          VStack(alignment: .leading) {
-            Code("""
-                let browser = ICDeviceBrowser()
-                browser.delegate = self // ICDeviceBrowserDelegate
-                browser.start()
-                browser.devices // [ICDevice]?
-              """)
+          VStack(alignment: .leading, spacing: 16) {
+            Code(
+              """
+              let browser = ICDeviceBrowser()
+              browser.delegate = self // ICDeviceBrowserDelegate
+              browser.start()
+              browser.devices // [ICDevice]?
+              """
+            )
             if deviceStore.devices.isEmpty {
               Text("デバイスが接続されていません")
             } else {
@@ -74,7 +77,7 @@ struct HowToUseSlide: View {
                     Text("\(device.name ?? "No Name")")
                   }
                 }
-                  .transition(.scale.combined(with: .opacity))
+                .transition(.scale.combined(with: .opacity))
               }
             }
           }
@@ -82,13 +85,28 @@ struct HowToUseSlide: View {
           .transition(.scale.combined(with: .opacity))
         case .deviceSelected:
           VStack(alignment: .leading) {
-            Text("Device Selected \(deviceStore.selectedDevice?.name ?? ".none")")
-            if let selectedDevice = deviceStore.selectedDevice as? ICCameraDevice {
-              CameraItemsView(device: selectedDevice)
+            Text(
+              "Device Selected \(deviceStore.selectedDevice?.name ?? ".none")"
+            )
+            if let selectedDevice = deviceStore.selectedDevice
+              as? ICCameraDevice
+            {
+              ContentCatalogPercentCompletedView(device: selectedDevice)
             }
           }
           .frame(maxWidth: .infinity, alignment: .leading)
           .transition(.scale.combined(with: .opacity))
+        case .percentCompleted:
+          VStack(alignment: .leading) {
+            Text(
+              "Device Selected \(deviceStore.selectedDevice?.name ?? ".none")"
+            )
+            if let selectedDevice = deviceStore.selectedDevice
+              as? ICCameraDevice
+            {
+              CameraItemsView(device: selectedDevice)
+            }
+          }
         }
       }
     }
