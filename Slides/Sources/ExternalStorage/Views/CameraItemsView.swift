@@ -1,32 +1,43 @@
 @preconcurrency import ImageCaptureCore
+import SlideKit
 import SwiftUI
 
 #if canImport(UIKit)
-typealias PlatformImage = UIImage
+  typealias PlatformImage = UIImage
 #elseif canImport(AppKit)
-typealias PlatformImage = NSImage
+  typealias PlatformImage = NSImage
 #endif
 
 struct CameraItemsView: View {
+
   var device: ICCameraDevice
   @State var mediaFiles: [ICCameraFile] = []
+  @State var contentCatalogPercentCompleted: Int = 0
+  @State var observation: NSKeyValueObservation?
+
   init(device: ICCameraDevice) {
     self.device = device
   }
 
   var body: some View {
-    LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
-      ForEach(mediaFiles, id: \.self) {
-        CameraItemView(mediaFile: $0)
-      }
+    VStack {
+      Code(
+        "ICCameraDevice.contentCatalogPercentCompleted = \(contentCatalogPercentCompleted)"
+      )
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
     .task {
-      for await contentCatalogPercentCompleted in device
-        .publisher(for: \.contentCatalogPercentCompleted).values {
-        print("contentCatalogPercentCompleted \(contentCatalogPercentCompleted)")
+      try? await device.requestOpenSession()
+      while device.contentCatalogPercentCompleted < 100 {
+        await MainActor.run {
+          contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
+        }
+        try? await Task.sleep(for: .seconds(0.1))
       }
-      mediaFiles = device.mediaFiles?.compactMap { $0 as? ICCameraFile } ?? []
-      print("mediaFiles \(mediaFiles)")
+      // ループ終了後も最終値を反映
+      await MainActor.run {
+        contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
+      }
     }
   }
 }

@@ -54,7 +54,7 @@ struct HowToUseSlide: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .transition(.scale.combined(with: .opacity))
         case .showDevices:
-          Group {
+          VStack(alignment: .leading) {
             Code("""
                 let browser = ICDeviceBrowser()
                 browser.delegate = self // ICDeviceBrowserDelegate
@@ -81,10 +81,14 @@ struct HowToUseSlide: View {
           .frame(maxWidth: .infinity, alignment: .leading)
           .transition(.scale.combined(with: .opacity))
         case .deviceSelected:
-          Text("Device Selected \(deviceStore.selectedDevice?.name ?? ".none")")
-          if let selectedDevice = deviceStore.selectedDevice as? ICCameraDevice {
-            CameraItemsView(device: selectedDevice)
+          VStack(alignment: .leading) {
+            Text("Device Selected \(deviceStore.selectedDevice?.name ?? ".none")")
+            if let selectedDevice = deviceStore.selectedDevice as? ICCameraDevice {
+              CameraItemsView(device: selectedDevice)
+            }
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .transition(.scale.combined(with: .opacity))
         }
       }
     }
@@ -96,10 +100,6 @@ struct HowToUseSlide: View {
       if newValue == .showDevices {
         if !deviceStore.isBrowsing {
           deviceStore.start()
-        }
-      } else {
-        if deviceStore.isBrowsing {
-          deviceStore.stop()
         }
       }
     }
