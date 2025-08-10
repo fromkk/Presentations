@@ -26,6 +26,8 @@ import SwiftUI
       ImageCaptureCoreSlide()
       HowToUseSlide()
       OtherSlide()
+      SummarySlide()
+      PRSlide()
     }
     public let theme: any SlideTheme = .default
   }
