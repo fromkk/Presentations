@@ -58,15 +58,15 @@ struct CameraItemView: View {
     Group {
       if let imageData {
         #if canImport(UIKit)
-        Image(uiImage: PlatformImage(data: imageData)!)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 300, height: 300)
+          Image(uiImage: PlatformImage(data: imageData)!)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 300, height: 300)
         #elseif canImport(AppKit)
-        Image(nsImage: PlatformImage(data: imageData)!)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 300, height: 300)
+          Image(nsImage: PlatformImage(data: imageData)!)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 300, height: 300)
         #endif
       } else {
         ProgressView()

@@ -1,7 +1,7 @@
 import Foundation
 import ImageCaptureCore
-import Observation
 import OSLog
+import Observation
 
 @Observable
 final class ImageCaptureCoreStore: NSObject, ICDeviceBrowserDelegate,

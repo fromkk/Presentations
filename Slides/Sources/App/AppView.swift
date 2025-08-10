@@ -170,17 +170,17 @@ public struct AppView: View {
         }
 
         #if os(iOS)
-        Button {
-          store.currentSlideConfiguration = ExternalStorageConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(ExternalStorageConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
+          Button {
+            store.currentSlideConfiguration = ExternalStorageConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(ExternalStorageConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(systemName: "chevron.forward")
+              Image(systemName: "chevron.forward")
+            }
           }
-        }
         #endif
       }
       .navigationTitle(Text("Presentations"))
