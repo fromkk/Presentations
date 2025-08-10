@@ -3,7 +3,7 @@ import SelfIntroduce
 import SlideKit
 import SwiftUI
 
-#if !os(visionOS)
+#if os(iOS)
 public struct ExternalStorageConfiguration: SlideConfigurationInterface {
   public init() {}
 

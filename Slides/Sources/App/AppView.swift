@@ -169,7 +169,7 @@ public struct AppView: View {
           }
         }
 
-        #if !os(visionOS)
+        #if os(iOS)
         Button {
           store.currentSlideConfiguration = ExternalStorageConfiguration()
           openWindows()
