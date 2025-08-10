@@ -8,6 +8,7 @@ struct TakenPhotos: View {
       ScrollView {
         VStack(alignment: .leading) {
           Item("外部ストレージに保存されたファイルをどうやって閲覧するか") {
+            Item("UIDocumentPickerViewControllerや.fileImporterを利用することはできるが、ユーザーに選んでもらう必要がある")
             Item("AVExternalStorageDevice周りのドキュメントを見ても該当の記述は無さそう")
             Item("ExternalAccessory.frameworkを利用するにはMFiの取得が必要")
             Item("DriverKitを使えばもしかしたら実装は可能かもしれないが実装コストが高い") {
