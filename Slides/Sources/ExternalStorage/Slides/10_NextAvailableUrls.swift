@@ -19,7 +19,10 @@
         "https://developer.apple.com/documentation/avfoundation/avexternalstoragedevice/nextavailableurls(withpathextensions:)"
     )!
 
-    let dcfURL: URL = URL(string: "https://www.macvf.fr/softs/lemkesoft/graphicconverter/bibliotheque/docs/bibliographie/dcf1.0.pdf")!
+    let dcfURL: URL = URL(
+      string:
+        "https://www.macvf.fr/softs/lemkesoft/graphicconverter/bibliotheque/docs/bibliographie/dcf1.0.pdf"
+    )!
 
     var body: some View {
       Group {

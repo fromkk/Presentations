@@ -10,6 +10,7 @@ struct ImageCaptureCoreSlide: View {
           Item("ちょうど昨年のiOSDCでAppleのエヴァンジェリストの方を紹介してもらい一緒に調査") {
             Image(.imageCaptureCore)
             Item("ImageCaptureCore.frameworkというフレームワークを発見")
+            Image(.imageCaptureApp)
           }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

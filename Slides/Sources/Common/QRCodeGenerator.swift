@@ -2,16 +2,16 @@ import CoreImage
 
 #if canImport(UIKit)
   import UIKit
-  typealias PlatformColor = UIColor
+  public typealias PlatformColor = UIColor
 #elseif canImport(AppKit)
   import AppKit
-  typealias PlatformColor = NSColor
+  public typealias PlatformColor = NSColor
 #endif
 
-struct QRCodeGenerator: Sendable {
+public struct QRCodeGenerator: Sendable {
   public init() {}
 
-  func callAsFunction(_ input: String, tintColor: PlatformColor = .black)
+  public func callAsFunction(_ input: String, tintColor: PlatformColor = .black)
     -> CIImage?
   {
     guard let data = input.data(using: .utf8) else {
