@@ -13,7 +13,6 @@ import SwiftUI
     public let slideIndexController = SlideIndexController {
       TitleSlide()
       SelfIntroduce(transition: .push(from: .trailing))
-      AboutKyuSlide()
       IWantMakeCamera()
       AboutCamera()
       LensAndSensor()
@@ -26,6 +25,7 @@ import SwiftUI
       TakenPhotos()
       ImageCaptureCoreSlide()
       HowToUseSlide()
+      OtherSlide()
     }
     public let theme: any SlideTheme = .default
   }
