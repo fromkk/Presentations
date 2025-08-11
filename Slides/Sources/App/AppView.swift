@@ -95,6 +95,7 @@ public struct AppView: View {
 
   @State private var showingFullScreenPresentation = false
   @State private var connector = PresentationMultipeerConnector()
+  @State private var showingBrowser = false
 
   private func openWindows() {
     if supportsMultipleWindows {
@@ -185,6 +186,21 @@ public struct AppView: View {
         #endif
       }
       .navigationTitle(Text("Presentations"))
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+            showingBrowser = true
+          } label: {
+            HStack {
+              Image(systemName: "person.2")
+              Text("\(connector.connectedPeerCount)")
+            }
+          }
+        }
+      }
+    }
+    .sheet(isPresented: $showingBrowser) {
+      MultipeerBrowserView(connector: connector)
     }
     .onChange(of: store.currentSlideConfiguration) { _, newValue in
       if let configuration = newValue {

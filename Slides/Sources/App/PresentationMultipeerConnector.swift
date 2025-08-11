@@ -6,14 +6,28 @@ import Observation
 final class PresentationMultipeerConnector: NSObject, MCSessionDelegate, MCNearbyServiceAdvertiserDelegate {
   @ObservationIgnored private let serviceType = "prs-control"
   @ObservationIgnored private let peerID = MCPeerID(displayName: UIDevice.current.name)
-  @ObservationIgnored private lazy var session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-  @ObservationIgnored private lazy var advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
+  @ObservationIgnored private lazy var session = MCSession(
+    peer: peerID,
+    securityIdentity: nil,
+    encryptionPreference: .required
+  )
+  @ObservationIgnored private lazy var advertiser = MCNearbyServiceAdvertiser(
+    peer: peerID,
+    discoveryInfo: nil,
+    serviceType: serviceType
+  )
+
+  var connectedPeerCount = 0
 
   override init() {
     super.init()
     session.delegate = self
     advertiser.delegate = self
     advertiser.startAdvertisingPeer()
+  }
+
+  func makeBrowserViewController() -> MCBrowserViewController {
+    MCBrowserViewController(serviceType: serviceType, session: session)
   }
 
   func sendSlideConfigurationID(_ id: String) {
@@ -28,7 +42,11 @@ final class PresentationMultipeerConnector: NSObject, MCSessionDelegate, MCNearb
 
   // MARK: - MCSessionDelegate
 
-  func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {}
+  func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+    DispatchQueue.main.async {
+      self.connectedPeerCount = session.connectedPeers.count
+    }
+  }
 
   func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {}
 
