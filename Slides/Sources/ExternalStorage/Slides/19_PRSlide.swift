@@ -114,6 +114,14 @@ struct PRSlide: View {
   var transition: AnyTransition {
     .scale.combined(with: .opacity)
   }
+
+  var script: String = """
+    最後に宣伝です。10月の1日から3日にかけて3日連続でextension DCというイベントをやります。
+    それぞれDeNAさん、Sansanさん、LINEヤフーさんの会場をお借ります。
+    iOSDCで話し足りなかったことなどを発散できる場にできればと思っています。
+    是非お越しください。
+    以上です。ご清聴ありがとうございました。
+    """
 }
 
 #Preview {

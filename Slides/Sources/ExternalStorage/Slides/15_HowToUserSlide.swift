@@ -148,6 +148,15 @@
       まずはアクセス権限を取得する必要があります。
       これはICDeviceBrowser().requestContentsAuthorization()というメソッドで取得することができます。
       取得した権限はICDeviceBrowser().contentsAuthorizationStatusプロパティで確認することができます。
+
+      ICDeviceBrowserを利用することで接続しているデバイス一覧を確認することができます。
+      start()/stop()で検索の開始・停止を実行します。
+      devicesプロパティに接続済みのデバイス一覧が格納されています。
+      接続イベントや接続解除イベントなどはdelegateを通じて受け取ることができます。
+
+      ICCameraDeviceにはファイルやフォルダの情報が格納されています。
+      ファイルの閲覧や削除などの操作が可能になっています。
+      ここまで来れば独自ビューワーの作成も可能です。
       """
   }
 

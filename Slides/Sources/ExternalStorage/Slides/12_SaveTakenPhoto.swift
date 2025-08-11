@@ -179,10 +179,10 @@
       """
   }
 
-#Preview {
-  SlidePreview {
-    SaveTakenPhoto()
+  #Preview {
+    SlidePreview {
+      SaveTakenPhoto()
+    }
   }
-}
 
 #endif
