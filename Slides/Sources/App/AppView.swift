@@ -94,6 +94,7 @@ public struct AppView: View {
   @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
 
   @State private var showingFullScreenPresentation = false
+  @State private var connector = PresentationMultipeerConnector()
 
   private func openWindows() {
     if supportsMultipleWindows {
@@ -184,6 +185,11 @@ public struct AppView: View {
         #endif
       }
       .navigationTitle(Text("Presentations"))
+    }
+    .onChange(of: store.currentSlideConfiguration) { _, newValue in
+      if let configuration = newValue {
+        connector.sendSlideConfigurationID(configuration.id)
+      }
     }
     #if canImport(UIKit)
       .fullScreenCover(isPresented: $showingFullScreenPresentation) {
