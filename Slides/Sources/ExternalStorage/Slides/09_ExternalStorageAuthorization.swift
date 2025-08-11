@@ -80,6 +80,11 @@ import SwiftUI
     }
 
     var transition: AnyTransition = .push(from: .trailing)
+
+    var script: String = """
+      AVFoundationのAVExternalStorageDeviceを利用するためには、AVExternalStorageDeviceのrequestAccessメソッドから許諾を得る必要があります。
+      許諾のステータスはauthorizationStatusから確認できます。
+      """
   }
 
   #Preview {

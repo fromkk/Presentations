@@ -168,6 +168,21 @@
     }
 
     var transition: AnyTransition = .push(from: .trailing)
+
+    var script: String = """
+      それでは撮影した画像を保存してみます。
+      カメラ機能を用意したのでシャッターを押します。
+      撮影したデータの保存先を選びます。
+      これでデータの保存が完了です。
+      生成したURLはstartAccessingSecurityScopedResourceを呼び出す必要があります。
+      stopAccessingSecurityScopedResourceでリクエストを停止します。
+      """
+  }
+
+  #Preview {
+    SlidePreview {
+      SaveTakenPhoto()
+    }
   }
 
 #endif

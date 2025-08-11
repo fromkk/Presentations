@@ -26,6 +26,10 @@ struct IWantMakeCamera: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    カメラを作りたいなーと思ったことがある人どれぐらいいますか？
+    """
 }
 
 #Preview {
