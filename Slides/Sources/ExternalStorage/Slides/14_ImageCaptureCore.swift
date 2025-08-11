@@ -19,6 +19,12 @@ struct ImageCaptureCoreSlide: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    そんな中ちょうど昨年のiOSDCでAppleのエヴァンジェリストの方を紹介してもらい一緒に調査をする機会を得ることができました。
+    メールでやり取りしている中で、ImageCaptureCore.frameworkというフレームワークを発見することができ、深掘りすることにしました。
+    その名の通り、イメージキャプチャアプリというmacOSアプリで利用されているframeworkです。
+    """
 }
 
 #Preview {

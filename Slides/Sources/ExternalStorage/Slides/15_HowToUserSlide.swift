@@ -143,6 +143,12 @@
     }
 
     var transition: AnyTransition = .push(from: .trailing)
+
+    var script: String = """
+      まずはアクセス権限を取得する必要があります。
+      これはICDeviceBrowser().requestContentsAuthorization()というメソッドで取得することができます。
+      取得した権限はICDeviceBrowser().contentsAuthorizationStatusプロパティで確認することができます。
+      """
   }
 
   #Preview {

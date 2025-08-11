@@ -9,6 +9,10 @@ struct TitleSlide: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    「独自UIで実現する外部ストレージデバイスの読み書き」というタイトルで発表します。よろしくお願いします。
+    """
 }
 
 #Preview {

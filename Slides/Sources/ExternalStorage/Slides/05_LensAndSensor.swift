@@ -10,6 +10,10 @@ struct LensAndSensor: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    レンズとセンサーについては今回のトークでは本質ではないのでiPhoneのカメラ機能を利用することとします。
+    """
 }
 
 #Preview {

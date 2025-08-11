@@ -51,6 +51,13 @@ struct AboutCamera: View {
   }
 
   var transition: AnyTransition = .push(from: .trailing)
+
+  var script: String = """
+    ざっくりとカメラの構成要素について振り返ってみます。
+    まず、レンズで光を受けて、それをセンサーに伝えます。昔はここがフィルムでしたね。
+    フィルム時代はフィルム自体がストレージでしたが、デジタルの今ではストレージを別途用意する必要があります。
+    今回はこのストレージ部分についてお話します。
+    """
 }
 
 #Preview {
