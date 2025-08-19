@@ -1,7 +1,9 @@
 import AboutSkip
+import Combine
 import Common
 import CreateSpatialPhoto
 import ExternalStorage
+import MultipeerConnectivity
 import Potatotips0527
 import SlideKit
 import SwiftUI
@@ -10,7 +12,17 @@ import visionOSMeetupVol10
 
 @Observable @MainActor
 public final class PresentationStore {
-  public init() {}
+  public init() {
+    #if canImport(UIKit)
+      multipeerClient = .init()
+      multipeerClient.delegate = self
+    #endif
+  }
+
+  #if canImport(UIKit)
+    let multipeerClient: MultiPeerConnectivityClient
+  #endif
+
   public var currentSlideConfiguration: (any SlideConfigurationInterface)?
   public var hasExternalDisplay: Bool = false
 
@@ -19,7 +31,54 @@ public final class PresentationStore {
     case mirroring
   }
   public var externalDisplayMode: ExternalDisplayMode = .external
+
+  private var cancellables: Set<AnyCancellable> = []
+
+  var presenterSlideIndexController: SlideIndexController? {
+    didSet {
+      cancellables.removeAll()
+      if let presenterSlideIndexController {
+        presenterSlideIndexController.$currentScript.assign(
+          to: \.presenterCurrentScript,
+          on: self
+        ).store(in: &cancellables)
+        presenterSlideIndexController.$currentIndex.assign(
+          to: \.presenterCurrentIndex,
+          on: self
+        ).store(in: &cancellables)
+      }
+    }
+  }
+
+  var presenterCurrentScript: String = ""
+
+  var presenterCurrentIndex: Int = 0
+
+  var presenterTotalSlidesCount: Int {
+    presenterSlideIndexController?.slides.count ?? 0
+  }
 }
+
+#if canImport(UIKit)
+  extension PresentationStore: MultipeerConnectivityClientDelegate {
+    func receivedEvent(_ event: MultiPeerConnectivityClient.Event) {
+      switch event.eventName {
+      case .slideSelected:
+        switch event.eventValue {
+        case "external-storage":
+          presenterSlideIndexController =
+            ExternalStorageConfiguration().slideIndexController
+        default:
+          break
+        }
+      }
+    }
+
+    func connectionStateChanged(_ connectedPeers: [MCPeerID]) {
+
+    }
+  }
+#endif
 
 public struct PresentationContentView: View {
   public init(store: PresentationStore) {
@@ -56,7 +115,8 @@ public struct PresentationContentView: View {
                 }
                 .accessibilityLabel("Forward")
               }
-            })
+            }
+          )
         #endif
         .gesture(
           DragGesture(minimumDistance: 100)
@@ -94,6 +154,13 @@ public struct AppView: View {
   @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
 
   @State private var showingFullScreenPresentation = false
+
+  #if canImport(UIKit)
+    @State private var showingMultipeerBrowser = false
+    @State private var showingInvitationAlert = false
+    @State private var invitingPeerName = ""
+    @State private var connectedPeersCount = 0
+  #endif
 
   private func openWindows() {
     if supportsMultipleWindows {
@@ -146,7 +213,8 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = SwiftUITransitionSlideConfiguration()
+          store.currentSlideConfiguration =
+            SwiftUITransitionSlideConfiguration()
           openWindows()
         } label: {
           HStack {
@@ -158,7 +226,8 @@ public struct AppView: View {
         }
 
         Button {
-          store.currentSlideConfiguration = CreateSpatialPhotoSlideConfiguration()
+          store.currentSlideConfiguration =
+            CreateSpatialPhotoSlideConfiguration()
           openWindows()
         } label: {
           HStack {
@@ -171,8 +240,12 @@ public struct AppView: View {
 
         #if os(iOS)
           Button {
-            store.currentSlideConfiguration = ExternalStorageConfiguration()
+            let configuration = ExternalStorageConfiguration()
+            store.currentSlideConfiguration = configuration
             openWindows()
+            store.multipeerClient.sendEvent(
+              .init(eventName: .slideSelected, eventValue: configuration.id)
+            )
           } label: {
             HStack {
               Text(ExternalStorageConfiguration.title)
@@ -184,6 +257,56 @@ public struct AppView: View {
         #endif
       }
       .navigationTitle(Text("Presentations"))
+      #if canImport(UIKit)
+        .toolbar {
+          ToolbarItem(placement: .primaryAction) {
+            Button {
+              showingMultipeerBrowser = true
+            } label: {
+              HStack(spacing: 4) {
+                Image(systemName: "antenna.radiowaves.left.and.right")
+                if connectedPeersCount > 0 {
+                  Text("\(connectedPeersCount)")
+                  .font(.caption)
+                  .foregroundColor(.primary)
+                }
+              }
+            }
+            .accessibilityLabel("接続 (\(connectedPeersCount)台)")
+          }
+        }
+        .sheet(isPresented: $showingMultipeerBrowser) {
+          MultipeerBrowserView(store: store.multipeerClient)
+        }
+        .onReceive(
+          NotificationCenter.default.publisher(for: .init("PendingInvitation"))
+        ) { _ in
+          if let invitation = store.multipeerClient.pendingInvitation {
+            invitingPeerName = invitation.peerID.displayName
+            showingInvitationAlert = true
+          }
+        }
+        .alert("接続招待", isPresented: $showingInvitationAlert) {
+          Button("承諾") {
+            store.multipeerClient.acceptInvitation()
+          }
+          Button("拒否", role: .cancel) {
+            store.multipeerClient.declineInvitation()
+          }
+        } message: {
+          Text("\(invitingPeerName)からの接続招待です")
+        }
+        .onAppear {
+          store.multipeerClient.startAdvertising()
+          connectedPeersCount = store.multipeerClient.connectedPeers.count
+        }
+        .onDisappear {
+          store.multipeerClient.stopAdvertising()
+        }
+        .onChange(of: store.multipeerClient.connectedPeers) { _, newPeers in
+          connectedPeersCount = newPeers.count
+        }
+      #endif
     }
     #if canImport(UIKit)
       .fullScreenCover(isPresented: $showingFullScreenPresentation) {
@@ -207,6 +330,77 @@ public struct AppView: View {
           }
         }
       }
+      .fullScreenCover(
+        isPresented: Binding(
+          get: {
+            store.presenterSlideIndexController != nil
+          },
+          set: {
+            if !$0 { store.presenterSlideIndexController = nil }
+          }
+        ),
+        content: {
+          if let slideIndexController = store.presenterSlideIndexController {
+            VStack {
+              ScrollView {
+                Text(store.presenterCurrentScript)
+                  .font(.system(size: 36))
+                  .foregroundColor(Color(uiColor: .label))
+                  .multilineTextAlignment(.leading)
+                  .lineLimit(nil)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+              }
+
+              HStack {
+                Spacer()
+
+                Button {
+                  slideIndexController.back()
+                } label: {
+                  Label("Back", systemImage: "chevron.backward")
+                    .font(.system(size: 40))
+                }
+                .labelStyle(.iconOnly)
+
+                Text(
+                  "\(store.presenterCurrentIndex + 1)/\(store.presenterTotalSlidesCount)"
+                )
+
+                Button {
+                  slideIndexController.forward()
+                } label: {
+                  Label("Forward", systemImage: "chevron.forward")
+                    .font(.system(size: 40))
+                }
+                .labelStyle(.iconOnly)
+
+                Spacer()
+              }
+            }
+            .background(Color(uiColor: .systemBackground))
+            .gesture(
+              DragGesture(minimumDistance: 100)
+                .onEnded { value in
+                  if value.translation.width < 100 {
+                    slideIndexController.forward()
+                  } else if value.translation.width > -100 {
+                    slideIndexController.back()
+                  }
+                }
+            )
+            .gesture(
+              DragGesture(minimumDistance: 100)
+                .onEnded { value in
+                  if value.translation.height > 100 {
+                    store.presenterSlideIndexController = nil
+                  }
+                }
+            )
+            // ダミープロパティの変更をViewが監視して更新をトリガー
+            .id(store.presenterCurrentIndex)
+          }
+        }
+      )
     #endif
   }
 }

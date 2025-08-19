@@ -13,6 +13,13 @@ struct OverlaySpatialPhotoSlide: View {
   @State var rightImage: CGImage?
   @State var orientation: Image.Orientation? = nil
   @State var value: Double = 0.0
+  var filter: PHPickerFilter {
+    if #available(iOS 18.0, *) {
+      return .all(of: [.images, .spatialMedia])
+    } else {
+      return .images
+    }
+  }
   var body: some View {
     HeaderSlide("前回作成したもの") {
       HStack {
@@ -107,7 +114,7 @@ struct OverlaySpatialPhotoSlide: View {
                     }
                   }
                 ),
-                matching: .all(of: [.images, .spatialMedia])
+                matching: filter
               )
             }
             .frame(maxWidth: proxy.size.width / 2)
