@@ -26,8 +26,22 @@ public final class PresentationStore {
   public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
     didSet {
       #if canImport(UIKit)
-        if let slideIndexController = currentSlideConfiguration?.slideIndexController
+        if let slideIndexController = currentSlideConfiguration?
+          .slideIndexController
         {
+          multipeerClient.sendEvent(
+            .init(
+              eventName: .scriptChanged,
+              eventValue: slideIndexController.currentScript
+            )
+          )
+          multipeerClient.sendEvent(
+            .init(
+              eventName: .indexChanged,
+              eventValue: "\(slideIndexController.currentIndex)"
+            )
+          )
+
           slideIndexController.$currentScript.sink {
             [weak self] script in
             guard let self else { return }
@@ -83,7 +97,9 @@ public final class PresentationStore {
       case .scriptChanged:
         presenterCurrentScript = event.eventValue
       case .indexChanged:
-        presenterCurrentIndex = Int(event.eventValue) ?? 0
+        let index = Int(event.eventValue) ?? 0
+        presenterCurrentIndex = index
+        presenterSlideIndexController?.move(to: index)
       case .backSlide:
         currentSlideConfiguration?.slideIndexController.back()
       case .forwardSlide:
@@ -351,7 +367,9 @@ public struct AppView: View {
                   if value.translation.height > 100 {
                     showingFullScreenPresentation = false
                     store.currentSlideConfiguration = nil
-                    store.multipeerClient.sendEvent(.init(eventName: .finished, eventValue: ""))
+                    store.multipeerClient.sendEvent(
+                      .init(eventName: .finished, eventValue: "")
+                    )
                   }
                 }
             )
@@ -371,13 +389,26 @@ public struct AppView: View {
           if let slideIndexController = store.presenterSlideIndexController {
             NavigationStack {
               VStack {
-                ScrollView {
-                  Text(store.presenterCurrentScript)
-                    .font(.system(size: 36))
-                    .foregroundColor(Color(uiColor: .label))
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                  PresentationView(
+                    slideSize: SlideSize.standard16_9,
+                    content: {
+                      SlideRouterView(
+                        slideIndexController: slideIndexController
+                      )
+                      .background(Color(uiColor: .systemBackground))
+                    }
+                  )
+                  .frame(width: 480, height: 270)
+
+                  ScrollView {
+                    Text(store.presenterCurrentScript)
+                      .font(.system(size: 36))
+                      .foregroundColor(Color(uiColor: .label))
+                      .multilineTextAlignment(.leading)
+                      .lineLimit(nil)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                  }
                 }
 
                 HStack {
