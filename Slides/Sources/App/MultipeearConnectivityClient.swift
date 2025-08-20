@@ -23,6 +23,11 @@ final class MultiPeerConnectivityClient: NSObject, MCSessionDelegate,
   struct Event: Codable {
     enum Name: String, Codable {
       case slideSelected
+      case scriptChanged
+      case indexChanged
+      case backSlide
+      case forwardSlide
+      case finished
     }
 
     let eventName: Name

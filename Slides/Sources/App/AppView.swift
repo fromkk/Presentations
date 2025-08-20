@@ -23,7 +23,32 @@ public final class PresentationStore {
     let multipeerClient: MultiPeerConnectivityClient
   #endif
 
-  public var currentSlideConfiguration: (any SlideConfigurationInterface)?
+  public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
+    didSet {
+      #if canImport(UIKit)
+        if let slideIndexController = currentSlideConfiguration?.slideIndexController
+        {
+          slideIndexController.$currentScript.sink {
+            [weak self] script in
+            guard let self else { return }
+            self.multipeerClient.sendEvent(
+              .init(eventName: .scriptChanged, eventValue: script)
+            )
+          }
+          .store(in: &cancellables)
+
+          slideIndexController.$currentIndex.sink {
+            [weak self] index in
+            guard let self else { return }
+            self.multipeerClient.sendEvent(
+              .init(eventName: .indexChanged, eventValue: "\(index)")
+            )
+          }
+          .store(in: &cancellables)
+        }
+      #endif
+    }
+  }
   public var hasExternalDisplay: Bool = false
 
   public enum ExternalDisplayMode {
@@ -32,31 +57,15 @@ public final class PresentationStore {
   }
   public var externalDisplayMode: ExternalDisplayMode = .external
 
-  private var cancellables: Set<AnyCancellable> = []
+  #if canImport(UIKit)
+    private var cancellables: Set<AnyCancellable> = []
 
-  var presenterSlideIndexController: SlideIndexController? {
-    didSet {
-      cancellables.removeAll()
-      if let presenterSlideIndexController {
-        presenterSlideIndexController.$currentScript.assign(
-          to: \.presenterCurrentScript,
-          on: self
-        ).store(in: &cancellables)
-        presenterSlideIndexController.$currentIndex.assign(
-          to: \.presenterCurrentIndex,
-          on: self
-        ).store(in: &cancellables)
-      }
-    }
-  }
+    var presenterSlideIndexController: SlideIndexController?
 
-  var presenterCurrentScript: String = ""
+    var presenterCurrentScript: String = ""
 
-  var presenterCurrentIndex: Int = 0
-
-  var presenterTotalSlidesCount: Int {
-    presenterSlideIndexController?.slides.count ?? 0
-  }
+    var presenterCurrentIndex: Int = 0
+  #endif
 }
 
 #if canImport(UIKit)
@@ -71,11 +80,29 @@ public final class PresentationStore {
         default:
           break
         }
+      case .scriptChanged:
+        presenterCurrentScript = event.eventValue
+      case .indexChanged:
+        presenterCurrentIndex = Int(event.eventValue) ?? 0
+      case .backSlide:
+        currentSlideConfiguration?.slideIndexController.back()
+      case .forwardSlide:
+        currentSlideConfiguration?.slideIndexController.forward()
+      case .finished:
+        presenterSlideIndexController = nil
       }
     }
 
     func connectionStateChanged(_ connectedPeers: [MCPeerID]) {
 
+    }
+
+    func backSlide() {
+      multipeerClient.sendEvent(.init(eventName: .backSlide, eventValue: ""))
+    }
+
+    func forwardSlide() {
+      multipeerClient.sendEvent(.init(eventName: .forwardSlide, eventValue: ""))
     }
   }
 #endif
@@ -324,6 +351,7 @@ public struct AppView: View {
                   if value.translation.height > 100 {
                     showingFullScreenPresentation = false
                     store.currentSlideConfiguration = nil
+                    store.multipeerClient.sendEvent(.init(eventName: .finished, eventValue: ""))
                   }
                 }
             )
@@ -341,50 +369,77 @@ public struct AppView: View {
         ),
         content: {
           if let slideIndexController = store.presenterSlideIndexController {
-            VStack {
-              ScrollView {
-                Text(store.presenterCurrentScript)
-                  .font(.system(size: 36))
-                  .foregroundColor(Color(uiColor: .label))
-                  .multilineTextAlignment(.leading)
-                  .lineLimit(nil)
-                  .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationStack {
+              VStack {
+                ScrollView {
+                  Text(store.presenterCurrentScript)
+                    .font(.system(size: 36))
+                    .foregroundColor(Color(uiColor: .label))
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                HStack {
+                  Spacer()
+
+                  Button {
+                    store.backSlide()
+                  } label: {
+                    Label("Back", systemImage: "chevron.backward")
+                      .font(.system(size: 40))
+                  }
+                  .labelStyle(.iconOnly)
+
+                  Text(
+                    "\(store.presenterCurrentIndex + 1)/\(slideIndexController.slides.count)"
+                  )
+
+                  Button {
+                    store.forwardSlide()
+                  } label: {
+                    Label("Forward", systemImage: "chevron.forward")
+                      .font(.system(size: 40))
+                  }
+                  .labelStyle(.iconOnly)
+
+                  Spacer()
+                }
               }
-
-              HStack {
-                Spacer()
-
-                Button {
-                  slideIndexController.back()
-                } label: {
-                  Label("Back", systemImage: "chevron.backward")
-                    .font(.system(size: 40))
+              .background(Color(uiColor: .systemBackground))
+              .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                  Button {
+                    store.presenterSlideIndexController = nil
+                  } label: {
+                    Label("Close", systemImage: "xmark")
+                  }
                 }
-                .labelStyle(.iconOnly)
 
-                Text(
-                  "\(store.presenterCurrentIndex + 1)/\(store.presenterTotalSlidesCount)"
-                )
-
-                Button {
-                  slideIndexController.forward()
-                } label: {
-                  Label("Forward", systemImage: "chevron.forward")
-                    .font(.system(size: 40))
+                ToolbarItem(placement: .primaryAction) {
+                  Button {
+                    showingMultipeerBrowser = true
+                  } label: {
+                    HStack(spacing: 4) {
+                      Image(systemName: "antenna.radiowaves.left.and.right")
+                      if connectedPeersCount > 0 {
+                        Text("\(connectedPeersCount)")
+                          .font(.caption)
+                          .foregroundColor(.primary)
+                      }
+                    }
+                  }
+                  .accessibilityLabel("接続 (\(connectedPeersCount)台)")
                 }
-                .labelStyle(.iconOnly)
-
-                Spacer()
               }
             }
-            .background(Color(uiColor: .systemBackground))
             .gesture(
               DragGesture(minimumDistance: 100)
                 .onEnded { value in
                   if value.translation.width < 100 {
-                    slideIndexController.forward()
+                    store.forwardSlide()
                   } else if value.translation.width > -100 {
-                    slideIndexController.back()
+                    store.backSlide()
                   }
                 }
             )
@@ -396,8 +451,7 @@ public struct AppView: View {
                   }
                 }
             )
-            // ダミープロパティの変更をViewが監視して更新をトリガー
-            .id(store.presenterCurrentIndex)
+            .id(store.presenterCurrentScript)
           }
         }
       )
