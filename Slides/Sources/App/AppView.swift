@@ -89,8 +89,12 @@ public final class PresentationStore {
       case .slideSelected:
         switch event.eventValue {
         case "external-storage":
+          #if os(iOS)
           presenterSlideIndexController =
             ExternalStorageConfiguration().slideIndexController
+          #else
+          break
+          #endif
         default:
           break
         }

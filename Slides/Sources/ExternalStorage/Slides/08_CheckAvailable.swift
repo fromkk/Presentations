@@ -1,3 +1,5 @@
+#if os(iOS)
+
 import AVFoundation
 import SlideKit
 import SwiftUI
@@ -21,3 +23,4 @@ struct CheckAvailableSlide: View {
     手元で確認したところ、iPhoneでしかtrueになっていませんでした。
     """
 }
+#endif
