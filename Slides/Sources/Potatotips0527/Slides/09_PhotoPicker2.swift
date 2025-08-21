@@ -10,6 +10,13 @@ struct PhotoPicker2Slide: View {
   @State var isPhotosPickerPresented: Bool = false
   @State var selectedPhotosPickerItem: PhotosPickerItem?
   @State var imageURL: URL?
+  var filter: PHPickerFilter {
+    if #available(iOS 18.0, *) {
+      return .all(of: [.images, .spatialMedia])
+    } else {
+      return .images
+    }
+  }
 
   var body: some View {
     HeaderSlide("空間写真を表示してみる") {
@@ -47,7 +54,7 @@ struct PhotoPicker2Slide: View {
                   }
                 }
               ),
-              matching: .all(of: [.images, .spatialMedia])
+              matching: filter
             )
           }
           .frame(maxWidth: proxy.size.width / 2)

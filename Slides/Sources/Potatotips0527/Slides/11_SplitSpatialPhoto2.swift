@@ -14,6 +14,13 @@ struct SplitSpatialPhoto2Slide: View {
   @State var rightImage: CGImage?
   @State var orientation: Image.Orientation? = nil
   @State var showCompareLine: Bool = false
+  var filter: PHPickerFilter {
+    if #available(iOS 18.0, *) {
+      return .all(of: [.images, .spatialMedia])
+    } else {
+      return .images
+    }
+  }
 
   var body: some View {
     HeaderSlide("左右それぞれの写真を取得してみる") {
@@ -103,7 +110,7 @@ struct SplitSpatialPhoto2Slide: View {
                       }
                     }
                   ),
-                  matching: .spatialMedia
+                  matching: filter
                 )
 
                 if leftImage != nil && rightImage != nil {
