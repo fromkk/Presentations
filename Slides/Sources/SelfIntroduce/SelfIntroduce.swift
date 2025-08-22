@@ -35,6 +35,12 @@ public struct SelfIntroduce: View {
         .frame(width: 300, height: 300)
     }
   }
+
+  public var script: String = """
+    自己紹介です。植岡和哉と申します。
+    XやGitHubなどはfromkkというアカウントでやっているのでよかったらフォローしてください。
+    カメラで写真を撮るのが趣味です。
+    """
 }
 
 #Preview {

@@ -54,8 +54,7 @@
     var isSyncing: Bool = false
 
     /// 保留中の招待情報を保持するプロパティ
-    var pendingInvitation:
-      (peerID: MCPeerID, handler: (Bool, MCSession?) -> Void)?
+    var pendingInvitation: (peerID: MCPeerID, handler: (Bool, MCSession?) -> Void)?
 
     @MainActor
     override init() {

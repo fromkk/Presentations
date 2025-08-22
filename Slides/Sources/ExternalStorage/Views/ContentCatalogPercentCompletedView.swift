@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentCatalogPercentCompletedView: View {
   var device: ICCameraDevice
   @State var contentCatalogPercentCompleted: Int = 0
+  @Environment(\.colorScheme) var colorScheme
 
   init(device: ICCameraDevice) {
     self.device = device
@@ -34,7 +35,7 @@ struct ContentCatalogPercentCompletedView: View {
             contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
           }
         }
-        """
+        """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
       )
     }
     .frame(maxWidth: .infinity, alignment: .leading)

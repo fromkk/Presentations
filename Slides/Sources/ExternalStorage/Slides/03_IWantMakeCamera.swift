@@ -13,14 +13,8 @@ struct IWantMakeCamera: View {
 
   var body: some View {
     HStack {
-      Text("カメラを作りたいと思ったことある人")
+      Text(phase == .initial ? "ある時" : "カメラを作りたいな")
         .font(.system(size: 96))
-
-      if phase == .second {
-        Text("✋")
-          .font(.system(size: 96))
-          .transition(.move(edge: .top).combined(with: .scale))
-      }
     }
     .animation(.default, value: phase)
   }
@@ -28,7 +22,7 @@ struct IWantMakeCamera: View {
   var transition: AnyTransition = .push(from: .trailing)
 
   var script: String = """
-    カメラを作りたいなーと思ったことがある人どれぐらいいますか？
+    ある時、カメラを作りたいなと思いました
     """
 }
 

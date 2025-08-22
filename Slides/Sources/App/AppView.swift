@@ -90,10 +90,10 @@ public final class PresentationStore {
         switch event.eventValue {
         case "external-storage":
           #if os(iOS)
-          presenterSlideIndexController =
-            ExternalStorageConfiguration().slideIndexController
+            presenterSlideIndexController =
+              ExternalStorageConfiguration().slideIndexController
           #else
-          break
+            break
           #endif
         default:
           break

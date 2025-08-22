@@ -26,6 +26,8 @@
       case photoTaken
     }
 
+    @Environment(\.colorScheme) var colorScheme
+
     init() {
       store = ExternalStorageObservationStore()
     }
@@ -106,7 +108,7 @@
                         options: nil
                       )
                     }
-                    """
+                    """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
                   )
                 } else {
                   ForEach(store.deviceList, id: \.uuid) { device in
@@ -144,7 +146,7 @@
                       url.stopAccessingSecurityScopedResource()
                     }
                     try imageData.write(to: url)
-                    """
+                    """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
                   )
                 }
               }

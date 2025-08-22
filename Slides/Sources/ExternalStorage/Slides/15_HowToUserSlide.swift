@@ -15,6 +15,7 @@
     }
 
     @State var authorizationStatus: ICAuthorizationStatus = .notDetermined
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
       HeaderSlide("How to use") {
@@ -27,7 +28,7 @@
                 Code(
                   """
                     ICDeviceBrowser().contentsAuthorizationStatus = 
-                  """
+                  """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
                 )
                 switch authorizationStatus {
                 case .notDetermined:
@@ -63,7 +64,7 @@
                 browser.delegate = self // ICDeviceBrowserDelegate
                 browser.start()
                 browser.devices // [ICDevice]?
-                """
+                """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
               )
               if deviceStore.devices.isEmpty {
                 Text("デバイスが接続されていません")

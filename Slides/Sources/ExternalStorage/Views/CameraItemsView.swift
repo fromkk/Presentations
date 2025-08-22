@@ -5,6 +5,7 @@ import SwiftUI
 struct CameraItemsView: View {
   var device: ICCameraDevice
   @State var mediaFiles: [ICCameraFile] = []
+  @Environment(\.colorScheme) var colorScheme
 
   var body: some View {
     VStack {
@@ -36,7 +37,7 @@ struct CameraItemsView: View {
             }
           }
         }
-        """
+        """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
       )
       LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
         ForEach(mediaFiles, id: \.self) {
