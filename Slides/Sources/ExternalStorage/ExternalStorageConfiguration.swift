@@ -18,6 +18,8 @@ import SwiftUI
       LensAndSensor()
       WhatToDoWithCapturedPhotos()
       SaveAPhotoToExternalStorage()
+      FileExporterSlide()
+      CheckAvailableSlide()
       ExternalStorageAuthorization()
       ExternalStorageObservation()
       NextAvailableUrls()
@@ -27,6 +29,7 @@ import SwiftUI
       HowToUseSlide()
       OtherSlide()
       SummarySlide()
+      AboutKyu()
       PRSlide()
     }
     public let theme: any SlideTheme = .default

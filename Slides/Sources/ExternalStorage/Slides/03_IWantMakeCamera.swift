@@ -13,8 +13,15 @@ struct IWantMakeCamera: View {
 
   var body: some View {
     HStack {
-      Text(phase == .initial ? "ある時" : "カメラを作りたいな")
-        .font(.system(size: 96))
+      if phase == .initial {
+        Text("ある時")
+          .font(.system(size: 96))
+          .transition(.scale.combined(with: .opacity))
+      } else {
+        Text("カメラを作りたいな")
+          .font(.system(size: 96))
+          .transition(.scale.combined(with: .opacity))
+      }
     }
     .animation(.default, value: phase)
   }
