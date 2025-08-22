@@ -200,6 +200,10 @@ public struct AppView: View {
   @Environment(\.openWindow) var openWindow
   @Environment(\.supportsMultipleWindows) private var supportsMultipleWindows
 
+  #if canImport(UIKit)
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+  #endif
+
   @State private var showingFullScreenPresentation = false
 
   #if canImport(UIKit)
@@ -392,7 +396,7 @@ public struct AppView: View {
         content: {
           if let slideIndexController = store.presenterSlideIndexController {
             NavigationStack {
-              VStack {
+              if horizontalSizeClass == .regular {
                 HStack {
                   PresentationView(
                     slideSize: SlideSize.standard16_9,
@@ -404,7 +408,6 @@ public struct AppView: View {
                     }
                   )
                   .frame(width: 480, height: 270)
-
                   ScrollView {
                     Text(store.presenterCurrentScript)
                       .font(.system(size: 36))
@@ -414,32 +417,55 @@ public struct AppView: View {
                       .frame(maxWidth: .infinity, alignment: .leading)
                   }
                 }
-
-                HStack {
-                  Spacer()
-
-                  Button {
-                    store.backSlide()
-                  } label: {
-                    Label("Back", systemImage: "chevron.backward")
-                      .font(.system(size: 40))
-                  }
-                  .labelStyle(.iconOnly)
-
-                  Text(
-                    "\(store.presenterCurrentIndex + 1)/\(slideIndexController.slides.count)"
+                .padding()
+              } else {
+                VStack {
+                  PresentationView(
+                    slideSize: SlideSize.standard16_9,
+                    content: {
+                      SlideRouterView(
+                        slideIndexController: slideIndexController
+                      )
+                      .background(Color(uiColor: .systemBackground))
+                    }
                   )
-
-                  Button {
-                    store.forwardSlide()
-                  } label: {
-                    Label("Forward", systemImage: "chevron.forward")
-                      .font(.system(size: 40))
+                  .frame(maxWidth: .infinity)
+                  ScrollView {
+                    Text(store.presenterCurrentScript)
+                      .font(.system(size: 36))
+                      .foregroundColor(Color(uiColor: .label))
+                      .multilineTextAlignment(.leading)
+                      .lineLimit(nil)
+                      .frame(maxWidth: .infinity, alignment: .leading)
                   }
-                  .labelStyle(.iconOnly)
-
-                  Spacer()
                 }
+                .padding()
+              }
+
+              HStack {
+                Spacer()
+
+                Button {
+                  store.backSlide()
+                } label: {
+                  Label("Back", systemImage: "chevron.backward")
+                    .font(.system(size: 40))
+                }
+                .labelStyle(.iconOnly)
+
+                Text(
+                  "\(store.presenterCurrentIndex + 1)/\(slideIndexController.slides.count)"
+                )
+
+                Button {
+                  store.forwardSlide()
+                } label: {
+                  Label("Forward", systemImage: "chevron.forward")
+                    .font(.system(size: 40))
+                }
+                .labelStyle(.iconOnly)
+
+                Spacer()
               }
               .background(Color(uiColor: .systemBackground))
               .toolbar {
