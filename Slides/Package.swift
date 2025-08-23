@@ -143,6 +143,9 @@ let package = Package(
         "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ],
+      resources: [
+        .process("kyu.mov")
       ]
     ),
   ]

@@ -1,10 +1,17 @@
+import AVKit
 import SlideKit
 import SwiftUI
 
 @Slide
 struct AboutKyu: View {
+  let player = AVPlayer(url: Bundle.module.url(forResource: "kyu", withExtension: "mov")!)
   var body: some View {
-    Text("TODO: add movie")
+    VideoPlayer(player: player)
+      .onAppear {
+        player.seek(to: .zero)
+        player.play()
+      }
+      .allowsHitTesting(false)
   }
 
   var transition: AnyTransition = .scale.combined(with: .opacity)
