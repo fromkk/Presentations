@@ -181,9 +181,9 @@
       case .photoTaken:
         return """
         撮影したデータの保存先を選びます。
-        これでデータの保存が完了です。
+        device.nextAvailableURLs(withPathExtensions: ["jpg"]) でデータの保存先を取得します。
         生成したURLはstartAccessingSecurityScopedResourceを呼び出す必要があります。
-        stopAccessingSecurityScopedResourceでリクエストを停止します。
+        データの保存が完了したらstopAccessingSecurityScopedResourceでリクエストを停止します。
         """
       }
     }

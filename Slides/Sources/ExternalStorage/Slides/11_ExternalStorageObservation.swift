@@ -43,7 +43,8 @@ import SwiftUI
     var script: String = """
       デバイスの接続状態を監視します。
       AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevicesはKVOに対応しているので、この値を監視しているだけで接続デバイスの一覧を取得することができます。
-      ここでUSB-Cに対応した外部ストレージを接続することで「○○○○」と表示されていることが分かります。
+      ここでUSB-Cに対応した外部ストレージを接続してみます。
+      そうすると「○○○○」と表示されていることが分かります。
       """
   }
 

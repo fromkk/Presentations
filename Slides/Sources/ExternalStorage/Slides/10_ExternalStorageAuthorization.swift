@@ -21,6 +21,7 @@ import SwiftUI
     var body: some View {
       HeaderSlide("外部ストレージへのアクセスの許可") {
         HStack(alignment: .top) {
+          Code("AVExternalStorageDevice.requestAccess() // ユーザーにアクセスの許可を求める")
           Text("AVExternalStorageDevice.authorizationStatus = ")
 
           switch authorizationStatus {
@@ -82,7 +83,7 @@ import SwiftUI
     var transition: AnyTransition = .push(from: .trailing)
 
     var script: String = """
-      AVFoundationのAVExternalStorageDeviceを利用するためには、AVExternalStorageDeviceのrequestAccessメソッドから許諾を得る必要があります。
+      AVFoundationのAVExternalStorageDeviceを利用するためには、AVExternalStorageDeviceのrequestAccessメソッドからユーザーに利用の許諾を得る必要があります。
       許諾のステータスはauthorizationStatusから確認できます。
       """
   }

@@ -34,15 +34,25 @@
 
     @Environment(\.colorScheme) var colorScheme
 
+    @Phase var phase: SlidePhase
+
+    enum SlidePhase: Int, PhasedState {
+      case initial
+      case second
+      case third
+    }
+
     var body: some View {
       HeaderSlide(".fileExporter") {
-        if photoData == nil {
+        switch phase {
+        case .initial:
           CameraView { data in
             photoData = data
+            $phase.forward()
           } captureFailed: { error in
             self.error = error
           }
-        } else {
+        case .second:
           ScrollView {
             Code(
               #"""
@@ -92,6 +102,10 @@
             Text(".fileExporter")
           }
           .buttonStyle(.borderedProminent)
+        case .third:
+          Item("最低限の挙動は問題ない。")
+          Item("しかし、ユーザーにエクスポートするディレクトリを選んでもらう必要がある。")
+          Item("実現したいのはユーザーがディレクトリを選ぶことなく外部ストレージへのエクスポート")
         }
       }
       .alert(
@@ -132,15 +146,21 @@
     var transition: AnyTransition = .push(from: .trailing)
 
     var script: String {
-      if photoData == nil {
+      switch phase {
+      case .initial:
         return """
-          ここでは .fileExporter modifier の使い方を見てみます。最初に保存するデータを用意します。
+          .fileExporter modifier を使ってみます。最初に保存するデータを用意します。
           """
-      } else {
+      case .second:
         return """
           データが用意できたら View に対して .fileExporter を指定します。
           Temporary領域などにファイルを保存して、URLを返せばファイルの保存が可能です。
+          """
+      case .third:
+        return """
+          最低限の挙動としてはこれで問題ありません。
           しかし、これだとユーザーにディレクトリを選んでもらう必要があります。
+          実現したいのはユーザーがディレクトリを選ぶことなく外部ストレージへファイルをエクスポートすることです。
           """
       }
     }

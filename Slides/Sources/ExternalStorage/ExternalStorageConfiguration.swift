@@ -19,7 +19,7 @@ import SwiftUI
       WhatToDoWithCapturedPhotos()
       SaveAPhotoToExternalStorage()
       FileExporterSlide()
-      CheckAvailableSlide()
+      AVExternalStorageDeviceSlide()
       ExternalStorageAuthorization()
       ExternalStorageObservation()
       NextAvailableUrls()
