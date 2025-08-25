@@ -25,6 +25,7 @@ import SwiftUI
       NextAvailableUrls()
       SaveTakenPhoto()
       TakenPhotos()
+      FileImporterSlide()
       ImageCaptureCoreSlide()
       HowToUseSlide()
       OtherSlide()

@@ -8,7 +8,7 @@ struct OtherSlide: View {
     string: "https://developer.apple.com/documentation/imagecapturecore/iccameradevice")!
   var body: some View {
     HeaderSlide("さらに詳しく") {
-      Item("他にもダウンロードとか削除とかできるのでドキュメントを眺めながらやりたいことを実現してください")
+      Item("他にもダウンロードとか削除とかできるのでドキュメントを参考に")
       BackportWebView(url: icCameraDeviceURL)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
       Text(icCameraDeviceURL.absoluteString)
@@ -18,6 +18,7 @@ struct OtherSlide: View {
   var transition: AnyTransition = .push(from: .trailing)
 
   var script: String = """
+    他にもダウンロードやファイルの削除などの操作が可能です。
     さらに詳しく知りたい方はドキュメントを見ながら動きを確認するのが良さそうです。
     """
 }

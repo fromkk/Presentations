@@ -124,17 +124,20 @@
       )
       .fileExporter(
         isPresented: $isFileExporterPresented,
-        document: ExportFileDocument {
-          guard let photoData else {
-            throw ExportFileDocument.ExportError.fileExportFailed
+        document: {
+          let capturedPhotoData = photoData
+          return ExportFileDocument {
+            guard let capturedPhotoData else {
+              throw ExportFileDocument.ExportError.fileExportFailed
+            }
+            let fileManager = FileManager.default
+            let url = fileManager.temporaryDirectory.appending(
+              path: "\(UUID().uuidString).jpg"
+            )
+            try capturedPhotoData.write(to: url)
+            return url
           }
-          let fileManager = FileManager.default
-          let url = fileManager.temporaryDirectory.appending(
-            path: "\(UUID().uuidString).jpg"
-          )
-          try photoData.write(to: url)
-          return url
-        },
+        }(),
         contentType: .jpeg
       ) { result in
         if let url = try? result.get() {

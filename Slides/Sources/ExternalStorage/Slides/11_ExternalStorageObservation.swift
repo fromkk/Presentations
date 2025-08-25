@@ -8,6 +8,7 @@ import SwiftUI
   @Slide
   struct ExternalStorageObservation: View, Sendable {
     @State var store: ExternalStorageObservationStore
+    @Environment(\.colorScheme) var colorScheme
 
     init() {
       store = ExternalStorageObservationStore()
@@ -15,18 +16,26 @@ import SwiftUI
 
     var body: some View {
       HeaderSlide("デバイスの接続状態の監視") {
-        Item(
-          "AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevices"
-        ) {
-          if store.deviceList.isEmpty {
-            Item("端末が接続されていません")
-              .transition(.scale.combined(with: .opacity))
-          } else {
-            ForEach(store.deviceList, id: \.self) { device in
-              Item("\(device.displayName ?? "No Name")")
-                .transition(.scale.combined(with: .opacity))
+        ScrollView {
+          VStack(alignment: .leading) {
+            Code(
+              "AVExternalStorageDeviceDiscoverySession.shared?.externalStorageDevices",
+              syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+            )
+            Item("KVOが利用可能")
+            Item("接続中の端末一覧") {
+              if store.deviceList.isEmpty {
+                Item("端末が接続されていません")
+                  .transition(.scale.combined(with: .opacity))
+              } else {
+                ForEach(store.deviceList, id: \.self) { device in
+                  Item("\(device.displayName ?? "No Name")")
+                    .transition(.scale.combined(with: .opacity))
+                }
+              }
             }
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
       }
       .task {

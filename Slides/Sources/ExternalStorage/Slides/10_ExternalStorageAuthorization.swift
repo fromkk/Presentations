@@ -14,14 +14,23 @@ import SwiftUI
       category: "ExternalStorageAuthorization"
     )
 
+    @Environment(\.colorScheme) var colorScheme
+
     init() {
       authorizationStatus = AVExternalStorageDevice.authorizationStatus
     }
 
     var body: some View {
       HeaderSlide("外部ストレージへのアクセスの許可") {
+        Code(
+          """
+          /// ユーザーにアクセスの許可を求める
+          AVExternalStorageDevice.requestAccess()
+          """,
+          syntaxHighlighter: colorScheme == .dark
+            ? .presentationDark : .presentation
+        )
         HStack(alignment: .top) {
-          Code("AVExternalStorageDevice.requestAccess() // ユーザーにアクセスの許可を求める")
           Text("AVExternalStorageDevice.authorizationStatus = ")
 
           switch authorizationStatus {

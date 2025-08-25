@@ -24,6 +24,13 @@
           case .initial:
             VStack(alignment: .leading) {
               Item("アクセス権限を取得")
+              Code(
+                """
+                /// ユーザーにアクセスの許可を求める
+                await ICDeviceBrowser().requestContentsAuthorization()
+                """,
+                syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+              )
               HStack(alignment: .top) {
                 Code(
                   """
