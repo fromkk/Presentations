@@ -168,9 +168,13 @@
         接続イベントや接続解除イベントなどはdelegateを通じて受け取ることができます。
         """
       case .deviceSelected:
-        return "ICCameraDeviceにはファイルやフォルダの情報が格納されています。"
+        return """
+        ICCameraDevice.contentCatalogPercentCompletedの値が100になるまで待つ必要があることに注意が必要です。
+        この値が100になったらファイルの閲覧などの操作が可能になります。
+        """
       case .percentCompleted:
         return """
+        ICCameraDeviceにはファイルやフォルダの情報が格納されています。
         ファイルの閲覧や削除などの操作が可能になっています。
         ここまで来れば独自ビューワーの作成も可能です。
         """

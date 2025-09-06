@@ -202,6 +202,7 @@ public struct AppView: View {
 
   #if canImport(UIKit)
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
   #endif
 
   @State private var showingFullScreenPresentation = false
@@ -396,7 +397,7 @@ public struct AppView: View {
         content: {
           if let slideIndexController = store.presenterSlideIndexController {
             NavigationStack {
-              if horizontalSizeClass == .regular {
+              if horizontalSizeClass == .regular && verticalSizeClass == .compact {
                 HStack {
                   PresentationView(
                     slideSize: SlideSize.standard16_9,
