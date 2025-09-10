@@ -56,27 +56,6 @@
           ScrollView {
             Code(
               #"""
-              struct ExportFileDocument: FileDocument {
-                static let readableContentTypes: [UTType] = [.jpeg]
-                init(configuration: ReadConfiguration) throws {
-                  fatalError("not implemented")
-                }
-
-                let fileExporter: @Sendable () throws -> URL
-                init(_ fileExporter: @escaping @Sendable () throws -> URL) {
-                  self.fileExporter = fileExporter
-                }
-
-                func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-                  let url = try fileExporter()
-                  return try FileWrapper(url: url, options: .immediate)
-                }
-
-                enum ExportError: Error {
-                  case fileExportFailed
-                }
-              }
-
               .fileExporter(
                 isPresented: $isFileExporterPresented,
                 document: ExportFileDocument {
@@ -88,6 +67,27 @@
                 }, contentType: .jpeg) { result in
                   if let url = try? result.get() {
                     try? FileManager.default.removeItem(at: url)
+                  }
+                }
+
+                struct ExportFileDocument: FileDocument {
+                  static let readableContentTypes: [UTType] = [.jpeg]
+                  init(configuration: ReadConfiguration) throws {
+                    fatalError("not implemented")
+                  }
+
+                  let fileExporter: @Sendable () throws -> URL
+                  init(_ fileExporter: @escaping @Sendable () throws -> URL) {
+                    self.fileExporter = fileExporter
+                  }
+
+                  func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+                    let url = try fileExporter()
+                    return try FileWrapper(url: url, options: .immediate)
+                  }
+
+                  enum ExportError: Error {
+                    case fileExportFailed
                   }
                 }
               """#,

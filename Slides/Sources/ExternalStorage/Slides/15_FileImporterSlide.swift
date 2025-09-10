@@ -73,27 +73,6 @@
           ScrollView {
             Code(
               #"""
-              struct ImportFileDocument: FileDocument {
-                static let readableContentTypes: [UTType] = [.jpeg, .png, .image]
-                var data: Data?
-                init(configuration: ReadConfiguration) throws {
-                  if let fileWrapper = configuration.file.regularFileContents {
-                    self.data = fileWrapper
-                  } else {
-                    throw ImportError.fileImportFailed
-                  }
-                }
-
-                func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-                  guard let data else { throw ImportError.fileImportFailed }
-                  return FileWrapper(regularFileWithContents: data)
-                }
-
-                enum ImportError: Error {
-                  case fileImportFailed
-                }
-              }
-
               .fileImporter(
                 isPresented: $isFileImporterPresented,
                 allowedContentTypes: [.jpeg, .png, .image]
@@ -114,6 +93,27 @@
                   }
                 case .failure(let error):
                   self.error = error
+                }
+              }
+
+              struct ImportFileDocument: FileDocument {
+                static let readableContentTypes: [UTType] = [.jpeg, .png, .image]
+                var data: Data?
+                init(configuration: ReadConfiguration) throws {
+                  if let fileWrapper = configuration.file.regularFileContents {
+                    self.data = fileWrapper
+                  } else {
+                    throw ImportError.fileImportFailed
+                  }
+                }
+
+                func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+                  guard let data else { throw ImportError.fileImportFailed }
+                  return FileWrapper(regularFileWithContents: data)
+                }
+
+                enum ImportError: Error {
+                  case fileImportFailed
                 }
               }
               """#,
