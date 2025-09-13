@@ -32,6 +32,7 @@ import SwiftUI
       SummarySlide()
       AboutKyu()
       PRSlide()
+      KanagawaSwiftSlide()
     }
     public let theme: any SlideTheme = .default
   }
