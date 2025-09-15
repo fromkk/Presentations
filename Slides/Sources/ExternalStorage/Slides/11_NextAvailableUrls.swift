@@ -78,17 +78,18 @@
       switch phase {
       case .initial:
         return """
-        次にデータを書き込む場所を取得します。
-        nextAvailableURLs(withPathExtensions:)というメソッドで生成することができます。
-        これでDCIM/100APPLE/IMG_0001.JPGのようなパスが生成されます。
-        """
+          次にデータを書き込む場所を取得します。
+          nextAvailableURLs(withPathExtensions:)というメソッドで生成することができます。
+          これでDCIM/100APPLE/IMG_0001.JPGのようなパスが生成されます。
+          ドキュメントにdigital camera formatsという記述があります。
+          """
       case .dcf:
-        return "これはDCF（Design rule for Camera file system）という仕様に則っています。"
+        return "これはDCF（Design rule for Camera file system）という仕様のことを指します。"
       case .dcfSummary:
         return """
-        簡単に要約するとルート直下にDCIMフォルダを作り、その下に3桁の数字・5桁の英数字のディレクトリを作成し、その下に4文字の英数字、4文字の連番数字に拡張子というルールになっています。
-        この時代はJPG拡張子の想定だったようですが、今では様々なファイルフォーマットが書き込まれています。
-        """
+          簡単に要約するとルート直下にDCIMフォルダを作り、その下に3桁の数字・5桁の英数字のディレクトリを作成し、その下に4文字の英数字、4文字の連番数字に拡張子というルールになっています。
+          この時代はJPG拡張子の想定だったようですが、今では様々なファイルフォーマットが書き込まれています。
+          """
       }
     }
   }

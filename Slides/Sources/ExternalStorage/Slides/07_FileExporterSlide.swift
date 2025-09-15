@@ -18,7 +18,12 @@
 
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
       let url = try fileExporter()
-      return try FileWrapper(url: url, options: .immediate)
+      let data = try Data(contentsOf: url, options: [])
+      let fileWrapper = FileWrapper(regularFileWithContents: data)
+      fileWrapper.filename = url.path().split(separator: "/").last.map(
+        String.init
+      )
+      return fileWrapper
     }
 
     enum ExportError: Error {
@@ -83,7 +88,10 @@
 
                   func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
                     let url = try fileExporter()
-                    return try FileWrapper(url: url, options: .immediate)
+                    let data = try Data(contentsOf: url, options: [])
+                    let fileWrapper = FileWrapper(regularFileWithContents: data)
+                    fileWrapper.filename = url.path().split(separator: "/").last.map(String.init)
+                    return fileWrapper
                   }
 
                   enum ExportError: Error {
@@ -100,6 +108,8 @@
             isFileExporterPresented = true
           } label: {
             Text(".fileExporter")
+              .font(.system(size: 48))
+              .padding()
           }
           .buttonStyle(.borderedProminent)
         case .third:
@@ -152,12 +162,12 @@
       switch phase {
       case .initial:
         return """
-          .fileExporter modifier を使ってみます。最初に保存するデータを用意します。
+          ということで .fileExporter modifier を使ってみます。最初に保存するデータを用意します。
           """
       case .second:
         return """
           データが用意できたら View に対して .fileExporter を指定します。
-          Temporary領域などにファイルを保存して、URLを返せばファイルの保存が可能です。
+          FileDocumentを適合した型を用意して、FileWrapperを返す必要があります。
           """
       case .third:
         return """
@@ -166,6 +176,12 @@
           実現したいのはユーザーがディレクトリを選ぶことなく外部ストレージへファイルをエクスポートすることです。
           """
       }
+    }
+  }
+
+  #Preview {
+    SlidePreview {
+      FileExporterSlide()
     }
   }
 #endif

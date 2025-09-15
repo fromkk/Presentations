@@ -18,8 +18,9 @@ struct OtherSlide: View {
   var transition: AnyTransition = .push(from: .trailing)
 
   var script: String = """
+    紹介したのはほんの一例です。
     他にもダウンロードやファイルの削除などの操作が可能です。
-    さらに詳しく知りたい方はドキュメントを見ながら動きを確認するのが良さそうです。
+    さらに詳しく知りたい方はドキュメントを見ながら動きを確認するのがいいと思います。
     """
 }
 

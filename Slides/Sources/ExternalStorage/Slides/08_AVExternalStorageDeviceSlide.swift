@@ -54,9 +54,16 @@
         return """
           AVExternalStorageDeviceを利用してみます。
           AVExternalStorageDeviceが利用可能か確認するにはAVExternalStorageDeviceDiscoverySession.isSupportedの値を確認します。
-          手元で確認したところ、iPhoneでしかtrueになっていませんでした。
+          手元で確認したところ、iPhoneの物理デバイスのみでtrueになることを確認しました。
           """
       }
     }
   }
+
+  #Preview {
+    SlidePreview {
+      AVExternalStorageDeviceSlide()
+    }
+  }
+
 #endif

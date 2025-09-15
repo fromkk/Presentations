@@ -42,6 +42,7 @@ import SwiftUI
                 requestAccess()
               } label: {
                 Text("AVExternalStorageDevice\n.requestAccess()")
+                  .padding()
               }
               .buttonStyle(.borderedProminent)
             }
@@ -85,6 +86,7 @@ import SwiftUI
         #endif
       } label: {
         Text("設定アプリを開く")
+          .padding()
       }
       .buttonStyle(.borderedProminent)
     }

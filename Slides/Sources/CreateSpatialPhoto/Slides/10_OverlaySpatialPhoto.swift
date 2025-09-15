@@ -67,6 +67,7 @@ struct OverlaySpatialPhotoSlide: View {
               } label: {
                 Text("Pick Spatial Photo")
                   .foregroundStyle(.white)
+                  .padding()
               }
               .buttonStyle(.borderedProminent)
               .photosPicker(

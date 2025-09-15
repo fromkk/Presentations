@@ -26,14 +26,10 @@ struct ContentCatalogPercentCompletedView: View {
         func subscribe() async throws {
           try await device.requestOpenSession()
           while device.contentCatalogPercentCompleted < 100 {
-            await MainActor.run {
-              contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
-            }
+            contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
             try await Task.sleep(for: .seconds(0.1))
           }
-          await MainActor.run {
-            contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
-          }
+          contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
         }
         """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
       )
@@ -42,14 +38,10 @@ struct ContentCatalogPercentCompletedView: View {
     .task {
       try? await device.requestOpenSession()
       while device.contentCatalogPercentCompleted < 100 {
-        await MainActor.run {
-          contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
-        }
+        contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
         try? await Task.sleep(for: .seconds(0.1))
       }
-      await MainActor.run {
-        contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
-      }
+      contentCatalogPercentCompleted = device.contentCatalogPercentCompleted
     }
   }
 }

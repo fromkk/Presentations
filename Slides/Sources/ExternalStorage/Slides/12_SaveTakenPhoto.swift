@@ -93,6 +93,7 @@
                     }
                   } label: {
                     Text("カメラロールに保存")
+                      .padding()
                   }
                   .buttonStyle(.borderedProminent)
 
@@ -175,16 +176,16 @@
       switch phase {
       case .initial:
         return """
-        それでは撮影した画像を保存してみます。
-        カメラ機能を用意したのでシャッターを押します。
-        """
+          それでは撮影した画像を保存してみます。
+          カメラ機能を用意したのでシャッターを押します。
+          """
       case .photoTaken:
         return """
-        撮影したデータの保存先を選びます。
-        device.nextAvailableURLs(withPathExtensions: ["jpg"]) でデータの保存先を取得します。
-        生成したURLはstartAccessingSecurityScopedResourceを呼び出す必要があります。
-        データの保存が完了したらstopAccessingSecurityScopedResourceでリクエストを停止します。
-        """
+          撮影したデータの保存先を選びます。
+          device.nextAvailableURLs(withPathExtensions: ["jpg"]) でデータの保存先を取得します。
+          生成したURLはstartAccessingSecurityScopedResourceを呼び出す必要があります。
+          データの保存が完了したらstopAccessingSecurityScopedResourceでリクエストを停止します。
+          """
       }
     }
   }

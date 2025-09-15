@@ -44,6 +44,7 @@ struct CameraItemsView: View {
           CameraItemView(mediaFile: $0)
         }
       }
+      .ignoresSafeArea()
     }
     .task {
       mediaFiles = device.mediaFiles?.compactMap { $0 as? ICCameraFile } ?? []
@@ -61,13 +62,15 @@ struct CameraItemView: View {
         #if canImport(UIKit)
           Image(uiImage: PlatformImage(data: imageData)!)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(width: 300, height: 300)
+            .clipShape(RoundedRectangle(cornerRadius: 32))
         #elseif canImport(AppKit)
           Image(nsImage: PlatformImage(data: imageData)!)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(width: 300, height: 300)
+            .clipShape(RoundedRectangle(cornerRadius: 32))
         #endif
       } else {
         ProgressView()

@@ -41,14 +41,6 @@
                 case .notDetermined:
                   VStack(alignment: .leading, spacing: 16) {
                     Text(".notDetermined")
-                    Button {
-                      requestPermission()
-                    } label: {
-                      Text(
-                        "await ICDeviceBrowser()\n.requestContentsAuthorization()"
-                      )
-                    }
-                    .buttonStyle(.borderedProminent)
                   }
                 case .authorized:
                   Text(".authorized")
@@ -59,6 +51,18 @@
                 default:
                   Text("unknown")
                 }
+              }
+
+              if authorizationStatus == .notDetermined {
+                Button {
+                  requestPermission()
+                } label: {
+                  Text(
+                    "await ICDeviceBrowser()\n.requestContentsAuthorization()"
+                  )
+                  .padding()
+                }
+                .buttonStyle(.borderedProminent)
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -156,28 +160,30 @@
       switch phase {
       case .initial:
         return """
-        まずはアクセス権限を取得する必要があります。
-        これはICDeviceBrowser().requestContentsAuthorization()というメソッドで取得することができます。
-        取得した権限はICDeviceBrowser().contentsAuthorizationStatusプロパティで確認することができます。
-        """
+          まずはアクセス権限を取得する必要があります。
+          これはICDeviceBrowser().requestContentsAuthorization()というメソッドで取得することができます。
+          取得した権限はICDeviceBrowser().contentsAuthorizationStatusプロパティで確認することができます。
+          """
       case .showDevices:
         return """
-        ICDeviceBrowserを利用することで接続しているデバイス一覧を確認することができます。
-        start()/stop()で検索の開始・停止を実行します。
-        devicesプロパティに接続済みのデバイス一覧が格納されています。
-        接続イベントや接続解除イベントなどはdelegateを通じて受け取ることができます。
-        """
+          ICDeviceBrowserを利用することで接続しているデバイス一覧を確認することができます。
+          start()/stop()で検索の開始・停止を実行します。
+          devicesプロパティに接続済みのデバイス一覧が格納されています。
+          接続イベントや接続解除イベントなどはdelegateを通じて受け取ることができます。
+          """
       case .deviceSelected:
         return """
-        ICCameraDevice.contentCatalogPercentCompletedの値が100になるまで待つ必要があることに注意が必要です。
-        この値が100になったらファイルの閲覧などの操作が可能になります。
-        """
+          ICCameraDeviceに対してrequestOpenSession()を呼ぶことでセッションが開始されます。
+          ICCameraDevice.contentCatalogPercentCompletedの値が100になるまで待つ必要があることに注意が必要です。
+
+          """
       case .percentCompleted:
         return """
-        ICCameraDeviceにはファイルやフォルダの情報が格納されています。
-        ファイルの閲覧や削除などの操作が可能になっています。
-        ここまで来れば独自ビューワーの作成も可能です。
-        """
+          contentCatalogPercentCompletedが100になったらcontentsプロパティやmediaFilesプロパティに値が格納され、ファイルの閲覧などの操作が可能になります。
+          ICCameraDeviceにはファイルやフォルダの情報が格納されています。
+          ファイルの閲覧や削除などの操作が可能になっています。
+          ここまで来ればこのような独自ビューワーの作成も可能です。
+          """
       }
     }
   }

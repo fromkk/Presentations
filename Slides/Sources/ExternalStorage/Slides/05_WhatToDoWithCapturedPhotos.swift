@@ -14,8 +14,8 @@ struct WhatToDoWithCapturedPhotos: View {
   }
 
   var body: some View {
-    HeaderSlide("撮影したデータをどうするか") {
-      Item("通常はカメラロールに保存")
+    HeaderSlide("撮影したデータをどう保存するか") {
+      Item("通常はカメラロール")
       if phase >= .second {
         Item("端末内の容量がないことを考慮したい") {
           if phase >= .third {
@@ -32,7 +32,7 @@ struct WhatToDoWithCapturedPhotos: View {
     switch phase {
     case .initial:
       return """
-        さて、撮影した写真や動画はどうしましょうか？
+        さて、撮影した写真や動画はどう保存しましょうか？
         通常はiPhoneのカメラロールに保存することが多いと思います。
         """
     case .second:

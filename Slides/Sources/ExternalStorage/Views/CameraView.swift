@@ -12,7 +12,8 @@
   }
 
   @MainActor
-  final class CameraViewController: UIViewController, @preconcurrency
+  final class CameraViewController: UIViewController,
+    @preconcurrency
     AVCapturePhotoCaptureDelegate
   {
     private lazy var logger = Logger(

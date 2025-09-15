@@ -49,13 +49,12 @@
         switch phase {
         case .initial:
           VStack(spacing: 20) {
-            Text("外部ストレージからファイルをインポート")
-              .font(.title2)
-
             Button {
               isFileImporterPresented = true
             } label: {
               Text("ファイルを選択")
+                .font(.system(size: 60))
+                .padding()
             }
             .buttonStyle(.borderedProminent)
 
@@ -171,7 +170,7 @@
       switch phase {
       case .initial:
         return """
-          .fileImporter modifier を使って外部ストレージからファイルをインポートしてみます。
+          一旦書き込み時と同様に .fileImporter modifier を使って外部ストレージからファイルをインポートしてみましょう。
           """
       case .second:
         return """
@@ -184,6 +183,12 @@
           しかし、これもユーザーの操作が必要で、特定のディレクトリのファイルを表示するという用途には向いていません。
           """
       }
+    }
+  }
+
+  #Preview {
+    SlidePreview {
+      FileImporterSlide()
     }
   }
 #endif
