@@ -7,6 +7,8 @@ struct CameraItemsView: View {
   @State var mediaFiles: [ICCameraFile] = []
   @Environment(\.colorScheme) var colorScheme
 
+  let selected: @MainActor @Sendable (ICCameraFile) -> Void
+
   var body: some View {
     VStack {
       Code(
@@ -40,8 +42,12 @@ struct CameraItemsView: View {
         """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
       )
       LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
-        ForEach(mediaFiles, id: \.self) {
-          CameraItemView(mediaFile: $0)
+        ForEach(mediaFiles, id: \.self) { file in
+          Button {
+            selected(file)
+          } label: {
+            CameraItemView(mediaFile: file)
+          }
         }
       }
       .ignoresSafeArea()

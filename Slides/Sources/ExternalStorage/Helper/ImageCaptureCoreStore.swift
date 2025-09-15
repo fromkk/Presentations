@@ -22,6 +22,7 @@ final class ImageCaptureCoreStore: NSObject, ICDeviceBrowserDelegate,
   }
 
   var selectedDevice: ICDevice?
+  var selectedFile: ICCameraFile?
 
   func select(_ device: ICDevice) {
     logger.info("\(#function) device \(device.description)")

@@ -12,6 +12,7 @@
       case showDevices
       case deviceSelected
       case percentCompleted
+      case fileSelected
     }
 
     @State var authorizationStatus: ICAuthorizationStatus = .notDetermined
@@ -117,7 +118,19 @@
               if let selectedDevice = deviceStore.selectedDevice
                 as? ICCameraDevice
               {
-                CameraItemsView(device: selectedDevice)
+                CameraItemsView(device: selectedDevice) { file in
+                  deviceStore.selectedFile = file
+                  $phase.forward()
+                }
+                .padding(.bottom, 60)
+              }
+            }
+          case .fileSelected:
+            VStack(alignment: .leading, spacing: 16) {
+              Item("ダウンロード用のURLを取得できるので大きいサイズなどでも表示可能")
+              Code("try await cameraFile.requestSecurityScopedURL()")
+              if let file = deviceStore.selectedFile {
+                CameraFileView(file: file)
               }
             }
           }
@@ -175,7 +188,6 @@
         return """
           ICCameraDeviceに対してrequestOpenSession()を呼ぶことでセッションが開始されます。
           ICCameraDevice.contentCatalogPercentCompletedの値が100になるまで待つ必要があることに注意が必要です。
-
           """
       case .percentCompleted:
         return """
@@ -183,6 +195,11 @@
           ICCameraDeviceにはファイルやフォルダの情報が格納されています。
           ファイルの閲覧や削除などの操作が可能になっています。
           ここまで来ればこのような独自ビューワーの作成も可能です。
+          """
+      case .fileSelected:
+        return """
+          ICCameraFileからダウンロード用のURLを取得できるので大きいサイズなどでも表示可能です。
+          これは try await cameraFile.requestSecurityScopedURL() で取得することができます。
           """
       }
     }
