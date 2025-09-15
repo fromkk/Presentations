@@ -13,7 +13,6 @@ import SwiftUI
     public let slideIndexController = SlideIndexController {
       TitleSlide()
       SelfIntroduce(transition: .push(from: .trailing))
-      IWantMakeCamera()
       AboutCamera()
       LensAndSensor()
       WhatToDoWithCapturedPhotos()
