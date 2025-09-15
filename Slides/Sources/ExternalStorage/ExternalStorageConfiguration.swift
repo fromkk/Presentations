@@ -28,6 +28,7 @@ import SwiftUI
       ImageCaptureCoreSlide()
       HowToUseSlide()
       OtherSlide()
+      MoreSlide()
       SummarySlide()
       AboutKyu()
       PRSlide()
