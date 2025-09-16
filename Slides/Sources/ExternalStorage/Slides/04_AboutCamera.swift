@@ -55,7 +55,7 @@ struct AboutCamera: View {
   var script: String {
     switch phase {
     case .initial:
-      return "事項紹介で写真を撮るのが好きと言いましたが、一旦カメラの構成要素について振り返ってみましょう。"
+      return "自己紹介でカメラで写真を撮るのが好きと言いましたが、ここではカメラの構成要素を振り返ってみようと思います。"
     case .lens:
       return "まず、レンズで光を受けて"
     case .sensor:
