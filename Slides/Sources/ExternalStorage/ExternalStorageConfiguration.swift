@@ -31,6 +31,7 @@ import SwiftUI
       MoreSlide()
       SummarySlide()
       AboutKyu()
+      PamphletSlide()
       PRSlide()
       KanagawaSwiftSlide()
     }

@@ -30,13 +30,16 @@
                 /// ユーザーにアクセスの許可を求める
                 await ICDeviceBrowser().requestContentsAuthorization()
                 """,
-                syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+                syntaxHighlighter: colorScheme == .dark
+                  ? .presentationDark : .presentation
               )
               HStack(alignment: .top) {
                 Code(
                   """
                     ICDeviceBrowser().contentsAuthorizationStatus = 
-                  """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+                  """,
+                  syntaxHighlighter: colorScheme == .dark
+                    ? .presentationDark : .presentation
                 )
                 switch authorizationStatus {
                 case .notDetermined:
@@ -76,7 +79,9 @@
                 browser.delegate = self // ICDeviceBrowserDelegate
                 browser.start()
                 browser.devices // [ICDevice]?
-                """, syntaxHighlighter: colorScheme == .dark ? .presentationDark : .presentation
+                """,
+                syntaxHighlighter: colorScheme == .dark
+                  ? .presentationDark : .presentation
               )
               if deviceStore.devices.isEmpty {
                 Text("デバイスが接続されていません")
@@ -128,7 +133,11 @@
           case .fileSelected:
             VStack(alignment: .leading, spacing: 16) {
               Item("ダウンロード用のURLを取得できるので大きいサイズなどでも表示可能")
-              Code("try await cameraFile.requestSecurityScopedURL()")
+              Code(
+                "try await cameraFile.requestSecurityScopedURL()",
+                syntaxHighlighter: colorScheme == .dark
+                  ? .presentationDark : .presentation
+              )
               if let file = deviceStore.selectedFile {
                 CameraFileView(file: file)
               }
