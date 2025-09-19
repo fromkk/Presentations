@@ -20,6 +20,7 @@ struct WhatToDoWithCapturedPhotos: View {
         Item("端末内の容量がないことを考慮したい") {
           if phase >= .third {
             Item("外部ストレージに保存することを検討")
+            Item("ユーザーになるべく保存先のことを考えさせたくない")
           }
         }
       }
