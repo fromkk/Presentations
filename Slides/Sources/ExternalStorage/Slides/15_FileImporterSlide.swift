@@ -5,29 +5,6 @@
   import UniformTypeIdentifiers
   import PhotosUI
 
-  struct ImportFileDocument: FileDocument {
-    static let readableContentTypes: [UTType] = [.jpeg, .png, .image]
-
-    var data: Data?
-
-    init(configuration: ReadConfiguration) throws {
-      if let fileWrapper = configuration.file.regularFileContents {
-        self.data = fileWrapper
-      } else {
-        throw ImportError.fileImportFailed
-      }
-    }
-
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-      guard let data else { throw ImportError.fileImportFailed }
-      return FileWrapper(regularFileWithContents: data)
-    }
-
-    enum ImportError: Error {
-      case fileImportFailed
-    }
-  }
-
   @Slide
   struct FileImporterSlide: View {
     @State var isFileImporterPresented: Bool = false
@@ -92,27 +69,6 @@
                   }
                 case .failure(let error):
                   self.error = error
-                }
-              }
-
-              struct ImportFileDocument: FileDocument {
-                static let readableContentTypes: [UTType] = [.jpeg, .png, .image]
-                var data: Data?
-                init(configuration: ReadConfiguration) throws {
-                  if let fileWrapper = configuration.file.regularFileContents {
-                    self.data = fileWrapper
-                  } else {
-                    throw ImportError.fileImportFailed
-                  }
-                }
-
-                func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-                  guard let data else { throw ImportError.fileImportFailed }
-                  return FileWrapper(regularFileWithContents: data)
-                }
-
-                enum ImportError: Error {
-                  case fileImportFailed
                 }
               }
               """#,

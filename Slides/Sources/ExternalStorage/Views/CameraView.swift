@@ -89,7 +89,7 @@
       settings.metadata["{TIFF}"] = meta
 
       // Add EXIF orientation metadata
-      var exifDict: [String: Any] = [:]
+      let exifDict: [String: Any] = [:]
       //    let orientation = exifOrientation(for: currentOrientation ?? .portrait)
       //    exifDict[kCGImagePropertyOrientation as String] = orientation
       settings.metadata[kCGImagePropertyExifDictionary as String] = exifDict

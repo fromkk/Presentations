@@ -1,7 +1,7 @@
-import ImageCaptureCore
+@preconcurrency import ImageCaptureCore
 import SwiftUI
 
-struct CameraFileView: View {
+struct CameraFileView: View, Sendable {
   let file: ICCameraFile
 
   @State var imageData: Data?

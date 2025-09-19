@@ -33,7 +33,7 @@ struct WhatToDoWithCapturedPhotos: View {
     case .initial:
       return """
         さて、撮影した写真や動画はどう保存しましょうか？
-        通常はiPhoneのカメラロールに保存することが多いと思います。
+        通常はiPhoneのカメラロール（ライブラリ）に保存することが多いと思います。
         """
     case .second:
       return """

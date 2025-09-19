@@ -4,7 +4,7 @@ import SwiftUI
 @Slide
 struct HistorySlide: View {
   var body: some View {
-    HeaderSlide("iOSDC Japan 採択歴") {
+    HeaderSlide("iOSDC Japan 登壇歴") {
       Item("2017 自分が欲しいとアプリを作った LT")
       Item("2018 ツールとして利用するUIテスト 15min")
       Item("2019 iOS 12以下でDark modeに対応した地獄の話 LT")
