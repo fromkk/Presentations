@@ -22,7 +22,7 @@
     }
 
     var body: some View {
-      HeaderSlide(".fileImporter") {
+      HeaderSlide(".fileImporter modifier") {
         switch phase {
         case .initial:
           VStack(spacing: 20) {
@@ -77,7 +77,7 @@
             )
           }
         case .third:
-          Item(".fileImporter を使うことで外部ストレージからファイルを選択可能")
+          Item(".fileImporter modifier を使うことで外部ストレージからファイルを選択可能")
           Item("ユーザーがファイルを選択するとURLが取得できる")
           Item("外部ストレージのファイルにアクセスできるが、ユーザーの操作が必要")
         }
