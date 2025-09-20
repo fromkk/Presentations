@@ -16,13 +16,15 @@ struct SummarySlide: View {
     HeaderSlide("まとめ") {
       HStack(alignment: .top) {
         VStack(alignment: .leading) {
-          Item("iPhoneをカメラにするために撮影したデータを外部ストレージに記録・閲覧できるように")
+          Item("撮影したデータを外部ストレージに記録・閲覧できるように調査してみた")
           Item("AVExternalStorageDeviceを利用すればメディアの書き出しが可能に")
           Item("ImageCaptureCore.frameworkを利用すればメディアの読み込み・削除が可能に") {
             Item(
               "特にcontentCatalogPercentCompletedが100にならないと値が取得できない問題にはハマったのでここで紹介"
             )
           }
+          Spacer()
+            .frame(height: 90)
           Item("https://github.com/mtj0928/SlideKit")
           Item(
             "資料置き場 https://github.com/fromkk/Presentations/tree/main/Slides/Sources/ExternalStorage"
@@ -59,7 +61,7 @@ struct SummarySlide: View {
 
   var script: String = """
     まとめです。
-    iPhoneをカメラにするために撮影したデータを外部ストレージに記録・閲覧できるようにしてみました。
+    撮影したデータを外部ストレージに記録・閲覧できるように調査してみました。
     AVExternalStorageDeviceを利用すればメディアの書き出しができることが分かりました。
     ImageCaptureCore.frameworkを利用すればメディアの読み込み・削除が可能なことが分かりました。
     特にcontentCatalogPercentCompletedが100にならないと値が取得できない問題にはハマったので紹介できてよかったです。
