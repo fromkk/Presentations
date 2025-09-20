@@ -11,16 +11,13 @@ struct ImageCaptureCoreClassesSlide: View {
             Item("外部ストレージデバイスを検出するためのブラウザ")
             Item("start()/stop()で探索を制御し、delegateでイベントを受け取る")
           }
-          Item("ICDevice") {
-            Item("接続されたデバイスの基本クラス")
+          Item("ICCameraDevice: ICDevice") {
+            Item("接続されたデバイスのクラス")
             Item("nameやtransportTypeなど共通情報を参照できる")
-          }
-          Item("ICCameraDevice") {
-            Item("カメラやiPhoneなどのメディアデバイスを表現")
             Item("contentCatalogPercentCompletedで読み込み状況を確認")
             Item("requestOpenSession()/requestCloseSession()でセッション管理")
           }
-          Item("ICCameraItem / ICCameraFile") {
+          Item("ICCameraFile: ICCameraItem") {
             Item("デバイス上のメディアを表すモデル")
             Item("requestThumbnail()やrequestSecurityScopedURL()でファイル取得")
           }
