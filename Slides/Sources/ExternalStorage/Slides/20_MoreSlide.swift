@@ -13,14 +13,14 @@ struct MoreSlide: View {
 
   var body: some View {
     HeaderSlide("外部ストレージを読み込むための他の選択肢") {
-      Item("AVExternalStorageDevice周りのドキュメントを見ても該当の記述は無さそう")
-      Item("ExternalAccessory.frameworkを利用するにはMFiの取得が必要")
-      Item("DriverKitを使えばもしかしたら実装は可能かもしれないが実装コストが高い") {
+      Item("AVExternalStorageDevice周りのドキュメントを見ても該当の記述は無さそう ❌")
+      Item("ExternalAccessory.frameworkを利用するにはMFiの取得が必要 ⚠️")
+      Item("DriverKitを使えばもしかしたら実装は可能かもしれないが実装コストが高い 🥺") {
         Text("https://developer.apple.com/forums/thread/758598")
       }
-      Item("FileManager.default.mountedVolumeURLsはmacOS以外ではnilが返る")
+      Item("FileManager.default.mountedVolumeURLsはmacOS以外ではnilが返る 💻")
       if phase == .second {
-        Item("今回はImageCaptureCore.frameworkを利用")
+        Item("今回はImageCaptureCore.frameworkを利用 ⭕️")
       }
     }
   }
