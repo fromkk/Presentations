@@ -5,7 +5,9 @@ import SwiftUI
 struct LensAndSensor: View {
   var body: some View {
     HeaderSlide("レンズとセンサー") {
-      Item("本質じゃないのでここではiPhoneのカメラを利用する")
+      Item("本質じゃないのでここではiPhoneのカメラを利用する") {
+        Item("⚠️ 発表の中で何度か写真を撮影するタイミングがあります。せっかくなのでピースとかしてもらえると嬉しいです ✌🏻")
+      }
     }
   }
 
