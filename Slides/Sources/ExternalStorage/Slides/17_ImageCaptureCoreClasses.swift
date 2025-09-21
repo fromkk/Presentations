@@ -4,23 +4,12 @@ import SwiftUI
 @Slide
 struct ImageCaptureCoreClassesSlide: View {
   var body: some View {
-    HeaderSlide("ImageCaptureCoreでよく使うクラス") {
+    HeaderSlide("メディアの操作でよく使うAPI") {
       ScrollView {
         VStack(alignment: .leading, spacing: 24) {
-          Item("ICDeviceBrowser") {
-            Item("外部ストレージデバイスを検出するためのブラウザ")
-            Item("start()/stop()で探索を制御し、delegateでイベントを受け取る")
-          }
-          Item("ICCameraDevice: ICDevice") {
-            Item("接続されたデバイスのクラス")
-            Item("nameやtransportTypeなど共通情報を参照できる")
-            Item("contentCatalogPercentCompletedで読み込み状況を確認")
-            Item("requestOpenSession()/requestCloseSession()でセッション管理")
-          }
-          Item("ICCameraFile: ICCameraItem") {
-            Item("デバイス上のメディアを表すモデル")
-            Item("requestThumbnail()やrequestSecurityScopedURL()でファイル取得")
-          }
+          Item("ICDeviceBrowser")
+          Item("ICCameraDevice: ICDevice")
+          Item("ICCameraFile: ICCameraItem")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
       }
@@ -30,10 +19,10 @@ struct ImageCaptureCoreClassesSlide: View {
   var transition: AnyTransition = .push(from: .trailing)
 
   var script: String = """
-    ImageCaptureCore.frameworkを使う際によく登場するクラスを整理します。
-    デバイス検出にはICDeviceBrowser、デバイスの共通インターフェースがICDeviceです。
-    メディアを扱う場合はICCameraDeviceからセッションを開き、ICCameraItemやICCameraFileでファイルへアクセスします。
-    それぞれの役割を押さえておくことでAPIの全体像が掴みやすくなります。
+    メディアの操作でよく使うAPIを書いています。ICDeviceBrowserでデバイスを検索し、
+    ICCameraDeviceでデバイスに関する操作を行い、
+    ICCameraFileでファイルの操作を行います。
+    次に詳細を見ていきます。
     """
 }
 
