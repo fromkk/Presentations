@@ -51,6 +51,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1"),
     .package(url: "https://github.com/SvenTiigi/YouTubePlayerKit.git", from: "2.0.0"),
+    .package(url: "https://github.com/fromkk/type.git", from: "0.1.0"),
   ],
   targets: [
     .target(
