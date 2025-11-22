@@ -9,7 +9,7 @@
 
   @MainActor
   protocol MultipeerConnectivityClientDelegate: AnyObject {
-    func receivedEvent(_ event: MultiPeerConnectivityClient.Event)
+    func receivedEvent(_ event: P2PEvent)
     func connectionStateChanged(_ connectedPeers: [MCPeerID])
   }
 
@@ -21,20 +21,6 @@
     @unchecked Sendable
   {
     weak var delegate: MultipeerConnectivityClientDelegate?
-
-    struct Event: Codable {
-      enum Name: String, Codable {
-        case slideSelected
-        case scriptChanged
-        case indexChanged
-        case backSlide
-        case forwardSlide
-        case finished
-      }
-
-      let eventName: Name
-      let eventValue: String
-    }
 
     private let logger = Logger(
       subsystem: Bundle.main.bundleIdentifier!,
@@ -49,7 +35,7 @@
 
     var mcBrowser: MCBrowserViewController
     private(set) var error: (any Error)?
-    var receivedEvent: Event?
+    var receivedEvent: P2PEvent?
 
     var isSyncing: Bool = false
 
@@ -139,7 +125,7 @@
       return mcBrowser
     }
 
-    func sendEvent(_ event: Event) {
+    func sendEvent(_ event: P2PEvent) {
       logger.info("\(#function) event \(event.eventName.rawValue)")
       guard !mcSession.connectedPeers.isEmpty,
         let data = try? JSONEncoder().encode(event)
@@ -207,7 +193,7 @@
       logger.info(
         "Received data \(String(data: data, encoding: .utf8) ?? "invalid") from '\(peerID.displayName)'"
       )
-      if let event = try? JSONDecoder().decode(Event.self, from: data) {
+      if let event = try? JSONDecoder().decode(P2PEvent.self, from: data) {
         Task { @MainActor in
           self.delegate?.receivedEvent(event)
         }

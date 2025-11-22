@@ -91,7 +91,7 @@ public final class PresentationStore {
 
 #if canImport(UIKit)
   extension PresentationStore: MultipeerConnectivityClientDelegate {
-    func receivedEvent(_ event: MultiPeerConnectivityClient.Event) {
+    func receivedEvent(_ event: P2PEvent) {
       switch event.eventName {
       case .slideSelected:
         switch event.eventValue {

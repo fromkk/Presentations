@@ -7,14 +7,6 @@ enum WifiAwareConstants {
   static let serviceName: String = "_presentations._udp"
 }
 
-struct PresentationEvent: Codable, Sendable, CustomStringConvertible {
-  let message: String
-
-  var description: String {
-    "\(Self.self) message \(message)"
-  }
-}
-
 extension WAPublishableService {
   public static var presentationService: WAPublishableService {
     allServices[WifiAwareConstants.serviceName]!
@@ -78,12 +70,12 @@ final class WifiAwareClient {
 
   var connection:
     NetworkConnection<
-      Coder<PresentationEvent, PresentationEvent, NetworkJSONCoder>
+      Coder<P2PEvent, P2PEvent, NetworkJSONCoder>
     >?
 
   var connectionState: ConnectionState = .idle
 
-  var receivedEvent: PresentationEvent?
+  var receivedEvent: P2PEvent?
 
   init() {
     Task {
@@ -101,8 +93,8 @@ final class WifiAwareClient {
       ),
       using: .parameters {
         Coder(
-          receiving: PresentationEvent.self,
-          sending: PresentationEvent.self,
+          receiving: P2PEvent.self,
+          sending: P2PEvent.self,
           using: NetworkJSONCoder()
         ) {
           UDP()
@@ -159,6 +151,7 @@ final class WifiAwareClient {
         return .continue
       }
     }
+    try await configureConnection(to: endpoint)
   }
 
   private func configureConnection(to endpoint: WAEndpoint) async throws {
@@ -167,8 +160,8 @@ final class WifiAwareClient {
       using: .parameters(
         {
           Coder(
-            receiving: PresentationEvent.self,
-            sending: PresentationEvent.self,
+            receiving: P2PEvent.self,
+            sending: P2PEvent.self,
             using: NetworkJSONCoder()
           ) {
             UDP()
@@ -184,7 +177,7 @@ final class WifiAwareClient {
     }
   }
 
-  func send(_ event: PresentationEvent) async throws {
+  func send(_ event: P2PEvent) async throws {
     logger.info("\(#function) event \(event)")
     guard let connection else {
       return
