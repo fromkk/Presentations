@@ -1,11 +1,11 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
   name: "Slides",
-  platforms: [.iOS(.v17), .macOS(.v15), .tvOS(.v16), .visionOS(.v2)],
+  platforms: [.iOS(.v26), .macOS(.v26), .tvOS(.v26), .visionOS(.v26)],
   products: [
     .library(
       name: "AboutSkip",

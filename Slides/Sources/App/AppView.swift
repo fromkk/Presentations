@@ -2,25 +2,32 @@ import AboutSkip
 import Combine
 import Common
 import CreateSpatialPhoto
+import DeviceDiscoveryUI
 import ExternalStorage
 import MultipeerConnectivity
+import OSLog
 import Potatotips0527
 import SlideKit
 import SwiftUI
 import SwiftUITransition
+import WiFiAware
 import visionOSMeetupVol10
 
 @Observable @MainActor
 public final class PresentationStore {
+  let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PresentationStore")
+
   public init() {
     #if canImport(UIKit)
       multipeerClient = .init()
+      wifiAwareClient = .init()
       multipeerClient.delegate = self
     #endif
   }
 
   #if canImport(UIKit)
     let multipeerClient: MultiPeerConnectivityClient
+    let wifiAwareClient: WifiAwareClient
   #endif
 
   public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
@@ -228,82 +235,148 @@ public struct AppView: View {
   public var body: some View {
     NavigationStack {
       List {
-        Button {
-          store.currentSlideConfiguration = AboutSkipSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(AboutSkipSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = Potatotips0527SlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(Potatotips0527SlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = VisionOSMeetUpVol10Configuration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(VisionOSMeetUpVol10Configuration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration =
-            SwiftUITransitionSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(SwiftUITransitionSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration =
-            CreateSpatialPhotoSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(CreateSpatialPhotoSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        #if os(iOS)
+        Section {
           Button {
-            let configuration = ExternalStorageConfiguration()
-            store.currentSlideConfiguration = configuration
+            store.currentSlideConfiguration = AboutSkipSlideConfiguration()
             openWindows()
-            store.multipeerClient.sendEvent(
-              .init(eventName: .slideSelected, eventValue: configuration.id)
-            )
           } label: {
             HStack {
-              Text(ExternalStorageConfiguration.title)
+              Text(AboutSkipSlideConfiguration.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
               Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration = Potatotips0527SlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(Potatotips0527SlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration = VisionOSMeetUpVol10Configuration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(VisionOSMeetUpVol10Configuration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration =
+              SwiftUITransitionSlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(SwiftUITransitionSlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration =
+              CreateSpatialPhotoSlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(CreateSpatialPhotoSlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          #if os(iOS)
+            Button {
+              let configuration = ExternalStorageConfiguration()
+              store.currentSlideConfiguration = configuration
+              openWindows()
+              store.multipeerClient.sendEvent(
+                .init(eventName: .slideSelected, eventValue: configuration.id)
+              )
+            } label: {
+              HStack {
+                Text(ExternalStorageConfiguration.title)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.forward")
+              }
+            }
+          #endif
+        }
+
+        #if canImport(UIKit)
+          Section {
+            if store.wifiAwareClient.pairedDevices.isEmpty {
+              Text("No paired devices")
+            } else {
+              ForEach(store.wifiAwareClient.pairedDevices, id: \.self) { device in
+                Text(device.name ?? "nil")
+              }
+            }
+          } header: {
+            Text("Wi-Fi Aware")
+          } footer: {
+            VStack(spacing: 16) {
+              if !store.wifiAwareClient.pairedDevices.isEmpty {
+                Button {
+                  Task {
+                    try await store.wifiAwareClient.subscribeListener()
+                  }
+                } label: {
+                  Text("Listen")
+                }
+
+                Button {
+                  Task {
+                    try await store.wifiAwareClient.publishListener()
+                  }
+                } label: {
+                  Text("Browse")
+                }
+              }
+
+              HStack(spacing: 16) {
+                // viewer
+                DevicePicker(
+                  .wifiAware(.connecting(to: .allPairedDevices, from: .presentationService)),
+                  onSelect: { selected in
+                    store.logger.info("onSelect \(selected.device.name ?? "nil")")
+                  },
+                  label: {
+                    Text("DevicePicker")
+                  },
+                  fallback: {
+                    Text("DevicePicker Failed")
+                  }
+                )
+
+                // Publisher
+                DevicePairingView(
+                  .wifiAware(
+                    .connecting(to: .presentationService, from: .allPairedDevices)
+                  ),
+                  label: {
+                    Text("DevicePairingView")
+                  },
+                  fallback: {
+                    Text("DevicePairingView Failed")
+                  }
+                )
+              }
+              .frame(maxWidth: .infinity, alignment: .center)
             }
           }
         #endif
@@ -397,7 +470,9 @@ public struct AppView: View {
         content: {
           if let slideIndexController = store.presenterSlideIndexController {
             NavigationStack {
-              if horizontalSizeClass == .regular && verticalSizeClass == .compact {
+              if horizontalSizeClass == .regular
+                && verticalSizeClass == .compact
+              {
                 HStack {
                   PresentationView(
                     slideSize: SlideSize.standard16_9,
@@ -519,4 +594,8 @@ public struct AppView: View {
       )
     #endif
   }
+}
+
+#Preview {
+  AppView(store: PresentationStore())
 }

@@ -37,5 +37,15 @@
 			</array>
 		</dict>
 	</dict>
+	<key>WiFiAwareServices</key>
+	<dict>
+		<key>_presentations._udp</key>
+		<dict>
+			<key>Publishable</key>
+			<dict/>
+			<key>Subscribable</key>
+			<dict/>
+		</dict>
+	</dict>
 </dict>
 </plist>
