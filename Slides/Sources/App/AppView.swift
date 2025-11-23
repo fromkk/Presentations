@@ -15,19 +15,24 @@ import visionOSMeetupVol10
 
 @Observable @MainActor
 public final class PresentationStore {
-  let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PresentationStore")
+  let logger = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "PresentationStore"
+  )
 
   public init() {
     #if canImport(UIKit)
       multipeerClient = .init()
       wifiAwareClient = .init()
       multipeerClient.delegate = self
+      wifiAwareClient.delegate = self
     #endif
   }
 
   #if canImport(UIKit)
     let multipeerClient: MultiPeerConnectivityClient
     let wifiAwareClient: WifiAwareClient
+    var wifiAwareConnectionState: ConnectionState?
   #endif
 
   public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
@@ -48,6 +53,20 @@ public final class PresentationStore {
               eventValue: "\(slideIndexController.currentIndex)"
             )
           )
+          Task {
+            try await wifiAwareClient.send(
+              .init(
+                eventName: .scriptChanged,
+                eventValue: slideIndexController.currentScript
+              )
+            )
+            try await wifiAwareClient.send(
+              .init(
+                eventName: .indexChanged,
+                eventValue: "\(slideIndexController.currentIndex)"
+              )
+            )
+          }
 
           slideIndexController.$currentScript.sink {
             [weak self] script in
@@ -55,6 +74,11 @@ public final class PresentationStore {
             self.multipeerClient.sendEvent(
               .init(eventName: .scriptChanged, eventValue: script)
             )
+            Task {
+              try await self.wifiAwareClient.send(
+                .init(eventName: .scriptChanged, eventValue: script)
+              )
+            }
           }
           .store(in: &cancellables)
 
@@ -64,6 +88,11 @@ public final class PresentationStore {
             self.multipeerClient.sendEvent(
               .init(eventName: .indexChanged, eventValue: "\(index)")
             )
+            Task {
+              try await self.wifiAwareClient.send(
+                .init(eventName: .indexChanged, eventValue: "\(index)")
+              )
+            }
           }
           .store(in: &cancellables)
         }
@@ -120,17 +149,30 @@ public final class PresentationStore {
       }
     }
 
-    func connectionStateChanged(_ connectedPeers: [MCPeerID]) {
-
-    }
-
     func backSlide() {
       multipeerClient.sendEvent(.init(eventName: .backSlide, eventValue: ""))
+      Task {
+        try await wifiAwareClient.send(
+          .init(eventName: .backSlide, eventValue: "")
+        )
+      }
     }
 
     func forwardSlide() {
       multipeerClient.sendEvent(.init(eventName: .forwardSlide, eventValue: ""))
+      Task {
+        try await wifiAwareClient.send(
+          .init(eventName: .forwardSlide, eventValue: "")
+        )
+      }
     }
+  }
+
+  extension PresentationStore: WifiAwareClientDelegate {
+    func connectionStateChanged(_ connectionState: ConnectionState) {
+      self.wifiAwareConnectionState = connectionState
+    }
+
   }
 #endif
 
@@ -322,38 +364,77 @@ public struct AppView: View {
             if store.wifiAwareClient.pairedDevices.isEmpty {
               Text("No paired devices")
             } else {
-              ForEach(store.wifiAwareClient.pairedDevices, id: \.self) { device in
-                Text(device.name ?? "nil")
+              ForEach(store.wifiAwareClient.pairedDevices, id: \.self) {
+                device in
+                Text(device.displayName)
               }
             }
           } header: {
             Text("Wi-Fi Aware")
           } footer: {
-            VStack(spacing: 16) {
+            VStack(alignment: .center, spacing: 16) {
               if !store.wifiAwareClient.pairedDevices.isEmpty {
-                Button {
-                  Task {
-                    try await store.wifiAwareClient.subscribeListener()
+                HStack(spacing: 16) {
+                  Button {
+                    Task {
+                      try await store.wifiAwareClient.subscribeListener()
+                    }
+                  } label: {
+                    Text("Listen")
                   }
-                } label: {
-                  Text("Listen")
-                }
 
-                Button {
-                  Task {
-                    try await store.wifiAwareClient.publishListener()
+                  Button {
+                    Task {
+                      try await store.wifiAwareClient.publishListener()
+                    }
+                  } label: {
+                    Text("Browse")
                   }
-                } label: {
-                  Text("Browse")
+
+                  HStack(spacing: 8) {
+                    switch store.wifiAwareConnectionState {
+                    case .idle, .none:
+                      Circle()
+                        .fill(Color.gray)
+                        .frame(width: 24, height: 24)
+
+                      Text("idle")
+                    case .connected:
+                      Circle()
+                        .fill(Color.green)
+                        .frame(width: 24, height: 24)
+
+                      Text("connected")
+                    case .connecting:
+                      ProgressView()
+                      Text("connecting")
+                    case .cancelled:
+                      Image(systemName: "personalhotspot.slash")
+                      Text("cancelled")
+                    case .failed:
+                      Circle()
+                        .fill(Color.red)
+                        .frame(width: 24, height: 24)
+
+                      Text("failed")
+                    }
+                  }
                 }
               }
 
               HStack(spacing: 16) {
                 // viewer
                 DevicePicker(
-                  .wifiAware(.connecting(to: .allPairedDevices, from: .presentationService)),
+                  .wifiAware(
+                    .connecting(
+                      to: .allPairedDevices,
+                      from: .presentationService
+                    )
+                  ),
                   onSelect: { selected in
-                    store.logger.info("onSelect \(selected.device.name ?? "nil")")
+                    store.logger.info(
+                      "onSelect \(selected.device.name ?? "nil")"
+                    )
                   },
                   label: {
                     Text("DevicePicker")
@@ -366,7 +447,10 @@ public struct AppView: View {
                 // Publisher
                 DevicePairingView(
                   .wifiAware(
-                    .connecting(to: .presentationService, from: .allPairedDevices)
+                    .connecting(
+                      to: .presentationService,
+                      from: .allPairedDevices
+                    )
                   ),
                   label: {
                     Text("DevicePairingView")
@@ -452,6 +536,11 @@ public struct AppView: View {
                     store.multipeerClient.sendEvent(
                       .init(eventName: .finished, eventValue: "")
                     )
+                    Task {
+                      try await store.wifiAwareClient.send(
+                        .init(eventName: .finished, eventValue: "")
+                      )
+                    }
                   }
                 }
             )

@@ -10,7 +10,6 @@
   @MainActor
   protocol MultipeerConnectivityClientDelegate: AnyObject {
     func receivedEvent(_ event: P2PEvent)
-    func connectionStateChanged(_ connectedPeers: [MCPeerID])
   }
 
   @Observable
@@ -181,7 +180,6 @@
       Task { @MainActor in
         let connectedPeers: [MCPeerID] = session.connectedPeers
         self.connectedPeers = connectedPeers
-        delegate?.connectionStateChanged(connectedPeers)
       }
     }
 

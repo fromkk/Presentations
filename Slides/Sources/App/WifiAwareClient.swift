@@ -51,11 +51,16 @@ extension WAAccessCategory {
 
 enum ConnectionState: Hashable, Sendable {
   case idle
-  case notConnected
   case connecting
   case connected
   case cancelled
   case failed
+}
+
+@MainActor
+protocol WifiAwareClientDelegate: AnyObject {
+  func receivedEvent(_ event: P2PEvent)
+  func connectionStateChanged(_ connectionState: ConnectionState)
 }
 
 @available(iOS 26.0, *)
@@ -66,6 +71,7 @@ final class WifiAwareClient {
     subsystem: Bundle.main.bundleIdentifier!,
     category: "WifiAwareClient"
   )
+  weak var delegate: WifiAwareClientDelegate?
   var pairedDevices: [WAPairedDevice] = []
 
   var connection:
@@ -104,6 +110,7 @@ final class WifiAwareClient {
       .serviceClass(appServiceClass)
     )
     .onStateUpdate({ [weak self] listener, state in
+      self?.logger.info("publishListener listener \(listener.debugDescription) state \(String(describing: state))")
       switch state {
       case .setup, .waiting:
         self?.connectionState = .connecting
@@ -116,6 +123,9 @@ final class WifiAwareClient {
       @unknown default:
         return
       }
+      if let connectionState = self?.connectionState {
+        self?.delegate?.connectionStateChanged(connectionState)
+      }
     })
     .run { [weak self] connection in
       self?.connection = connection
@@ -124,12 +134,14 @@ final class WifiAwareClient {
 
   func subscribeListener() async throws {
     logger.info("\(#function)")
+
     let browser = NetworkBrowser(
       for: .wifiAware(
         .connecting(to: .allPairedDevices, from: .presentationService)
       )
     )
     browser.onStateUpdate { [weak self] browser, state in
+      self?.logger.info("publishListener listener \(browser.debugDescription) state \(String(describing: state))")
       switch state {
       case .setup, .waiting:
         self?.connectionState = .connecting
@@ -141,6 +153,9 @@ final class WifiAwareClient {
         self?.connectionState = .cancelled
       @unknown default:
         return
+      }
+      if let connectionState = self?.connectionState {
+        self?.delegate?.connectionStateChanged(connectionState)
       }
     }
     let endpoint = try await browser.run { [weak self] endpoints in
@@ -155,6 +170,7 @@ final class WifiAwareClient {
   }
 
   private func configureConnection(to endpoint: WAEndpoint) async throws {
+    logger.info("\(#function) endpoint \(endpoint.description)")
     let connection = NetworkConnection(
       to: endpoint,
       using: .parameters(
@@ -170,10 +186,12 @@ final class WifiAwareClient {
         .wifiAware { $0.performanceMode = .realtime }
         .serviceClass(appServiceClass)
     )
+    self.connection = connection
 
     for try await (event, _) in connection.messages {
       logger.info("configureConnection received \(event)")
       self.receivedEvent = event
+      self.delegate?.receivedEvent(event)
     }
   }
 
