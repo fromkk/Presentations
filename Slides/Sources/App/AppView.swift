@@ -348,6 +348,11 @@ public struct AppView: View {
               store.multipeerClient.sendEvent(
                 .init(eventName: .slideSelected, eventValue: configuration.id)
               )
+              Task {
+                try await store.wifiAwareClient.send(
+                  .init(eventName: .slideSelected, eventValue: configuration.id)
+                )
+              }
             } label: {
               HStack {
                 Text(ExternalStorageConfiguration.title)
@@ -377,7 +382,7 @@ public struct AppView: View {
                 HStack(spacing: 16) {
                   Button {
                     Task {
-                      try await store.wifiAwareClient.subscribeListener()
+                      try await store.wifiAwareClient.startAdvertise()
                     }
                   } label: {
                     Text("Listen")
@@ -385,7 +390,7 @@ public struct AppView: View {
 
                   Button {
                     Task {
-                      try await store.wifiAwareClient.publishListener()
+                      try await store.wifiAwareClient.startBrowse()
                     }
                   } label: {
                     Text("Browse")
