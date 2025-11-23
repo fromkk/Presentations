@@ -47,6 +47,10 @@ let package = Package(
       name: "ExternalStorage",
       targets: ["ExternalStorage"]
     ),
+    .library(
+      name: "WifiAwareSlides",
+      targets: ["WifiAwareSlides"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/mtj0928/SlideKit.git", from: "0.6.1"),
@@ -70,6 +74,7 @@ let package = Package(
         "SwiftUITransition",
         "visionOSMeetupVol10",
         "ExternalStorage",
+        "WifiAwareSlides",
       ]
     ),
     .target(
@@ -146,6 +151,14 @@ let package = Package(
       ],
       resources: [
         .process("kyu.mov")
+      ]
+    ),
+    .target(
+      name: "WifiAwareSlides",
+      dependencies: [
+        "Common",
+        "SelfIntroduce",
+        .product(name: "SlideKit", package: "SlideKit"),
       ]
     ),
   ]

@@ -11,6 +11,7 @@ import SlideKit
 import SwiftUI
 import SwiftUITransition
 import WiFiAware
+import WifiAwareSlides
 import visionOSMeetupVol10
 
 @Observable @MainActor
@@ -124,13 +125,16 @@ public final class PresentationStore {
       switch event.eventName {
       case .slideSelected:
         switch event.eventValue {
-        case "external-storage":
+        case ExternalStorageConfiguration.id:
           #if os(iOS)
             presenterSlideIndexController =
               ExternalStorageConfiguration().slideIndexController
           #else
             break
           #endif
+        case WifiAwareSlidesConfiguration.id:
+          presenterSlideIndexController =
+          WifiAwareSlidesConfiguration().slideIndexController
         default:
           break
         }
@@ -361,6 +365,27 @@ public struct AppView: View {
                 Image(systemName: "chevron.forward")
               }
             }
+
+          Button {
+            let configuration = WifiAwareSlidesConfiguration()
+            store.currentSlideConfiguration = configuration
+            openWindows()
+            store.multipeerClient.sendEvent(
+              .init(eventName: .slideSelected, eventValue: configuration.id)
+            )
+            Task {
+              try await store.wifiAwareClient.send(
+                .init(eventName: .slideSelected, eventValue: configuration.id)
+              )
+            }
+          } label: {
+            HStack {
+              Text(WifiAwareSlidesConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
           #endif
         }
 
