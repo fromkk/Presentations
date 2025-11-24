@@ -159,6 +159,9 @@ let package = Package(
         "Common",
         "SelfIntroduce",
         .product(name: "SlideKit", package: "SlideKit"),
+      ],
+      resources: [
+        .process("1123.mov")
       ]
     ),
   ]

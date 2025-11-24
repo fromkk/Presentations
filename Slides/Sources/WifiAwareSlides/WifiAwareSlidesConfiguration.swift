@@ -16,6 +16,10 @@ import SwiftUI
       TitleSlide()
       SelfIntroduce(transition: .push(from: .trailing))
       AboutSlide()
+      SampleCodeSlide()
+      ReferenceSlide()
+      ResultSlide()
+      SummarySlide()
     }
     public let theme: any SlideTheme = .default
   }

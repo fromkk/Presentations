@@ -1,6 +1,6 @@
-import WiFiAware
 import Network
 import OSLog
+import WiFiAware
 
 actor NetworkManager {
   private let logger = Logger(
@@ -37,22 +37,23 @@ actor NetworkManager {
         }
       }
       .wifiAware { $0.performanceMode = appPerformanceMode }
-      .serviceClass(appServiceClass))
-      .onStateUpdate { listener, state in
-        self.logger.info("\(String(describing: listener)): \(String(describing: state))")
+      .serviceClass(appServiceClass)
+    )
+    .onStateUpdate { listener, state in
+      self.logger.info("\(String(describing: listener)): \(String(describing: state))")
 
-        switch state {
-        case .setup, .waiting: break
-        case .ready: self.localEventsContinuation.yield(.listenerRunning)
-        case .failed(let error): self.localEventsContinuation.yield(.listenerStopped(error.wifiAware))
-        case .cancelled: self.localEventsContinuation.yield(.listenerStopped(nil))
-        default: break
-        }
+      switch state {
+      case .setup, .waiting: break
+      case .ready: self.localEventsContinuation.yield(.listenerRunning)
+      case .failed(let error): self.localEventsContinuation.yield(.listenerStopped(error.wifiAware))
+      case .cancelled: self.localEventsContinuation.yield(.listenerStopped(nil))
+      default: break
       }
-      .run { connection in
-        self.logger.info("Received connection: \(String(describing: connection))")
-        await self.connectionManager.add(connection)
-      }
+    }
+    .run { connection in
+      self.logger.info("Received connection: \(String(describing: connection))")
+      await self.connectionManager.add(connection)
+    }
   }
 
   // MARK: - NetworkBrowser (Subscriber)

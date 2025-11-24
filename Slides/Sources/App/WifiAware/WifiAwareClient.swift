@@ -265,4 +265,3 @@ final class WifiAwareClient {
     connectionState = .idle
   }
 }
-

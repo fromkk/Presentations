@@ -1,7 +1,7 @@
 import Foundation
-import WiFiAware
 import Network
 import OSLog
+import WiFiAware
 
 typealias WiFiAwareConnection = NetworkConnection<Coder<P2PEvent, P2PEvent, NetworkJSONCoder>>
 typealias WiFiAwareConnectionID = String

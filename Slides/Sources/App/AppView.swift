@@ -134,7 +134,7 @@ public final class PresentationStore {
           #endif
         case WifiAwareSlidesConfiguration.id:
           presenterSlideIndexController =
-          WifiAwareSlidesConfiguration().slideIndexController
+            WifiAwareSlidesConfiguration().slideIndexController
         default:
           break
         }
@@ -366,26 +366,26 @@ public struct AppView: View {
               }
             }
 
-          Button {
-            let configuration = WifiAwareSlidesConfiguration()
-            store.currentSlideConfiguration = configuration
-            openWindows()
-            store.multipeerClient.sendEvent(
-              .init(eventName: .slideSelected, eventValue: configuration.id)
-            )
-            Task {
-              try await store.wifiAwareClient.send(
+            Button {
+              let configuration = WifiAwareSlidesConfiguration()
+              store.currentSlideConfiguration = configuration
+              openWindows()
+              store.multipeerClient.sendEvent(
                 .init(eventName: .slideSelected, eventValue: configuration.id)
               )
-            }
-          } label: {
-            HStack {
-              Text(WifiAwareSlidesConfiguration.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
+              Task {
+                try await store.wifiAwareClient.send(
+                  .init(eventName: .slideSelected, eventValue: configuration.id)
+                )
+              }
+            } label: {
+              HStack {
+                Text(WifiAwareSlidesConfiguration.title)
+                  .frame(maxWidth: .infinity, alignment: .leading)
 
-              Image(systemName: "chevron.forward")
+                Image(systemName: "chevron.forward")
+              }
             }
-          }
           #endif
         }
 
