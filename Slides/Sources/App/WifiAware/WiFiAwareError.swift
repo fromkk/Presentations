@@ -2,6 +2,7 @@ import Foundation
 import Network
 import WiFiAware
 
+#if os(iOS)
 struct WiFiAwareError: LocalizedError {
   private let waError: WAError
 
@@ -47,3 +48,4 @@ extension NWError {
     return WiFiAwareError(waError, category: .connection)
   }
 }
+#endif

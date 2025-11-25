@@ -2,6 +2,7 @@ import Network
 import OSLog
 import WiFiAware
 
+#if os(iOS)
 actor NetworkManager {
   private let logger = Logger(
     subsystem: Bundle.main.bundleIdentifier!,
@@ -109,3 +110,4 @@ actor NetworkManager {
     networkEventsContinuation.finish()
   }
 }
+#endif

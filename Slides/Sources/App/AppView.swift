@@ -2,7 +2,9 @@ import AboutSkip
 import Combine
 import Common
 import CreateSpatialPhoto
+#if canImport(DeviceDiscoveryUI)
 import DeviceDiscoveryUI
+#endif
 import ExternalStorage
 import MultipeerConnectivity
 import OSLog

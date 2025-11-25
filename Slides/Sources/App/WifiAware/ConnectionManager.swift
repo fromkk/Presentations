@@ -3,6 +3,7 @@ import Network
 import OSLog
 import WiFiAware
 
+#if os(iOS)
 typealias WiFiAwareConnection = NetworkConnection<Coder<P2PEvent, P2PEvent, NetworkJSONCoder>>
 typealias WiFiAwareConnectionID = String
 typealias WiFiAwareConnectionState = (WiFiAwareConnection, WiFiAwareConnection.State)
@@ -199,3 +200,4 @@ actor ConnectionManager: Sendable {
     networkEventsContinuation.finish()
   }
 }
+#endif

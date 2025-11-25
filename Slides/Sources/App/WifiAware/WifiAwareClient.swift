@@ -3,6 +3,7 @@ import Network
 import OSLog
 import WiFiAware
 
+#if os(iOS)
 enum WifiAwareConstants {
   static let serviceName: String = "_presentations._udp"
 }
@@ -265,3 +266,4 @@ final class WifiAwareClient {
     connectionState = .idle
   }
 }
+#endif
