@@ -10,15 +10,15 @@ struct CameraFileView: View, Sendable {
     Group {
       if let imageData {
         #if canImport(UIKit)
-        Image(uiImage: UIImage(data: imageData)!)
-          .resizable()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .aspectRatio(contentMode: .fit)
+          Image(uiImage: UIImage(data: imageData)!)
+            .resizable()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(contentMode: .fit)
         #elseif canImport(AppKit)
-        Image(nsImage: NSImage(data: imageData)!)
-          .resizable()
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .aspectRatio(contentMode: .fit)
+          Image(nsImage: NSImage(data: imageData)!)
+            .resizable()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(contentMode: .fit)
         #endif
       } else {
         ProgressView()

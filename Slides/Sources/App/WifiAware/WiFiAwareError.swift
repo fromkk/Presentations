@@ -1,0 +1,51 @@
+import Foundation
+import Network
+import WiFiAware
+
+#if os(iOS)
+struct WiFiAwareError: LocalizedError {
+  private let waError: WAError
+
+  enum Category {
+    case listener
+    case browser
+    case connection
+  }
+  private let category: Category
+
+  init(_ waError: WAError, category: Category) {
+    self.waError = waError
+    self.category = category
+  }
+
+  var errorDescription: String? {
+    switch category {
+    case .listener: return "Listener Error"
+    case .browser: return "Browser Error"
+    case .connection: return "Connection Error"
+    }
+  }
+
+  var recoverySuggestion: String? {
+    switch waError {
+    case .noPairedDevices(_): return "No Paired Devices. Please pair devices first."
+    case .publisherTimeout(_): return "Timed out. Try to restart advertising."
+    case .subscriberTimeout(_): return "Timed out. Try to restart discovery."
+    case .connectionIdleTimeout(_):
+      return "Timed out due to inactivity. Try setting up a new connection."
+    case .connectionFailed(_): return "Failed to connect. Try attempting the connection again."
+    case .connectionTerminated(_): return "Connection terminated. Try setting up a new connection."
+    default: return "Try again later."
+    }
+  }
+}
+
+extension NWError {
+  var wifiAware: WiFiAwareError? {
+    guard case .posix(let code) = self,
+      let waError = code as? WAError
+    else { return nil }
+    return WiFiAwareError(waError, category: .connection)
+  }
+}
+#endif

@@ -4,28 +4,44 @@ import Common
 import CreateSpatialPhoto
 import ExternalStorage
 import MultipeerConnectivity
+import OSLog
 import Potatotips0527
 import SlideKit
 import SwiftUI
 import SwiftUITransition
+import WiFiAware
+import WifiAwareSlides
 import visionOSMeetupVol10
+
+#if canImport(DeviceDiscoveryUI)
+  import DeviceDiscoveryUI
+#endif
 
 @Observable @MainActor
 public final class PresentationStore {
+  let logger = Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: "PresentationStore"
+  )
+
   public init() {
-    #if canImport(UIKit)
+    #if os(iOS)
       multipeerClient = .init()
+      wifiAwareClient = .init()
       multipeerClient.delegate = self
+      wifiAwareClient.delegate = self
     #endif
   }
 
-  #if canImport(UIKit)
+  #if os(iOS)
     let multipeerClient: MultiPeerConnectivityClient
+    let wifiAwareClient: WifiAwareClient
+    var wifiAwareConnectionState: ConnectionState?
   #endif
 
   public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
     didSet {
-      #if canImport(UIKit)
+      #if os(iOS)
         if let slideIndexController = currentSlideConfiguration?
           .slideIndexController
         {
@@ -41,6 +57,20 @@ public final class PresentationStore {
               eventValue: "\(slideIndexController.currentIndex)"
             )
           )
+          Task {
+            try await wifiAwareClient.send(
+              .init(
+                eventName: .scriptChanged,
+                eventValue: slideIndexController.currentScript
+              )
+            )
+            try await wifiAwareClient.send(
+              .init(
+                eventName: .indexChanged,
+                eventValue: "\(slideIndexController.currentIndex)"
+              )
+            )
+          }
 
           slideIndexController.$currentScript.sink {
             [weak self] script in
@@ -48,6 +78,11 @@ public final class PresentationStore {
             self.multipeerClient.sendEvent(
               .init(eventName: .scriptChanged, eventValue: script)
             )
+            Task {
+              try await self.wifiAwareClient.send(
+                .init(eventName: .scriptChanged, eventValue: script)
+              )
+            }
           }
           .store(in: &cancellables)
 
@@ -57,6 +92,11 @@ public final class PresentationStore {
             self.multipeerClient.sendEvent(
               .init(eventName: .indexChanged, eventValue: "\(index)")
             )
+            Task {
+              try await self.wifiAwareClient.send(
+                .init(eventName: .indexChanged, eventValue: "\(index)")
+              )
+            }
           }
           .store(in: &cancellables)
         }
@@ -71,7 +111,7 @@ public final class PresentationStore {
   }
   public var externalDisplayMode: ExternalDisplayMode = .external
 
-  #if canImport(UIKit)
+  #if os(iOS)
     private var cancellables: Set<AnyCancellable> = []
 
     var presenterSlideIndexController: SlideIndexController?
@@ -82,19 +122,18 @@ public final class PresentationStore {
   #endif
 }
 
-#if canImport(UIKit)
+#if os(iOS)
   extension PresentationStore: MultipeerConnectivityClientDelegate {
-    func receivedEvent(_ event: MultiPeerConnectivityClient.Event) {
+    func receivedEvent(_ event: P2PEvent) {
       switch event.eventName {
       case .slideSelected:
         switch event.eventValue {
-        case "external-storage":
-          #if os(iOS)
-            presenterSlideIndexController =
-              ExternalStorageConfiguration().slideIndexController
-          #else
-            break
-          #endif
+        case ExternalStorageConfiguration.id:
+          presenterSlideIndexController =
+            ExternalStorageConfiguration().slideIndexController
+        case WifiAwareSlidesConfiguration.id:
+          presenterSlideIndexController =
+            WifiAwareSlidesConfiguration().slideIndexController
         default:
           break
         }
@@ -113,17 +152,30 @@ public final class PresentationStore {
       }
     }
 
-    func connectionStateChanged(_ connectedPeers: [MCPeerID]) {
-
-    }
-
     func backSlide() {
       multipeerClient.sendEvent(.init(eventName: .backSlide, eventValue: ""))
+      Task {
+        try await wifiAwareClient.send(
+          .init(eventName: .backSlide, eventValue: "")
+        )
+      }
     }
 
     func forwardSlide() {
       multipeerClient.sendEvent(.init(eventName: .forwardSlide, eventValue: ""))
+      Task {
+        try await wifiAwareClient.send(
+          .init(eventName: .forwardSlide, eventValue: "")
+        )
+      }
     }
+  }
+
+  extension PresentationStore: WifiAwareClientDelegate {
+    func connectionStateChanged(_ connectionState: ConnectionState) {
+      self.wifiAwareConnectionState = connectionState
+    }
+
   }
 #endif
 
@@ -207,7 +259,7 @@ public struct AppView: View {
 
   @State private var showingFullScreenPresentation = false
 
-  #if canImport(UIKit)
+  #if os(iOS)
     @State private var showingMultipeerBrowser = false
     @State private var showingInvitationAlert = false
     @State private var invitingPeerName = ""
@@ -228,88 +280,222 @@ public struct AppView: View {
   public var body: some View {
     NavigationStack {
       List {
-        Button {
-          store.currentSlideConfiguration = AboutSkipSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(AboutSkipSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = Potatotips0527SlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(Potatotips0527SlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration = VisionOSMeetUpVol10Configuration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(VisionOSMeetUpVol10Configuration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration =
-            SwiftUITransitionSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(SwiftUITransitionSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        Button {
-          store.currentSlideConfiguration =
-            CreateSpatialPhotoSlideConfiguration()
-          openWindows()
-        } label: {
-          HStack {
-            Text(CreateSpatialPhotoSlideConfiguration.title)
-              .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: "chevron.forward")
-          }
-        }
-
-        #if os(iOS)
+        Section {
           Button {
-            let configuration = ExternalStorageConfiguration()
-            store.currentSlideConfiguration = configuration
+            store.currentSlideConfiguration = AboutSkipSlideConfiguration()
             openWindows()
-            store.multipeerClient.sendEvent(
-              .init(eventName: .slideSelected, eventValue: configuration.id)
-            )
           } label: {
             HStack {
-              Text(ExternalStorageConfiguration.title)
+              Text(AboutSkipSlideConfiguration.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
               Image(systemName: "chevron.forward")
             }
           }
+
+          Button {
+            store.currentSlideConfiguration = Potatotips0527SlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(Potatotips0527SlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration = VisionOSMeetUpVol10Configuration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(VisionOSMeetUpVol10Configuration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration =
+              SwiftUITransitionSlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(SwiftUITransitionSlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          Button {
+            store.currentSlideConfiguration =
+              CreateSpatialPhotoSlideConfiguration()
+            openWindows()
+          } label: {
+            HStack {
+              Text(CreateSpatialPhotoSlideConfiguration.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+              Image(systemName: "chevron.forward")
+            }
+          }
+
+          #if os(iOS)
+            Button {
+              let configuration = ExternalStorageConfiguration()
+              store.currentSlideConfiguration = configuration
+              openWindows()
+              store.multipeerClient.sendEvent(
+                .init(eventName: .slideSelected, eventValue: configuration.id)
+              )
+              Task {
+                try await store.wifiAwareClient.send(
+                  .init(eventName: .slideSelected, eventValue: configuration.id)
+                )
+              }
+            } label: {
+              HStack {
+                Text(ExternalStorageConfiguration.title)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.forward")
+              }
+            }
+
+            Button {
+              let configuration = WifiAwareSlidesConfiguration()
+              store.currentSlideConfiguration = configuration
+              openWindows()
+              store.multipeerClient.sendEvent(
+                .init(eventName: .slideSelected, eventValue: configuration.id)
+              )
+              Task {
+                try await store.wifiAwareClient.send(
+                  .init(eventName: .slideSelected, eventValue: configuration.id)
+                )
+              }
+            } label: {
+              HStack {
+                Text(WifiAwareSlidesConfiguration.title)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.forward")
+              }
+            }
+          #endif
+        }
+
+        #if os(iOS)
+          Section {
+            if store.wifiAwareClient.pairedDevices.isEmpty {
+              Text("No paired devices")
+            } else {
+              ForEach(store.wifiAwareClient.pairedDevices, id: \.self) {
+                device in
+                Text(device.displayName)
+              }
+            }
+          } header: {
+            Text("Wi-Fi Aware")
+          } footer: {
+            VStack(alignment: .center, spacing: 16) {
+              if !store.wifiAwareClient.pairedDevices.isEmpty {
+                HStack(spacing: 16) {
+                  Button {
+                    Task {
+                      try await store.wifiAwareClient.startAdvertise()
+                    }
+                  } label: {
+                    Text("Listen")
+                  }
+
+                  Button {
+                    Task {
+                      try await store.wifiAwareClient.startBrowse()
+                    }
+                  } label: {
+                    Text("Browse")
+                  }
+
+                  HStack(spacing: 8) {
+                    switch store.wifiAwareConnectionState {
+                    case .idle, .none:
+                      Circle()
+                        .fill(Color.gray)
+                        .frame(width: 24, height: 24)
+
+                      Text("idle")
+                    case .connected:
+                      Circle()
+                        .fill(Color.green)
+                        .frame(width: 24, height: 24)
+
+                      Text("connected")
+                    case .connecting:
+                      ProgressView()
+                      Text("connecting")
+                    case .cancelled:
+                      Image(systemName: "personalhotspot.slash")
+                      Text("cancelled")
+                    case .failed:
+                      Circle()
+                        .fill(Color.red)
+                        .frame(width: 24, height: 24)
+
+                      Text("failed")
+                    }
+                  }
+                }
+              }
+
+              HStack(spacing: 16) {
+                // viewer
+                DevicePicker(
+                  .wifiAware(
+                    .connecting(
+                      to: .allPairedDevices,
+                      from: .presentationService
+                    )
+                  ),
+                  onSelect: { selected in
+                    store.logger.info(
+                      "onSelect \(selected.device.name ?? "nil")"
+                    )
+                  },
+                  label: {
+                    Text("DevicePicker")
+                  },
+                  fallback: {
+                    Text("DevicePicker Failed")
+                  }
+                )
+
+                // Publisher
+                DevicePairingView(
+                  .wifiAware(
+                    .connecting(
+                      to: .presentationService,
+                      from: .allPairedDevices
+                    )
+                  ),
+                  label: {
+                    Text("DevicePairingView")
+                  },
+                  fallback: {
+                    Text("DevicePairingView Failed")
+                  }
+                )
+              }
+              .frame(maxWidth: .infinity, alignment: .center)
+            }
+          }
         #endif
       }
       .navigationTitle(Text("Presentations"))
-      #if canImport(UIKit)
+      #if os(iOS)
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
             Button {
@@ -360,7 +546,7 @@ public struct AppView: View {
         }
       #endif
     }
-    #if canImport(UIKit)
+    #if os(iOS)
       .fullScreenCover(isPresented: $showingFullScreenPresentation) {
         if let configuration = store.currentSlideConfiguration {
           NavigationStack {
@@ -379,6 +565,11 @@ public struct AppView: View {
                     store.multipeerClient.sendEvent(
                       .init(eventName: .finished, eventValue: "")
                     )
+                    Task {
+                      try await store.wifiAwareClient.send(
+                        .init(eventName: .finished, eventValue: "")
+                      )
+                    }
                   }
                 }
             )
@@ -397,7 +588,9 @@ public struct AppView: View {
         content: {
           if let slideIndexController = store.presenterSlideIndexController {
             NavigationStack {
-              if horizontalSizeClass == .regular && verticalSizeClass == .compact {
+              if horizontalSizeClass == .regular
+                && verticalSizeClass == .compact
+              {
                 HStack {
                   PresentationView(
                     slideSize: SlideSize.standard16_9,
@@ -519,4 +712,8 @@ public struct AppView: View {
       )
     #endif
   }
+}
+
+#Preview {
+  AppView(store: PresentationStore())
 }
