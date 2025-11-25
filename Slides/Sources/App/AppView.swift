@@ -2,9 +2,6 @@ import AboutSkip
 import Combine
 import Common
 import CreateSpatialPhoto
-#if canImport(DeviceDiscoveryUI)
-import DeviceDiscoveryUI
-#endif
 import ExternalStorage
 import MultipeerConnectivity
 import OSLog
@@ -16,6 +13,10 @@ import WiFiAware
 import WifiAwareSlides
 import visionOSMeetupVol10
 
+#if canImport(DeviceDiscoveryUI)
+  import DeviceDiscoveryUI
+#endif
+
 @Observable @MainActor
 public final class PresentationStore {
   let logger = Logger(
@@ -24,7 +25,7 @@ public final class PresentationStore {
   )
 
   public init() {
-    #if canImport(UIKit)
+    #if os(iOS)
       multipeerClient = .init()
       wifiAwareClient = .init()
       multipeerClient.delegate = self
@@ -32,7 +33,7 @@ public final class PresentationStore {
     #endif
   }
 
-  #if canImport(UIKit)
+  #if os(iOS)
     let multipeerClient: MultiPeerConnectivityClient
     let wifiAwareClient: WifiAwareClient
     var wifiAwareConnectionState: ConnectionState?
@@ -40,7 +41,7 @@ public final class PresentationStore {
 
   public var currentSlideConfiguration: (any SlideConfigurationInterface)? {
     didSet {
-      #if canImport(UIKit)
+      #if os(iOS)
         if let slideIndexController = currentSlideConfiguration?
           .slideIndexController
         {
@@ -110,7 +111,7 @@ public final class PresentationStore {
   }
   public var externalDisplayMode: ExternalDisplayMode = .external
 
-  #if canImport(UIKit)
+  #if os(iOS)
     private var cancellables: Set<AnyCancellable> = []
 
     var presenterSlideIndexController: SlideIndexController?
@@ -121,19 +122,15 @@ public final class PresentationStore {
   #endif
 }
 
-#if canImport(UIKit)
+#if os(iOS)
   extension PresentationStore: MultipeerConnectivityClientDelegate {
     func receivedEvent(_ event: P2PEvent) {
       switch event.eventName {
       case .slideSelected:
         switch event.eventValue {
         case ExternalStorageConfiguration.id:
-          #if os(iOS)
-            presenterSlideIndexController =
-              ExternalStorageConfiguration().slideIndexController
-          #else
-            break
-          #endif
+          presenterSlideIndexController =
+            ExternalStorageConfiguration().slideIndexController
         case WifiAwareSlidesConfiguration.id:
           presenterSlideIndexController =
             WifiAwareSlidesConfiguration().slideIndexController
@@ -262,7 +259,7 @@ public struct AppView: View {
 
   @State private var showingFullScreenPresentation = false
 
-  #if canImport(UIKit)
+  #if os(iOS)
     @State private var showingMultipeerBrowser = false
     @State private var showingInvitationAlert = false
     @State private var invitingPeerName = ""
@@ -391,7 +388,7 @@ public struct AppView: View {
           #endif
         }
 
-        #if canImport(UIKit)
+        #if os(iOS)
           Section {
             if store.wifiAwareClient.pairedDevices.isEmpty {
               Text("No paired devices")
@@ -498,7 +495,7 @@ public struct AppView: View {
         #endif
       }
       .navigationTitle(Text("Presentations"))
-      #if canImport(UIKit)
+      #if os(iOS)
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
             Button {
@@ -549,7 +546,7 @@ public struct AppView: View {
         }
       #endif
     }
-    #if canImport(UIKit)
+    #if os(iOS)
       .fullScreenCover(isPresented: $showingFullScreenPresentation) {
         if let configuration = store.currentSlideConfiguration {
           NavigationStack {
